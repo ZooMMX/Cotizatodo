@@ -19,10 +19,10 @@ var Login = function () {
 
 	            messages: {
 	                username: {
-	                    required: "Username is required."
+	                    required: "Nombre de usuario es obligatorio."
 	                },
 	                password: {
-	                    required: "Password is required."
+	                    required: "Password es obligatorio."
 	                }
 	            },
 
@@ -74,7 +74,7 @@ var Login = function () {
 
 	            messages: {
 	                email: {
-	                    required: "Email is required."
+	                    required: "Email es obligatorio."
 	                }
 	            },
 
@@ -161,9 +161,6 @@ var Login = function () {
 	                    required: true,
 	                    email: true
 	                },
-	                address: {
-	                    required: true
-	                },
 	                city: {
 	                    required: true
 	                },
@@ -186,7 +183,30 @@ var Login = function () {
 	                }
 	            },
 
-	            messages: { // custom messages for radio buttons and checkboxes
+	            messages: {
+                    fullname: {
+                        required: "Campo obligatorio"
+                    },
+                    email: {
+                        required: "Campo obligatorio",
+                        email: "E-mail inválido"
+                    },
+                    city: {
+                        required: "Campo obligatorio"
+                    },
+                    country: {
+                        required: "Campo obligatorio"
+                    },
+                    username: {
+                        required: "Campo obligatorio"
+                    },
+                    password: {
+                        required: "Campo obligatorio"
+                    },
+                    rpassword: {
+                        required: "Campo obligatorio",
+                        equalTo: "Password y confirmación no coinciden"
+                    },
 	                tnc: {
 	                    required: "Primero acepta términos y condiciones."
 	                }

@@ -1,0 +1,9 @@
+
+.borderless {
+    border: none;
+    border-color: transparent;
+}
+
+.company-name {
+    font-size: 20pt;
+}

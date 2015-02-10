@@ -18,4 +18,11 @@ public class HomeController {
 
         return "home";
     }
+
+    @RequestMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("user", new User());
+
+        return "login";
+    }
 }

@@ -19,8 +19,14 @@ public class User {
 
     private String username;
     private String password;
+    private String city;
+    private String country;
+
+    private String email;
     private boolean enabled = true;
+
     private Set<UserRole> userRole = new HashSet<UserRole>(0);
+
     public User() {
     }
 
@@ -31,7 +37,7 @@ public class User {
     }
 
     public User(String username, String password,
-        boolean enabled, Set<UserRole> userRole) {
+                boolean enabled, Set<UserRole> userRole) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -40,13 +46,39 @@ public class User {
 
     @Id
     @Column(name = "username", unique = true,
-        nullable = false, length = 45)
+            nullable = false, length = 45)
     public String getUsername() {
         return this.username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Column(nullable = false, length = 60)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Column(nullable = false, length = 2)
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    @Column(length = 60)
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Column

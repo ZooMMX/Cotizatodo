@@ -19,7 +19,9 @@ public class QuoteController {
     }
 
     @RequestMapping("/quotes/new")
-        public String newQuote(Model model) {
+        public String newQuote(Model model)
+        {
+            model.addAttribute("quote", new Quote());
             return "quote_new";
         }
 }
