@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 /**
@@ -44,7 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
-        //handler.setPermissionEvaluator(new TamtoPermissionEvaluator());
         handler.setPermissionEvaluator(cotizadoraPermissionEvaluator);
         web.expressionHandler(handler);
     }
@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/img/**", "/css/**", "/media/**", "/plugins/**", "/scripts/**", "/register").permitAll()
+                .antMatchers("/", "/quotes/new", "/quotes/print", "/quotes/print/pdf").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and()
@@ -68,7 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .logout()
-                .permitAll()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout")
+
                 .and()
             .exceptionHandling()
                 .accessDeniedPage("/403");

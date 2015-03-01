@@ -15,9 +15,13 @@ $.fn.invoiceTable = function(options) {
 			invoice = {},
 			// display form field in place of cell text
 			showEditor = function (select) {
-				active = element.find('td.editable:focus');
+				active = element.find('td.editable:focus,th.editable:focus');
 				if (active.length) {
-					editor.val(active.text())
+					var selectorVal = active.find('input[type=hidden]').val();
+					if (active.hasClass('salesTaxText')) {
+						selectorVal = active.find('span').text();
+					}
+					editor.val(selectorVal)
 						.removeClass('error')
 						.show()
 						.offset(active.offset())
@@ -35,17 +39,33 @@ $.fn.invoiceTable = function(options) {
 				var text = editor.val(),
 					evt = $.Event('change'),
 					originalContent;
-				if (active.text() === text || editor.hasClass('error')) {
+				if (active.find('span').text() === text || editor.hasClass('error')) {
 					return true;
 				}
-				originalContent = active.html();
-				active.text(text).trigger(evt, text);
+				originalContent = active.find('span').text();
+				active.find('span').text(text).trigger(evt, text);
 				if (evt.result === false) {
-					active.html(originalContent);
+					active.find('span').text(originalContent);
 				}
-				else if (active.hasClass("unitPrice")) {
-					active.text(parseFloat(text).toFixed(2));
+				else {
+					if (active.hasClass("salesTaxText")) {
+						var numbers = text.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
+						if (numbers.length > 0) {
+							active.find('input[type=hidden]').val(numbers[numbers.length-1]);
+							$('#salestaxtext').val(text);
+						} else {
+							active.find('span').text(originalContent);
+						}
+
+					} else {
+						if (active.hasClass('numeric')) {
+							active.find('span').text(formatNumber(text,true));
+						}
+						active.find('input[type=hidden]').val(text);
+					}
+
 				}
+				calculateTotal();
 			},
 			// allow arrow key navigation with editable elements
 			movement = function (element, keycode) {
@@ -59,6 +79,14 @@ $.fn.invoiceTable = function(options) {
 					return element.parent().next().children().eq(element.index());
 				}
 				return [];
+			},
+			formatNumber = function(number,fixed) {
+				if (fixed) {
+					number = parseFloat(number).toFixed(2);
+				}
+				var parts = number.toString().split(".");
+			    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			    return parts.join(".");
 			},
 			//function to calculate totals, and add json string to cookie
 			calculateTotal = function() {
@@ -74,14 +102,15 @@ $.fn.invoiceTable = function(options) {
 					var arrRow = {},
 					row = $(this);
 
-					arrRow['description'] = row.find('.description').text(),
-					arrRow['quantity'] = row.find('.quantity').text(),
-					arrRow['unitPrice'] = row.find('.unitPrice').text();
+					arrRow['description'] = row.find('.description input[type=hidden]').val();
+					arrRow['quantity'] = row.find('.quantity input[type=hidden]').val();
+					arrRow['unitPrice'] = row.find('.unitPrice input[type=hidden]').val();
 					arrRow['rowTotal'] = 0;
 
 					if (!isNaN(parseFloat(arrRow['quantity']) && !isNaN(parseFloat(arrRow['unitPrice'])))) {
 						arrRow['rowTotal'] = (arrRow['quantity'] * arrRow['unitPrice']);
-						row.find('.rowTotal').text(arrRow['rowTotal'].toFixed(2));
+						row.find('.rowTotal span').text(formatNumber(arrRow['rowTotal'],true));
+						row.find('.rowTotal  input[type=hidden]').val(arrRow['rowTotal']);
 						invoice['subtotal'] += arrRow['rowTotal'];
 					}
 
@@ -89,12 +118,18 @@ $.fn.invoiceTable = function(options) {
 
 				});
 
-				invoice['salestax'] = invoice['subtotal'] * activeOptions.salestax / 100;
-				invoice['total'] = (invoice['subtotal'] * activeOptions.salestax / 100) + invoice['subtotal'];
+				invoice['salestaxrate'] = element.find('#salestaxrate').val();
+				invoice['salestaxratetext'] = element.find('.salesTaxText').text();
+				invoice['salestax'] = invoice['subtotal'] * invoice['salestaxrate'] / 100;
+				invoice['total'] = (invoice['subtotal'] * invoice['salestaxrate'] / 100) + invoice['subtotal'];
 
-				element.find('.calc-subtotal').text(invoice['subtotal'].toFixed(2));
-				element.find('.calc-salesTax').text(invoice['salestax'].toFixed(2));
-				element.find('.calc-total').text(invoice['total'].toFixed(2));
+				element.find('.calc-subtotal span').text(formatNumber(invoice['subtotal'],true));
+				element.find('.calc-salesTax span').text(formatNumber(invoice['salestax'],true));
+				element.find('.calc-total span').text(formatNumber(invoice['total'],true));
+
+				element.find('.calc-subtotal input[type=hidden]').val(invoice['subtotal']);
+				element.find('.calc-salesTax input[type=hidden]').val(invoice['salestax']);
+				element.find('.calc-total input[type=hidden]').val(invoice['total']);
 
 				createCookie('myinvoice',JSON.stringify(invoice),30);
 			},
@@ -102,6 +137,7 @@ $.fn.invoiceTable = function(options) {
 			addRow = function() {
 
 				var newRow = $('#row-template').clone(true).removeClass("hide").addClass("calculate");
+				newRow.find('input').removeAttr('disabled');
 				newRow.appendTo(element.find('tbody'));
 				newRow.children().eq(0).text(newRow.siblings().length);
 				return newRow;
@@ -134,7 +170,9 @@ $.fn.invoiceTable = function(options) {
 			};
 
 		// set sales tax text in the table
-		element.find('.salesTaxText').text('IVA ('+ activeOptions.salestax +'%)');
+		element.find('.salesTaxText span').text(activeOptions.salestaxtext);
+		element.find('#salestaxrate').val(activeOptions.salestax);
+		element.find('#salestaxtext').val(activeOptions.salestaxtext);
 
 		// if element is blurred set active text
 		editor.blur(function () {
@@ -176,7 +214,7 @@ $.fn.invoiceTable = function(options) {
 		});
 
 		// set interaction for editable elements
-		element.find('td.editable').on('click keypress dblclick', showEditor)
+		element.find('td.editable,th.editable').on('click keypress dblclick', showEditor)
 		.css('cursor', 'pointer')
 		.keydown(function (e) {
 			var prevent = true,
@@ -198,7 +236,7 @@ $.fn.invoiceTable = function(options) {
 		});
 
 		// set a tab index for editable elements
-		element.find('td.editable').prop('tabindex', 1);
+		element.find('td.editable,th.editable').prop('tabindex', 1);
 
 		// add click event for add row button
 		element.find('#btn-add').on('click', function(){
@@ -229,28 +267,64 @@ $.fn.invoiceTable = function(options) {
 			if (element.find('.calculate').length === 0) {
 				addRow();
 			}
+			$.each(element.find('.calculate'),function(index,row){
+				$(row).children().eq(0).text(index+1);
+			});
 			calculateTotal();
 		});
 
-		// add click event for submit invoice button
-		element.find('#btn-sub').on('click', function(){
+		// add click event for save invoice button
+        /*
+		$('#btn-save').on('click', function(){
+
+			var formURL = 'save.php';
+			var formData = $('#formi').serialize();
+
 			$.ajax({
-				type: "POST",
-				url: "somescript.php", //change this script to whatever you create :-)
-				data: {invoice: JSON.stringify(invoice)},
-			})
-			.done(function(data) {
-				alert('Invoice Submitted!');
-				eraseCookie('myinvoice');
-				element.find('tr.calculate').remove();
-				addRow();
-				calculateTotal();
+				url: formURL,
+				type: 'POST',
+				data:  formData,
+				success: function(data, textStatus, jqXHR) {
+					alert('Invoice Submitted!');
+					eraseCookie('myinvoice');
+					element.find('tr.calculate').remove();
+					addRow();
+					calculateTotal();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
 			});
-			
-		});
+
+		}); */
+
+		// add click event for print invoice button
+        // print no envía datos si no la ventana de elección de layout
+        /*
+		$('#btn-print').on('click', function(){
+
+			var formURL = 'print.php';
+			var formData = $('#formi').serialize();
+
+			$.ajax({
+				url: formURL,
+				type: 'POST',
+				data:  formData,
+				success: function(data, textStatus, jqXHR) {
+					alert('Invoice Submitted!');
+					eraseCookie('myinvoice');
+					element.find('tr.calculate').remove();
+					addRow();
+					calculateTotal();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
+			});
+		});*/
 
 		// change event for editable elements
-		element.find('td.editable').on('change', function(evt) {
+		element.find('td.editable,th.editable').on('change', function(evt) {
 			calculateTotal();
 		}).on('validate', function (evt, value) {
 			if ($(this).hasClass('numeric')) {
@@ -273,19 +347,24 @@ $.fn.invoiceTable = function(options) {
 			var invoiceObject = $.parseJSON(existingInvoice);
 			$.each(invoiceObject.lineitems,function(index,item){
 				var newRow = addRow();
-				newRow.find('.description').text(item.description);
+				newRow.find('.description span').text(item.description);
+				newRow.find('.description input[type=hidden]').val(item.description);
 				if (!isNaN(item.quantity)) {
-					newRow.find('.quantity').text(item.quantity);
+					newRow.find('.quantity span').text(formatNumber(item.quantity,false));
+					newRow.find('.quantity input[type=hidden]').val(item.quantity);
 				}
 				if (!isNaN(item.unitPrice) && item.unitPrice) {
-					newRow.find('.unitPrice').text(parseFloat(item.unitPrice).toFixed(2));
+					newRow.find('.unitPrice input[type=hidden]').val(item.unitPrice);
+					newRow.find('.unitPrice span').text(formatNumber(item.unitPrice,true));
 				}
 			});
+			element.find('.salesTaxText span').text(invoiceObject.salestaxratetext);
+			element.find('#salestaxrate').val(invoiceObject.salestaxrate);
 			calculateTotal();
 		} else {
 			addRow();
 		}
-		
+
 
 	});
 
@@ -296,6 +375,6 @@ $.fn.invoiceTable.defaultOptions = {
 					  'text-align', 'font', 'font-size', 'font-family', 'font-weight',
 					  'border', 'border-top', 'border-bottom', 'border-left', 'border-right'],
 	editor: $('<input class=\"cell\">'),
-	salestax: 20
+	salestax: 16,
+	salestaxtext: 'Impuesto (IVA 16%)'
 };
-

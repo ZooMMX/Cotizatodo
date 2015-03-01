@@ -10,7 +10,9 @@
     </th:block>
     <div layout:fragment="content">
         <!-- BEGIN FORM-->
-        <form id="formi" th:action="@{/quotes/new}" th:object="${quote}" class="horizontal-form"  method="POST" enctype="multipart/form-data">
+        <form id="formi" th:action="@{/quotes/print/pdf}" th:object="${quote}" class="horizontal-form"  method="POST" enctype="multipart/form-data" target="_blank">
+            <input type="hidden" name="layout" id="layout" value=""/>
+            <input type="hidden" th:field="*{id}"/>
             <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
@@ -18,11 +20,11 @@
                     <span class="caption-subject bold uppercase">Nueva Cotización</span>
                 </div>
                 <div class="actions">
-                    <a href="javascript:;" class="btn btn-default btn-sm">
-                    <i class="fa fa-pencil"></i> Guardar </a>
-                    <a href="javascript:;" class="btn btn-default btn-sm">
-                    <i class="fa fa-plus"></i> Imprimir </a>
-                    <a class="btn btn-icon-only btn-default btn-sm fullscreen" href="#" data-original-title="" title="">
+                    <a href="javascript:;" class="btn btn-sm blue" id="btn-save">
+                    <i class="fa fa-save"></i> Guardar </a>
+                    <a href="/quotes/print" data-target="#ajax" data-toggle="modal" id="btn-print" class="btn btn-sm green">
+                    <i class="fa fa-print"></i> Imprimir </a>
+                    <a class="btn btn-icon-only btn-default btn-sm fullscreen" href="javascript:;">
                     </a>
                 </div>
             </div>
@@ -31,13 +33,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" id="fullname" class="form-control borderless company-name input-lg" placeholder="Nombre de tu empresa"/>
+                                    <input type="text" th:field="*{sourceCompany}" id="company" class="form-control borderless company-name input-lg" placeholder="Nombre de tu empresa"/>
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <!-- disponible -->
+                                    <input type="text" th:field="*{title}" id="title" class="form-control borderless company-name input-lg right-column" value="COTIZACIÓN"/>
                                 </div>
                             </div>
                             <!--/span-->
@@ -46,26 +48,54 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label">Emisor</label>
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <input type="text" id="fullname" th:field="*{sourceName}" class="form-control" placeholder="Nombre del emisor"/>
+                                        <input type="text" id="date" th:field="*{date}" class="form-control borderless input-sm" value="13 de Febrero de 2015" placeholder="Fecha"/>
+                                        <textarea th:field="*{sourceAddress}" class="form-control borderless input-sm" rows="3" placeholder="Dirección del emisor">
+                                            1002 Av. Juarez
+                                            Centro
+                                            Puebla, Pue.
+                                        </textarea>
+                                        <input type="text" id="phone" th:field="*{sourcePhone}" class="form-control borderless input-sm" placeholder="Teléfono del emisor" value="(222) 984 112"/>
                                     </div>
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label">Receptor</label>
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <input type="text" id="username" th:field="*{targetName}" class="form-control" placeholder="Nombre del receptor"/>
+                                        <input type="text" th:field="*{targetName}" id="targetName" class="form-control borderless right-column input-sm client-cell" value="Horacio Orozco" placeholder="Nombre receptor"/>
+                                        <input type="text" th:field="*{targetPosition}" id="targetPosition" class="form-control borderless right-column input-sm" value="CEO" placeholder="Puesto receptor"/>
+                                        <input type="text" th:field="*{targetCompany}" id="targetCompany" class="form-control borderless right-column input-sm client-cell" value="Orozco Co." placeholder="Compañía receptora"/>
+                                        <input type="text" th:field="*{targetPhone}" id="targetPhone" class="form-control borderless right-column input-sm" value="(55) 65 17 87 93" placeholder="Teléfono receptor"/>
                                     </div>
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <!--/row-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-icon right">
+                                    <i class="fa"></i>
+                                    <input type="text" id="mail" th:field="*{sourceEmail}" class="form-control borderless input-sm" placeholder="Correo del emisor" value="ventas@cotizadora.com"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-icon right">
+                                    <i class="fa"></i>
+                                    <input type="text" th:field="*{folio}" id="folio" class="form-control borderless right-column input-sm" value="#1099" placeholder="Folio o número de referencia"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <!--/row-->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -85,33 +115,32 @@
                                         <tbody>
                                             <tr id="row-template" class="hide">
                                                 <td class="fit-content"></td>
-                                                <td class="editable description"></td>
-                                                <td class="editable numeric quantity"></td>
-                                                <td class="editable numeric unitPrice"></td>
-                                                <td class="numeric rowTotal">0.00</td>
-                                                <th class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">Delete</button></th>
+                                                <td class="editable description"><span></span><input type="hidden" name="description[]" disabled="true" /></td>
+                                                <td class="editable numeric quantity"><span></span><input type="hidden" name="quantity[]" disabled="true" /></td>
+                                                <td class="editable numeric unitPrice"><span></span><input type="hidden" name="unitPrice[]" disabled="true" /></td>
+                                                <td class="numeric rowTotal"><span>0.00</span><input type="hidden" name="rowTotal[]" disabled="true" /></td>
+                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">Borrar</button></td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th colspan="4"><strong>Subtotal</strong></th>
-                                                <th class="calc-subtotal numeric"><strong>0.00</strong></th>
+                                                <th class="calc-subtotal numeric"><strong><span>0.00</span></strong><input type="hidden" name="subtotal" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr>
-                                                <th colspan="4" class="salesTaxText"><strong>Impuesto (IVA 16%)</strong></th>
-                                                <th class="calc-salesTax numeric"><strong>0.00</strong></th>
-                                                <th></th>
+                                                <th colspan="4" class="salesTaxText editable"><strong><span></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" /></th>
+                                                <th class="calc-salesTax numeric"><strong><span>0.00</span></strong><input type="hidden" th:field="*{taxes}" name="salestax" /></th>
+                                                <th><input th:field="*{taxesDescription}" type="hidden" name="salestaxtext" id="salestaxtext" /></th>
                                             </tr>
                                             <tr class="grand-total">
                                                 <th colspan="4"><strong>Total</strong></th>
-                                                <th class="calc-total numeric"><strong>0.00</strong></th>
+                                                <th class="calc-total numeric"><strong><span>0.00</span></strong><input type="hidden" name="total" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr>
                                                 <th colspan="6">
                                                     <button type="button" id="btn-add" class="btn btn-default">Agregar fila</button>
-                                                    <button type="button" id="btn-sub" class="btn btn-default">Enviar</button>
                                                 </th>
                                             </tr>
                                         </tfoot>
@@ -123,17 +152,19 @@
                         </div>
                         <!--/row-->
                         <div class="row">
-                            <div class="col-md-12 ">
+                            <div class="col-md-9">
                                 <div class="form-group">
-                                    <textarea placeholder="Términos y condiciones" id="notas" th:field="*{termsAndConditions}" class="form-control" rows="6"></textarea>
+                                    <textarea placeholder="Términos y condiciones" id="notas" th:field="*{termsAndConditions}" class="form-control borderless" rows="6"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="text" th:field="*{sourceName}" class="form-control borderless input-sm client-cell" placeholder="Nombre del Emisor"/>
+                                    <input type="text" th:field="*{sourcePosition}" class="form-control borderless input-sm" placeholder="Cargo del emisor"/>
                                 </div>
                             </div>
                         </div>
                         <!--/row-->
-                    </div>
-                    <div class="form-actions right">
-                        <a class="btn default" href="/usuarios">Cancelar</a>
-                        <button type="submit" class="btn blue"><i class="fa fa-check"></i>Guardar cambios</button>
                     </div>
                     <!--/row-->
                 </div>
@@ -153,7 +184,14 @@
 
         <script>
                 jQuery(document).ready(function() {
-                    $('#invoiceTable').invoiceTable({salestax:16});
+                    $('#invoiceTable').invoiceTable({salestax:16,salestaxtext:'Impuesto (IVA 16%)'});
+
+                    $("#btn-save").click(function() {
+                        $("#formi")
+                                .attr('action', '/quotes/save')
+                                .attr('target', '_self')
+                                .submit();
+                    })
                 });
         </script>
     </th:block>

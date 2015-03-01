@@ -50,7 +50,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGO -->
 <div class="logo">
 	<a href="/">
-	<img src="img/logo-big.png" alt=""/>
+        <img th:src="@{/img/logo-cotiza-small.png}" alt="logo" class="logo-default"/>
 	</a>
 </div>
 <!-- END LOGO -->
@@ -106,7 +106,7 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <div class="create-account">
             <p>
-                 ¿ Aún no tienes una cuenta ?&nbsp; <a href="javascript:;" id="register-btn">
+                 ¿ Aún no tienes una cuenta ?&nbsp; <a href="javascript:;" id="register-btn" class="" style="color: black;">
                 Regístrate </a>
             </p>
         </div>
@@ -429,10 +429,10 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <div class="form-group">
             <label>
-            <input type="checkbox" name="tnc"/> Acepto los <a href="#">
-            Terminos de servicio </a>
-            y <a href="#">
-            políticas de privacidad </a>
+            <input type="checkbox" name="tnc"/> Acepto los <a href="#" style="color: black;">
+            <u>Terminos de servicio</u> </a>
+            y <a href="#" style="color: black;">
+            <u>políticas de privacidad </u></a>
             </label>
             <div id="register_tnc_error">
             </div>
@@ -482,7 +482,7 @@ jQuery(document).ready(function() {
   Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
   Login.init();
-  Demo.init();
+  //Demo.init();
        // init background slide images
        $.backstretch([
         "/media/bg/1.jpg",

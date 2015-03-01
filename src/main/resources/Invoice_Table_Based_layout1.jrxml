@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice_Table_Based" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+	<property name="template.engine" value="tabular_template"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JSON Cotizatodo datasource"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" mode="Transparent" forecolor="#ED5351" hAlign="Left" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFF000"/>
+		</conditionalStyle>
+	</style>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF" hAlign="Center" vAlign="Middle">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" forecolor="#EFEFEF" backcolor="#EE3293" hAlign="Center" vAlign="Middle" fontSize="25" isBold="true">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#E7E7E7"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="tableDataset" uuid="b23bb1f5-17ed-4027-bfee-b94f4844544d">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JSON Cotizatodo datasource"/>
+		<queryString language="json">
+			<![CDATA[quote.details]]>
+		</queryString>
+		<field name="concept" class="java.lang.String">
+			<fieldDescription><![CDATA[concept]]></fieldDescription>
+		</field>
+		<field name="quantity" class="java.lang.String">
+			<fieldDescription><![CDATA[quantity]]></fieldDescription>
+		</field>
+		<field name="price" class="java.lang.String">
+			<fieldDescription><![CDATA[price]]></fieldDescription>
+		</field>
+	</subDataset>
+	<queryString language="json">
+		<![CDATA[quote]]>
+	</queryString>
+	<field name="targetName" class="java.lang.String">
+		<fieldDescription><![CDATA[targetName]]></fieldDescription>
+	</field>
+	<field name="targetCompany" class="java.lang.String">
+		<fieldDescription><![CDATA[targetCompany]]></fieldDescription>
+	</field>
+	<field name="details" class="java.lang.String">
+		<fieldDescription><![CDATA[details]]></fieldDescription>
+	</field>
+	<field name="sourceName" class="java.lang.String">
+		<fieldDescription><![CDATA[sourceName]]></fieldDescription>
+	</field>
+	<field name="sourcePosition" class="java.lang.String">
+		<fieldDescription><![CDATA[sourcePosition]]></fieldDescription>
+	</field>
+	<field name="sourceCompany" class="java.lang.String">
+		<fieldDescription><![CDATA[sourceCompany]]></fieldDescription>
+	</field>
+	<field name="sourceAddress" class="java.lang.String">
+		<fieldDescription><![CDATA[sourceAddress]]></fieldDescription>
+	</field>
+	<field name="sourcePhone" class="java.lang.String">
+		<fieldDescription><![CDATA[sourcePhone]]></fieldDescription>
+	</field>
+	<field name="sourceEmail" class="java.lang.String">
+		<fieldDescription><![CDATA[sourceEmail]]></fieldDescription>
+	</field>
+	<field name="targetPosition" class="java.lang.String">
+		<fieldDescription><![CDATA[targetPosition]]></fieldDescription>
+	</field>
+	<field name="targetAddress" class="java.lang.String">
+		<fieldDescription><![CDATA[targetAddress]]></fieldDescription>
+	</field>
+	<field name="targetPhone" class="java.lang.String">
+		<fieldDescription><![CDATA[targetPhone]]></fieldDescription>
+	</field>
+	<field name="targetEmail" class="java.lang.String">
+		<fieldDescription><![CDATA[targetEmail]]></fieldDescription>
+	</field>
+	<field name="subtotal" class="java.lang.String">
+		<fieldDescription><![CDATA[subtotal]]></fieldDescription>
+	</field>
+	<field name="taxes" class="java.lang.String">
+		<fieldDescription><![CDATA[taxes]]></fieldDescription>
+	</field>
+	<field name="taxesDescription" class="java.lang.String">
+		<fieldDescription><![CDATA[taxesDescription]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.String">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="termsAndConditions" class="java.lang.String">
+		<fieldDescription><![CDATA[termsAndConditions]]></fieldDescription>
+	</field>
+	<field name="date" class="java.lang.String">
+		<fieldDescription><![CDATA[date]]></fieldDescription>
+	</field>
+	<field name="title" class="java.lang.String">
+		<fieldDescription><![CDATA[title]]></fieldDescription>
+	</field>
+	<title>
+		<band height="235" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image>
+				<reportElement x="-20" y="-20" width="612" height="255" uuid="7d0d6068-fba7-44f4-90da-31e070a46d53">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["Invoice_magenta_header.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="321" y="185" width="50" height="22" uuid="0f86baff-6386-4f3f-b3fe-2388707babe8">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="OpenSans"/>
+				</textElement>
+				<text><![CDATA[FECHA	:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="371" y="185" width="154" height="22" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="OpenSans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="127" y="185" width="84" height="22" uuid="3836ce65-eca3-4cad-a6de-b1818def0a2b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="OpenSans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INV0001"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="47" y="185" width="80" height="22" uuid="0b3f9342-da78-4cfa-9fc5-2301c4749678">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="OpenSans"/>
+				</textElement>
+				<text><![CDATA[FOLIO	:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="70" width="161" height="20" uuid="192175a2-9159-4caa-a8c8-73f3c1ab5bb2"/>
+				<textElement>
+					<font fontName="OpenSans Semibold" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{targetName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="90" width="161" height="12" uuid="f3d65545-233f-42b0-9b82-0be32f532f9b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="OpenSans Semibold" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{targetPosition}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Right" vAlign="Top">
+				<reportElement x="339" y="0" width="221" height="69" uuid="94883631-a913-43e2-b182-ab8d77d0181e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["logo-cotiza-small.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="20" y="14" width="191" height="42" forecolor="#EE0077" uuid="850958c8-ef30-4560-a22a-79daaf58f340"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="OpenSans" size="30" isBold="false" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="230" y="165" width="114" height="20" forecolor="#FFFFFF" uuid="e54acca8-ebc2-4d76-8aad-dd632ac09d9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="OpenSans"/>
+				</textElement>
+				<text><![CDATA[DETALLES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="340" y="60" width="220" height="31" uuid="8d647467-5413-4cb1-8120-288fa09e5ba4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="OpenSans Semibold" size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sourceCompany}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="100" width="216" height="41" forecolor="#FFFFFF" uuid="ba4685d3-0451-454b-b507-980e028fdaa8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="OpenSans" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total	: "+$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="102" width="161" height="12" uuid="bc28eff4-a4e5-41c7-b46d-65a381ad0576">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="OpenSans Semibold" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{targetCompany}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="114" width="161" height="12" uuid="24f584f8-9dbd-43d6-8692-605272cfc6c3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="OpenSans Semibold" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{targetPhone}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="70">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<componentElement>
+				<reportElement x="-20" y="0" width="612" height="70" uuid="7dd11e21-93c3-4c23-8b21-79815a28873a">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tableDataset" uuid="fd8c9666-b119-45dc-a0ec-9362df410787">
+						<datasetParameter name="JSON_INPUT_STREAM">
+							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.source">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.date.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.date.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.number.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.number.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_LOCALE">
+							<datasetParameterExpression><![CDATA[$P{JSON_LOCALE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.locale.code">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.locale.code}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_TIME_ZONE">
+							<datasetParameterExpression><![CDATA[$P{JSON_TIME_ZONE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.timezone.id">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.timezone.id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="80" uuid="5dfd1d2b-122b-4c29-99f7-52c77a17b060">
+						<jr:columnHeader style="Table_CH" height="32">
+							<staticText>
+								<reportElement key="" style="Table_CH" x="39" y="0" width="41" height="32" forecolor="#FFFFFF" uuid="a94c3c02-b277-4b84-92b4-e754535949f5"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Roboto" size="10"/>
+								</textElement>
+								<text><![CDATA[PART.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="38">
+							<textField>
+								<reportElement style="Detail" x="39" y="0" width="41" height="38" uuid="d2969ed4-e72d-4e76-a5ef-4ab4647de7a4"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Roboto" size="9" isItalic="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="240" uuid="0ebe3ecc-2155-4d32-9873-c68b38a571e2">
+						<jr:columnHeader style="Table_CH" height="32">
+							<staticText>
+								<reportElement key="" style="Table_CH" x="0" y="0" width="240" height="32" forecolor="#FFFFFF" uuid="8ff7ae4a-f105-43e0-85db-e3cea048abdd"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Roboto" size="10"/>
+								</textElement>
+								<text><![CDATA[CONCEPTO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="38">
+							<textField>
+								<reportElement style="Detail" x="0" y="0" width="240" height="38" uuid="fae55550-6b23-4c59-b913-dd907d20f2e1"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Roboto" size="10" isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{concept}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="4d1120ad-3f6d-4ee4-b830-1e302b88c779">
+						<jr:columnHeader style="Table_CH" height="32">
+							<staticText>
+								<reportElement key="" style="Table_CH" x="0" y="0" width="90" height="32" forecolor="#FFFFFF" uuid="d91b84ad-e587-4d92-9bdd-c3f924cf904e"/>
+								<box leftPadding="2"/>
+								<textElement>
+									<font fontName="Roboto" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CANTIDAD]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="38">
+							<textField>
+								<reportElement style="Detail" x="0" y="0" width="90" height="38" uuid="026842da-e3c7-4bdd-b8ad-d88bfda868f8"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Roboto" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="84930648-297c-4c2f-89c8-9c84d1b270f9">
+						<jr:columnHeader style="Table_CH" height="32">
+							<staticText>
+								<reportElement key="" style="Table_CH" x="0" y="0" width="90" height="32" forecolor="#FFFFFF" uuid="52e73702-ddd0-4382-8d21-565bf3e321cf"/>
+								<box leftPadding="2"/>
+								<textElement>
+									<font fontName="Roboto" size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[PRECIO UNITARIO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="38">
+							<textField>
+								<reportElement style="Detail" x="0" y="0" width="90" height="38" uuid="ba3367e1-c7cd-40b7-a619-6ed6b4bfb8c7"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Roboto" size="9"/>
+									<paragraph rightIndent="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="112" uuid="6f840b9a-9214-432b-a2a0-fd5bd069906c">
+						<jr:columnHeader style="Table_CH" height="32">
+							<staticText>
+								<reportElement key="" style="Table_CH" x="0" y="0" width="91" height="32" forecolor="#FFFFFF" uuid="045d794e-ff71-4b2e-a209-ffc20025bb6c"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Roboto" size="10"/>
+								</textElement>
+								<text><![CDATA[IMPORTE]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="38">
+							<textField>
+								<reportElement style="Detail" x="0" y="0" width="91" height="38" uuid="dad24874-3c54-4367-8782-5eae6383fcab"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Roboto" size="9"/>
+									<paragraph rightIndent="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="65">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image scaleImage="FillFrame">
+				<reportElement x="-20" y="0" width="612" height="65" uuid="761bd67a-aede-4ddd-a59b-0f8d200576eb">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["Invoice_magenta_footer.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="20" y="10" width="260" height="50" forecolor="#404040" uuid="8902e736-3891-4719-8e48-dc903c12e2f9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="OpenSans Semibold" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gracias por hacer negocios con nosotros]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="458" y="25" width="85" height="35" uuid="e721b6df-ce63-4ebf-bdae-24f5c9e9cf5f">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Roboto" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sourceAddress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="25" width="85" height="35" uuid="e379603c-5806-4dfd-9048-ac5f25ebde58">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Roboto" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sourceEmail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="25" width="85" height="35" uuid="75480a95-dd80-4e95-b810-3c8d705e4bf8">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Roboto" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sourcePhone}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="194">
+			<image>
+				<reportElement key="" mode="Transparent" x="-20" y="0" width="612" height="120" uuid="2d0dc091-cec7-43a1-b684-9fd48b0b7a48"/>
+				<imageExpression><![CDATA["Invoice_magenta_summary.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="280" y="1" width="200" height="20" uuid="9df6a7f8-8e0a-42f2-b38d-4699e38327b2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SUBTOTAL"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="26" width="200" height="20" uuid="df785247-fe0c-4430-ba5f-6328eb830b02"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="50" width="200" height="20" uuid="5e795b6e-9626-4e04-8983-3bf12785b2a6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxesDescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="73" width="200" height="24" uuid="30679ed6-536a-4f40-9de0-a4f1765005a9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["GRAN TOTAL"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="1" width="80" height="20" uuid="c8403093-e3cb-4678-afef-7972a4f49dfe"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="26" width="80" height="20" uuid="d50c7586-0d5f-46bb-98d1-afbebf22070a">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="50" width="80" height="20" uuid="237f3c11-2131-410a-aa3e-9503767220d9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="73" width="80" height="24" uuid="54d82f8b-8ac9-4849-80f1-6040f6d68737">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Roboto" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="160" width="279" height="14" uuid="9f375043-8d65-44e7-a4d5-ecb4e6d91605">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="OpenSans Semibold" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sourceName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="174" width="279" height="14" uuid="0df0738e-66b0-43c6-8fb4-23e7de1ebf26">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sourcePosition}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="30" width="250" height="158" uuid="43e7f6ee-1e6d-423c-984b-4c403ed81e60"/>
+				<textElement>
+					<font fontName="OpenSans Semibold" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{termsAndConditions}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="6" width="250" height="20" uuid="6517c81a-c378-4356-9a17-66a71edbb91f"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="OpenSans Semibold" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Términos y condiciones]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

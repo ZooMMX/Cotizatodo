@@ -20,12 +20,16 @@ input. cell {
 }
 
 textarea:focus, input:focus {
-	background: rgba(255,255,100,0.4)!important;
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,100,0.5)), to(rgba(255,255,100,0.1)))!important;
+	background-color: #1a82f7;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFB3), to(#FFFFF0));
+	background: -webkit-linear-gradient(top, #FFFFB3, #FFFFF0);
+	background: -moz-linear-gradient(top, #FFFFB3, #FFFFF0);
+	background: -ms-linear-gradient(top, #FFFFB3, #FFFFF0);
+	background: -o-linear-gradient(top, #FFFFB3, #FFFFF0);
 	color: #000;
 	text-shadow: #fff 1px 1px;
 	-webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
-	}
+}
 
 #invoiceTable thead, #invoiceTable tfoot {
 	background-color: #E6E6E6;

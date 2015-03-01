@@ -39,28 +39,29 @@ var Datatable = function() {
                 filterApplyAction: "filter",
                 filterCancelAction: "filter_cancel",
                 resetGroupActionInputOnSuccess: true,
-                loadingMessage: 'Loading...',
+                loadingMessage: 'Cargando...',
                 dataTable: {
                     "dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
                     "pageLength": 10, // default records per page
                     "language": { // language settings
                         // metronic spesific
-                        "metronicGroupActions": "_TOTAL_ records selected:  ",
-                        "metronicAjaxRequestGeneralError": "Could not complete request. Please check your internet connection",
+                        "metronicGroupActions": "_TOTAL_ registros seleccionados:  ",
+                        "metronicAjaxRequestGeneralError": "No se pudo completar la petición. Por favor revisa tu conexión.",
 
                         // data tables spesific
-                        "lengthMenu": "<span class='seperator'>|</span>View _MENU_ records",
-                        "info": "<span class='seperator'>|</span>Found total _TOTAL_ records",
-                        "infoEmpty": "No records found to show",
-                        "emptyTable": "No data available in table",
-                        "zeroRecords": "No matching records found",
+                        "lengthMenu": "<span class='seperator'>|</span>Ver _MENU_ registros",
+                        "info": "<span class='seperator'>|</span>_TOTAL_ registros encontrados",
+                        "infoEmpty": "No se encontraron registros que mostrar",
+                        "emptyTable": "No hay datos disponibles en la tabla",
+                        "zeroRecords": "No se encontraron registros que coincidan",
+                        "infoFiltered": "(filtrados de un total de _MAX_ registros)",
                         "paginate": {
-                            "previous": "Prev",
-                            "next": "Next",
-                            "last": "Last",
-                            "first": "First",
-                            "page": "Page",
-                            "pageOf": "of"
+                            "previous": "Anterior",
+                            "next": "Siguiente",
+                            "last": "Última",
+                            "first": "Primera",
+                            "page": "Página",
+                            "pageOf": "de"
                         }
                     },
 
@@ -145,11 +146,6 @@ var Datatable = function() {
                         }
                         Metronic.initUniform($('input[type="checkbox"]', table)); // reinitialize uniform checkboxes on each table reload
                         countSelectedRecords(); // reset selected records indicator
-
-                        // callback for ajax data load
-                        if (tableOptions.onDataLoad) {
-                            tableOptions.onDataLoad.call(undefined, the);
-                        }
                     }
                 }
             }, options);

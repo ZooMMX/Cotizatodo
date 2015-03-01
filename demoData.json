@@ -1,0 +1,32 @@
+{ "quote": {
+	"title": "COTIZACIÓN",
+	"sourceName": "Octavio Ruiz",
+	"sourcePosition": "Ventas",
+	"sourceCompany": "",
+	"sourceAddress": "Blv. Mucho mucho 300. Puebla Pue.",
+	"sourcePhone": "(222) 474 88 99",
+	"sourceEmail": "octavio@phesus.com",
+	"targetName": "Horacio Orozco",
+	"targetPosition": "CEO",
+	"targetCompany": "Orozco Co.",	
+	"targetAddress": "Av. Cool 101",
+	"targetPhone": "(55) 4121 6788",
+	"targetEmail": "horacio.orozco@orozcoco.com",
+	"subtotal": "1,999.00",
+	"taxes": "319.84",
+	"taxesDescription": "IVA (16%)",
+	"total": "$ 2,318.84",
+	"termsAndConditions": "Páguese en los próximos 60 días naturales",
+	"date": "2015-01-01",
+	"details": 
+			[
+				{ "concept": "Lorem ipsum", "quantity": "20", "price": "10.50" },
+				{ "concept": "Lorem ipsum", "quantity": "20", "price": "10.50" },
+				{ "concept": "Lorem ipsum", "quantity": "20", "price": "10.50" },
+				{ "concept": "Lorem ipsum", "quantity": "20", "price": "10.50" },
+				{ "concept": "Lorem ipsum", "quantity": "20", "price": "10.50" }								
+			]
+			
+		
+	}
+}

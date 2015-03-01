@@ -26,8 +26,20 @@ public class CotizadoraPermissionEvaluator implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication,
             Object targetDomainObject, Object permission) {
-        log.info("hasPermission(Authentication, Object, Object) called");
-        return true;
+        //log.info("hasPermission(Authentication, Object, Object) called");
+        MediUser activeUser = (MediUser) authentication.getPrincipal();
+
+        if(permission instanceof String && ((String) permission).equalsIgnoreCase("quote")) {
+            if(targetDomainObject != null && !(targetDomainObject instanceof Long)) return false;
+            Long id = (Long) targetDomainObject;
+
+            //Si es ID es nulo se está guardando una nueva cotización, no aplica este permiso.
+            if(id == null) return true;
+            Quote q = quoteRepository.findOne((Long) id);
+            if(q != null && q.getUsername() != null && q.getUsername().equals(activeUser.getUsername())) return true;
+        }
+
+        return false;
     }
 
     @Override

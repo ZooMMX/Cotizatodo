@@ -9,9 +9,12 @@
         Título <small>subtítulo</small>
     </th:block>
     <div layout:fragment="content">
-            <center><img th:src="@{/img/Cooldude.png}" style="max-height: 130px"/></center>
             <!-- Begin: life time stats -->
-            <div class="portlet light">
+            <div class="col-md-1">
+                <img th:src="@{/img/Cooldude.png}" style="max-height: 130px" class="hidden-sm hidden-xs"/>
+            </div>
+            <div class="col-md-11">
+                <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-gift font-green-sharp"></i>
@@ -65,7 +68,7 @@
                             </select>
                             <button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-check"></i> Aplicar</button>
                         </div>
-                        <table class="table table-striped table-light table-hover" id="datatable_ajax">
+                        <table class="table table-striped table-hover" id="datatable_ajax">
                         <thead>
                         <tr role="row" class="heading">
                             <th width="2%">
@@ -84,6 +87,8 @@
                                  <!--Acciones. Quito título de columna para simplificar-->
                             </th>
                         </tr>
+                        <!-- filtros inactivos -->
+                        <!--
                         <tr role="row" class="filter">
                             <td>
                             </td>
@@ -114,12 +119,14 @@
                                 <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> Reset</button>
                             </td>
                         </tr>
+                        -->
                         </thead>
                         <tbody>
                         </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
             </div>
             <!-- End: life time stats -->
             <!-- Modal -->
@@ -141,15 +148,15 @@
     <!-- Page level CSS -->
     <link href="/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css"/>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script type="text/javascript" src="plugins/select2/select2.min.js" th:href="@{/plugins/select2/select2.min.js}"></script>
-    <script type="text/javascript" src="plugins/datatables/media/js/jquery.dataTables.min.js" th:href="@{/plugins/datatables/media/js/jquery.dataTables.min.js}"></script>
-    <script type="text/javascript" src="plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js" th:href="@{/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js}"></script>
-    <script type="text/javascript" src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" th:href="@{/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+    <script type="text/javascript" src="/plugins/select2/select2.min.js" th:href="@{/plugins/select2/select2.min.js}"></script>
+    <script type="text/javascript" src="/plugins/datatables/media/js/jquery.dataTables.min.js" th:href="@{/plugins/datatables/media/js/jquery.dataTables.min.js}"></script>
+    <script type="text/javascript" src="/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js" th:href="@{/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js}"></script>
+    <script type="text/javascript" src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" th:href="@{/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
     <script type="text/javascript" src="/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.es.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="scripts/datatable.js" th:href="@{/scripts/datatable.js}"></script>
-    <script src="scripts/table-ajax.js" th:href="@{/scripts/table-ajax.js}"></script>
+    <script th:src="@{/scripts/datatable.js}" th:href="@{/scripts/datatable.js}"></script>
+    <script th:src="@{/scripts/table-ajax.js}" th:href="@{/scripts/table-ajax.js}"></script>
     <script type="text/javascript" src="/plugins/htmltable_export/tableExport.js"></script>
     <script type="text/javascript" src="/plugins/htmltable_export/jquery.base64.js"></script>
     <!-- END PAGE LEVEL SCRIPTS -->

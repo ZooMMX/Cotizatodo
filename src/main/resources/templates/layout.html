@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.1
-Version: 3.6.1
+Version: 3.2.0
 Author: KeenThemes
 Website: http://www.keenthemes.com/
 Contact: support@keenthemes.com
@@ -30,243 +30,264 @@ License: You must have a valid license purchased only from themeforest(the above
 <link th:href="@{/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css"/>
 <link th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
 <link th:href="@{/plugins/uniform/css/uniform.default.css}" rel="stylesheet" type="text/css"/>
-<link th:href="@{/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN THEME STYLES -->
 <link th:href="@{/css/components-rounded.css}" id="style_components" rel="stylesheet" type="text/css"/>
 <link th:href="@{/css/plugins.css}" rel="stylesheet" type="text/css"/>
 <link th:href="@{/css/layout.css}" rel="stylesheet" type="text/css"/>
-<link id="style_color" th:href="@{/css/themes/light.css}" rel="stylesheet" type="text/css"/>
+<link th:href="@{/css/themes/default.css}" rel="stylesheet" type="text/css" id="style_color"/>
 <link th:href="@{/css/custom.css}" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
 <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
-<!-- DOC: Apply "page-header-fixed-mobile" and "page-footer-fixed-mobile" class to body element to force fixed header or footer in mobile devices -->
-<!-- DOC: Apply "page-sidebar-closed" class to the body and "page-sidebar-menu-closed" class to the sidebar menu element to hide the sidebar by default -->
-<!-- DOC: Apply "page-sidebar-hide" class to the body to make the sidebar completely hidden on toggle -->
-<!-- DOC: Apply "page-sidebar-closed-hide-logo" class to the body element to make the logo hidden on sidebar toggle -->
-<!-- DOC: Apply "page-sidebar-hide" class to body element to completely hide the sidebar on sidebar toggle -->
-<!-- DOC: Apply "page-sidebar-fixed" class to have fixed sidebar -->
-<!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
-<!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
-<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
-<body class="page-header-fixed page-sidebar-closed-hide-logo">
+<!-- DOC: Apply "page-header-menu-fixed" class to set the mega menu fixed  -->
+<!-- DOC: Apply "page-header-top-fixed" class to set the top menu fixed  -->
+<body>
 <!-- BEGIN HEADER -->
-<div class="page-header navbar navbar-fixed-top">
-	<!-- BEGIN HEADER INNER -->
-	<div class="page-header-inner">
-		<!-- BEGIN LOGO -->
-		<div class="page-logo">
-			<a href="index.html">
-			<img th:src="@{/img/logo-light.png}" alt="logo" class="logo-default"/>
-			</a>
-			<div class="menu-toggler sidebar-toggler">
-				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+<div class="page-header">
+	<!-- BEGIN HEADER TOP -->
+	<div class="page-header-top">
+		<div class="container">
+			<!-- BEGIN LOGO -->
+			<div class="page-logo">
+				<a href="/">
+                    <img th:src="@{/img/logo-cotiza-small.png}" alt="logo" class="logo-default"/>
+                </a>
+
 			</div>
-		</div>
-		<!-- END LOGO -->
-		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
-		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-		</a>
-		<!-- END RESPONSIVE MENU TOGGLER -->
-		<!-- BEGIN PAGE ACTIONS -->
-		<!-- DOC: Remove "hide" class to enable the page header actions -->
-		<div class="page-actions">
-			<div class="btn-group">
-				<button type="button" class="btn red-haze btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-				<span class="hidden-sm hidden-xs">Actions&nbsp;</span><i class="fa fa-angle-down"></i>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li>
-						<a href="#">
-						<i class="icon-docs"></i> New Post </a>
-					</li>
-					<li>
-						<a href="#">
-						<i class="icon-tag"></i> New Comment </a>
-					</li>
-					<li>
-						<a href="#">
-						<i class="icon-share"></i> Share </a>
-					</li>
-					<li class="divider">
-					</li>
-					<li>
-						<a href="#">
-						<i class="icon-flag"></i> Comments <span class="badge badge-success">4</span>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-						<i class="icon-users"></i> Feedbacks <span class="badge badge-danger">2</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<!-- END PAGE ACTIONS -->
-		<!-- BEGIN PAGE TOP -->
-		<div class="page-top">
-			<!-- BEGIN HEADER SEARCH BOX -->
-			<!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-			<form class="search-form" action="extra_search.html" method="GET">
-				<div class="input-group">
-					<input type="text" class="form-control input-sm" placeholder="Search..." name="query"/>
-					<span class="input-group-btn">
-					<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
-					</span>
-				</div>
-			</form>
-			<!-- END HEADER SEARCH BOX -->
+			<!-- END LOGO -->
+			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+			<a href="javascript:;" class="menu-toggler"></a>
+			<!-- END RESPONSIVE MENU TOGGLER -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
-					<li class="separator hide">
-					</li>
+                    <li class="dropdown dropdown-user dropdown-dark" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
+                        <a href="/login" class="dropdown-toggle">
+                        <span class="username username-hide-mobile">Registrarse</span>
+                        </a>
+                    </li>
+                    <li class="dropdown dropdown-separator" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
+                        <span class="separator"></span>
+                    </li>
+                    <li class="dropdown dropdown-user dropdown-dark" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
+                        <a href="/login" class="dropdown-toggle">
+                        <span class="username username-hide-mobile">Entrar</span>
+                        </a>
+                    </li>
+                    <li class="dropdown dropdown-separator" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
+                        <span class="separator"></span>
+                    </li>
 					<!-- BEGIN USER LOGIN DROPDOWN -->
-					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					<li class="dropdown dropdown-user dropdown-dark">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-						<span class="username username-hide-on-mobile">
-						Nick </span>
-						<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-                        &nbsp;<!--<img alt="" class="img-circle" th:src="@{/img/avatar9.jpg}"/>-->
+					<li class="dropdown dropdown-user dropdown-dark" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<!--<img alt="" class="img-circle" src="../../assets/admin/layout3/img/avatar9.jpg"/>-->
+						<span class="username username-hide-mobile">
+                            <div th:text="${#authentication.getPrincipal().getDisplayName()}">
+                                Hermes
+                            </div>
+						</span>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-default">
 							<li>
 								<a href="extra_profile.html">
-								<i class="icon-user"></i> My Profile </a>
+								<i class="icon-user"></i> Mi perfil </a>
 							</li>
-							<li>
-								<a href="page_calendar.html">
-								<i class="icon-calendar"></i> My Calendar </a>
-							</li>
-							<li>
+							<!--<li>
 								<a href="inbox.html">
 								<i class="icon-envelope-open"></i> My Inbox <span class="badge badge-danger">
 								3 </span>
 								</a>
-							</li>
-							<li>
-								<a href="page_todo.html">
-								<i class="icon-rocket"></i> My Tasks <span class="badge badge-success">
-								7 </span>
-								</a>
-							</li>
-							<li class="divider">
-							</li>
-							<li>
+							</li> -->
+							<!-- <li class="divider">
+							</li>-->
+							<!--<li>
 								<a href="extra_lock.html">
 								<i class="icon-lock"></i> Lock Screen </a>
-							</li>
+							</li>-->
 							<li>
-								<a href="login.html">
-								<i class="icon-key"></i> Log Out </a>
+                                <form id="logoutForm" target="_self" action="/logout">
+								<a href="javascript:;" onclick="logoutForm.submit();">
+								<i class="icon-key"></i> Cerrar sesión </a>
+                                </form>
 							</li>
 						</ul>
 					</li>
-					<!-- END USER LOGIN DROPDOWN -->
+                    <!-- END USER LOGIN DROPDOWN -->
+                    <li class="dropdown dropdown-separator" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                        <span class="separator"></span>
+                    </li>
+                    <li>
+                        <a href="/quotes/new" class="btn btn-lg green-turquoise">
+                            <span class="fa fa-bullhorn"></span>
+                            Comenzar
+                        </a>
+                    </li>
 				</ul>
 			</div>
 			<!-- END TOP NAVIGATION MENU -->
 		</div>
-		<!-- END PAGE TOP -->
 	</div>
-	<!-- END HEADER INNER -->
-</div>
-<!-- END HEADER -->
-<div class="clearfix">
-</div>
-<!-- BEGIN CONTAINER -->
-<div class="page-container">
-	<!-- BEGIN SIDEBAR -->
-	<div class="page-sidebar-wrapper">
-		<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-        <div class="page-sidebar navbar-collapse collapse">
-            <!-- BEGIN SIDEBAR MENU -->
-            <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-			<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-			<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-			<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-			<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
-			<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-			<ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-				<li class="start ">
-					<a href="/quotes">
-					<i class="icon-home"></i>
-					<span class="title">Cotizaciones</span>
-					</a>
-				</li>
-				<li class="active">
-					<a href="/quotes">
-					<i class="icon-docs"></i>
-					<span class="title">Todas las cotizaciones</span>
-					</a>
-				</li>
-				<li class="last">
-                    <a href="/quotes/new">
-                    <i class="icon-doc"></i>
-                    <span class="title">Nueva cotización</span>
-                    </a>
-				</li>
-			</ul>
-			<!-- END SIDEBAR MENU -->
+	<!-- END HEADER TOP -->
+	<!-- BEGIN HEADER MENU -->
+	<div class="page-header-menu">
+		<div class="container">
+			<!-- BEGIN HEADER SEARCH BOX -->
+            <!--
+			<form class="search-form" action="extra_search.html" method="GET">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search" name="query"/>
+					<span class="input-group-btn">
+					<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+					</span>
+				</div>
+			</form>-->
+			<!-- END HEADER SEARCH BOX -->
+			<!-- BEGIN MEGA MENU -->
+			<!-- DOC: Apply "hor-menu-light" class after the "hor-menu" class below to have a horizontal menu with white background -->
+			<!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
+			<div class="hor-menu ">
+				<ul class="nav navbar-nav">
+					<li class="active">
+						<a href="/">INICIO</a>
+					</li>
+                    <li class="menu-dropdown" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                        <a href="/quotes/" target="_self" class="tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Aquí estan todas tus cotizaciones guardadas">
+                        MIS COTIZACIONES </a>
+                    </li>
+                    <!--<li class="menu-dropdown">
+                        <a href="angularjs" target="_blank" class="tooltips" data-container="body" data-placement="bottom" data-html="true">
+                        AYUDA </a>
+                    </li>
+					<li class="menu-dropdown">
+						<a href="angularjs" target="_blank" class="tooltips" data-container="body" data-placement="bottom" data-html="true">
+						CONTACTO </a>
+					</li>-->
+				</ul>
+			</div>
+			<!-- END MEGA MENU -->
 		</div>
 	</div>
-	<!-- END SIDEBAR -->
-	<!-- BEGIN CONTENT -->
-	<div class="page-content-wrapper">
-		<div class="page-content">
-			<!-- BEGIN PAGE HEADER-->
-			<!-- BEGIN PAGE HEAD -->
-			<!--<div class="page-head">-->
-				<!-- BEGIN PAGE TITLE -->
-				<!--<div class="page-title">
-					<h1>Blank Page <small>blank page</small></h1>
-				</div>-->
-				<!-- END PAGE TITLE -->
-			<!--</div>-->
-			<!-- END PAGE HEAD -->
+	<!-- END HEADER MENU -->
+</div>
+<!-- END HEADER -->
+<!-- BEGIN PAGE CONTAINER -->
+<div class="page-container">
+	<!-- BEGIN PAGE HEAD -->
+    <!--
+	<div class="page-head">
+		<div class="container">
+
+			<div class="page-title">
+				<h1>Blank Page Layout <small>blank page sample</small></h1>
+			</div>
+
+		</div>
+	</div>
+    -->
+	<!-- END PAGE HEAD -->
+	<!-- BEGIN PAGE CONTENT -->
+	<div class="page-content">
+		<div class="container">
+            <!-- Modal -->
+            <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+                <div class="page-loading page-loading-boxed">
+                    <img src="/img/loading-spinner-grey.gif" alt="" class="loading"/>
+                    <span>
+                    &nbsp;&nbsp;Cargando... </span>
+                </div>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        Cargando...
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
 			<!-- BEGIN PAGE BREADCRUMB -->
             <!--
 			<ul class="page-breadcrumb breadcrumb">
 				<li>
-					<a href="index.html">Home</a>
-					<i class="fa fa-circle"></i>
+					<a href="#">Home</a><i class="fa fa-circle"></i>
 				</li>
 				<li>
-					<a href="#">Page Layouts</a>
+					<a href="layout_blank_page.html">Features</a>
 					<i class="fa fa-circle"></i>
 				</li>
-				<li>
-					<a href="#">Blank Page</a>
+				<li class="active">
+					 Blank Page Layout
 				</li>
-			</ul>-->
+			</ul>
+			-->
 			<!-- END PAGE BREADCRUMB -->
-			<!-- END PAGE HEADER-->
-			<!-- BEGIN PAGE CONTENT-->
-            <div class="row">
-                <div class="col-md-12" layout:fragment="content">
-                     Page content goes here
-                </div>
-            </div>
-			<!-- END PAGE CONTENT-->
+			<!-- BEGIN PAGE CONTENT INNER -->
+			<div class="row">
+				<div class="col-md-12" layout:fragment="content">
+					 Page content goes here
+				</div>
+			</div>
+			<!-- END PAGE CONTENT INNER -->
 		</div>
 	</div>
-	<!-- END CONTENT -->
+	<!-- END PAGE CONTENT -->
 </div>
-<!-- END CONTAINER -->
+<!-- END PAGE CONTAINER -->
+<!-- BEGIN PRE-FOOTER -->
+<div class="page-prefooter">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-sm-6 col-xs-12 footer-block">
+				<h2>Acerca de</h2>
+				<p>
+					 Cotizadora es una aplicación desarrollada para facilitarte el diseño y elaboración de tus cotizaciones.
+				</p>
+			</div>
+			<!--<div class="col-md-3 col-sm-6 col-xs12 footer-block">
+				<h2>Subscribe Email</h2>
+				<div class="subscribe-form">
+					<form action="javascript:;">
+						<div class="input-group">
+							<input type="text" placeholder="mail@email.com" class="form-control"/>
+							<span class="input-group-btn">
+							<button class="btn" type="submit">Submit</button>
+							</span>
+						</div>
+					</form>
+				</div>
+			</div>-->
+			<div class="col-md-3 col-sm-6 col-xs-12 footer-block">
+				<h2>Follow Us On</h2>
+				<ul class="social-icons">
+					<li>
+						<a href="javascript:;" data-original-title="facebook" class="facebook"></a>
+					</li>
+					<li>
+						<a href="javascript:;" data-original-title="twitter" class="twitter"></a>
+					</li>
+					<li>
+						<a href="javascript:;" data-original-title="youtube" class="youtube"></a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-5 col-sm-6 col-xs-12 footer-block">
+				<h2>CONTACTO</h2>
+				<address class="margin-bottom-40">
+				Email: <a href="mailto:contacto@cotizadora.com">contacto@cotizadora.com</a>
+				</address>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END PRE-FOOTER -->
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
-	<div class="page-footer-inner">
-		 2015 &copy; Cotizadora by Phesus.
+	<div class="container">
+		 2015 &copy; Phesus. All Rights Reserved.
 	</div>
-	<div class="scroll-to-top">
-		<i class="icon-arrow-up"></i>
-	</div>
+</div>
+<div class="scroll-to-top">
+	<i class="icon-arrow-up"></i>
 </div>
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
@@ -285,19 +306,18 @@ License: You must have a valid license purchased only from themeforest(the above
 <script th:src="@{/plugins/jquery.blockui.min.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/jquery.cokie.min.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/uniform/jquery.uniform.min.js}" type="text/javascript"></script>
-<script th:src="@{/plugins/bootstrap-switch/js/bootstrap-switch.min.js}" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <script th:src="@{/scripts/metronic.js}" type="text/javascript"></script>
 <script th:src="@{/scripts/layout.js}" type="text/javascript"></script>
 <script th:src="@{/scripts/demo.js}" type="text/javascript"></script>
 <script>
       jQuery(document).ready(function() {
-         Metronic.init(); // init metronic core components
-         Layout.init(); // init current layout
-         Demo.init(); // init demo features
+            Metronic.init(); // init metronic core components
+            Layout.init(); // init current layout
+            //Demo.init(); // init demo features
       });
-   </script>
-   <th:block layout:fragment="scripts"></th:block>
+</script>
+<th:block layout:fragment="scripts"></th:block>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

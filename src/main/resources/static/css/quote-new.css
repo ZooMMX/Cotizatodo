@@ -1,4 +1,8 @@
 
+input {
+	background-color: #FFFFFF;
+}
+
 .borderless {
     border: none;
     border-color: transparent;
@@ -6,4 +10,13 @@
 
 .company-name {
     font-size: 20pt;
+}
+
+.right-column {
+    text-align: right;
+}
+
+.client-cell {
+    font-size: 13pt;
+    font-weight: bold;
 }
