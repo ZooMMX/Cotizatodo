@@ -74,8 +74,6 @@
             <groupId>com.phesus</groupId>
             <artifactId>fonts</artifactId>
             <version>1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/fonts.jar</systemPath>
         </dependency>
 	</dependencies>
 
