@@ -14,10 +14,12 @@ import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.jasperreports.ConfigurableJasperReportsView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -81,6 +83,7 @@ public class QuoteController {
             @RequestParam(value = "quantity[]", required = false) BigDecimal[] quantity,
             @RequestParam(value = "unitPrice[]", required = false) BigDecimal[] unitPrice,
             @RequestParam(value = "rowTotal[]", required = false) BigDecimal[] rowTotal,
+            @RequestParam("logo") MultipartFile logoFile,
             HttpServletResponse response) throws IOException, JRException {
 
         ObjectMapper om = new ObjectMapper();
@@ -106,6 +109,7 @@ public class QuoteController {
         params.put("datasource", ds);
 
         params.put("JSON_INPUT_STREAM", fields2Json(rowsDescription, quantity, unitPrice, rowTotal)); //new FileInputStream("demoData.json"));
+        params.put("logo", ImageIO.read(logoFile.getInputStream()));
         //Funcionando con demo data: params.put("JSON_INPUT_STREAM", new ByteArrayInputStream(out.toByteArray()));
 
         return new ModelAndView(view, params);

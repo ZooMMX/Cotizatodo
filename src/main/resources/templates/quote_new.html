@@ -33,13 +33,42 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <!-- [Start] Selector de logo -->
+                                    <div class="fileinput fileinput-new" style="margin-bottom: 0px;" data-provides="fileinput">
+                                        <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 180px; height: 60px; margin-bottom: 0px; margin-left: 16px;">
+                                        </div>
+                                        <!--<div>-->
+                                            <span class="btn default btn-file">
+                                            <span class="fileinput-new">
+                                            Subir logo </span>
+                                            <span class="fileinput-exists">
+                                            Cambiar </span>
+                                            <input type="file" name="logo"/>
+                                            </span>
+                                            <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput">
+                                            Remover </a>
+                                        <!--</div>-->
+                                    </div>
+                                    <!-- [End] Selector de logo -->
                                     <input type="text" th:field="*{sourceCompany}" id="company" class="form-control borderless company-name input-lg" placeholder="Nombre de tu empresa"/>
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" th:field="*{title}" id="title" class="form-control borderless company-name input-lg right-column" value="COTIZACIÓN"/>
+                                    <input type="text" th:field="*{title}" id="title" class="form-control borderless company-name input-lg right-column" style="padding-right: 33px;" value="COTIZACIÓN"/>
+                                    <!-- Fecha -->
+                                    <div class="input-icon right">
+                                        <i class="fa"></i>
+                                        <input type="text" id="date" th:field="*{date}" class="form-control borderless right-column input-sm" value="13 de Febrero de 2015" placeholder="Fecha"/>
+                                    </div>
+                                    <!-- /Fecha -->
+                                    <!-- Folio -->
+                                    <div class="input-icon right">
+                                        <i class="fa"></i>
+                                        <input type="text" th:field="*{folio}" id="folio" class="form-control borderless right-column input-sm" value="#1099" placeholder="Folio o número de referencia"/>
+                                    </div>
+                                    <!-- /Folio -->
                                 </div>
                             </div>
                             <!--/span-->
@@ -50,13 +79,13 @@
                                 <div class="form-group">
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <input type="text" id="date" th:field="*{date}" class="form-control borderless input-sm" value="13 de Febrero de 2015" placeholder="Fecha"/>
-                                        <textarea th:field="*{sourceAddress}" class="form-control borderless input-sm" rows="3" placeholder="Dirección del emisor">
+                                        <textarea th:field="*{sourceAddress}" class="form-control borderless input-sm" style="padding-left: 16px;" rows="3" placeholder="Dirección del emisor">
                                             1002 Av. Juarez
                                             Centro
                                             Puebla, Pue.
                                         </textarea>
-                                        <input type="text" id="phone" th:field="*{sourcePhone}" class="form-control borderless input-sm" placeholder="Teléfono del emisor" value="(222) 984 112"/>
+                                        <input type="text" id="phone" th:field="*{sourcePhone}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Teléfono del emisor" value="(222) 984 112"/>
+                                        <input type="text" id="mail" th:field="*{sourceEmail}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Correo del emisor" value="ventas@cotizadora.com"/>
                                     </div>
                                 </div>
                             </div>
@@ -75,27 +104,6 @@
                             <!--/span-->
                         </div>
                         <!--/row-->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="input-icon right">
-                                    <i class="fa"></i>
-                                    <input type="text" id="mail" th:field="*{sourceEmail}" class="form-control borderless input-sm" placeholder="Correo del emisor" value="ventas@cotizadora.com"/>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/span-->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="input-icon right">
-                                    <i class="fa"></i>
-                                    <input type="text" th:field="*{folio}" id="folio" class="form-control borderless right-column input-sm" value="#1099" placeholder="Folio o número de referencia"/>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/span-->
-                    </div>
-                    <!--/row-->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -177,9 +185,12 @@
         <!-- BEGIN PAGE LEVEL STYLES -->
         <link th:href="@{/css/invoice-table.css}" rel="stylesheet"/>
         <link th:href="@{/css/quote-new.css}" rel="stylesheet"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/plugins/bootstrap-fileinput/bootstrap-fileinput.css}"/>
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script th:src="@{/scripts/jquery.invoice-table.js}"></script>
+        <script type="text/javascript" th:src="@{/plugins/bootstrap-fileinput/bootstrap-fileinput.js}"></script>
+
         <!-- END PAGE LEVEL PLUGINS-->
 
         <script>

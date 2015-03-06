@@ -77,6 +77,9 @@
 			<fieldDescription><![CDATA[price]]></fieldDescription>
 		</field>
 	</subDataset>
+	<parameter name="logo" class="java.lang.Object">
+		<parameterDescription><![CDATA[BufferedImage del logotipo]]></parameterDescription>
+	</parameter>
 	<queryString language="json">
 		<![CDATA[quote]]>
 	</queryString>
@@ -223,7 +226,7 @@
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<imageExpression><![CDATA["logo-cotiza-small.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="20" y="14" width="191" height="42" forecolor="#1AB2F6" uuid="850958c8-ef30-4560-a22a-79daaf58f340"/>
