@@ -86,13 +86,13 @@ License: You must have a valid license purchased only from themeforest(the above
 						<!--<img alt="" class="img-circle" src="../../assets/admin/layout3/img/avatar9.jpg"/>-->
 						<span class="username username-hide-mobile">
                             <div th:text="${#authentication.getPrincipal().getDisplayName()}">
-                                Hermes
+                                Hermes Robles
                             </div>
 						</span>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-default">
 							<li>
-								<a href="extra_profile.html">
+								<a th:href="'/usuario/' + ${#authentication.getPrincipal().getUsername()}">
 								<i class="icon-user"></i> Mi perfil </a>
 							</li>
 							<!--<li>
@@ -108,10 +108,10 @@ License: You must have a valid license purchased only from themeforest(the above
 								<i class="icon-lock"></i> Lock Screen </a>
 							</li>-->
 							<li>
-                                <form id="logoutForm" target="_self" action="/logout">
+                                <form id="logoutForm" target="_self" action="/logout"></form>
 								<a href="javascript:;" onclick="logoutForm.submit();">
 								<i class="icon-key"></i> Cerrar sesión </a>
-                                </form>
+
 							</li>
 						</ul>
 					</li>
