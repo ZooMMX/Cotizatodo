@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import java.security.Principal;
 import java.util.*;
 
 /**
@@ -29,114 +30,95 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/usuario/{username}")
-    public String usuarioVer(@PathVariable("username") String username, Model model) {
+    @RequestMapping("/user")
+    public String usuarioVer(
+            @RequestParam(required = false, defaultValue = "false") Boolean successfulChange,
+            @RequestParam(required = false, defaultValue = "false") Boolean unsuccessfulChange,
+            @RequestParam(required = false, defaultValue = "false") Boolean wrongPassword,
+            Model model,
+            Principal principal
+    ) {
+
+        String username = principal.getName();
         User user = userRepository.findByUsername(username);
 
         //Construyo un HashSet con los roles actuales
         HashSet userRoles = new HashSet();
-        for(UserRole ur : user.getUserRole())
+        for (UserRole ur : user.getUserRole())
             userRoles.add(ur.getRole());
 
         model.addAttribute("selectedMenu", "usuarios");
         model.addAttribute("user", user);
         model.addAttribute("roleTypes", Roles.values());
         model.addAttribute("userRoles", userRoles);
+        model.addAttribute("successfulChange", successfulChange);
+        model.addAttribute("unsuccessfulChange", unsuccessfulChange);
+        model.addAttribute("wrongPassword", wrongPassword);
 
         return "user_profile";
     }
 
     /**
-     * Editar usuario. Primer paso GET
-     * @param username
+     * Editar usuario. 2do Paso POST
+     * @param user
      * @param model
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/usuarioEdicion/{username}")
-    public String usuarioNuevo(
-            @PathVariable String username,
-            @RequestParam(required = false, defaultValue = "false") Boolean successfulChange,
-            @RequestParam(required = false, defaultValue = "false") Boolean successfulRegister,
+    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
+    public String usuarioEdicionPost(
+            @ModelAttribute User user,
             Model model) {
 
-        User user = userRepository.findByUsername(username);
+        User userFromBd = userRepository.findByUsername(user.getUsername());
 
-        model.addAttribute("user", user);
-        model.addAttribute("successfulChange", successfulChange);
-        model.addAttribute("successfulRegister", successfulRegister);
+        //Construyo un HashSet con los roles actuales
+        //HashSet userRoles = (HashSet) user.getUserRole();
 
-        return "usuario_edicion";
+        /* Actualizar campos modificados */
+        //userFromBd.setEnabled( user.isEnabled() );
+        userFromBd.setFullname(user.getFullname());
+        userFromBd.setCity(user.getCity());
+        userFromBd.setCountry(user.getCountry());
+        userFromBd.setEmail(user.getEmail());
+
+
+        /* Guardar registro */
+        modificarUsuario(userFromBd);
+
+        return "redirect:/user?successfulChange=true";
+
     }
 
-    /**
-     * Editar usuario. 2do Paso POST
-     * @param username
-     * @param user
-     * @param roles
-     * @param model
-     * @return
-     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/usuarioEdicion/{username}", method = RequestMethod.POST)
-        public String usuarioEdicionPost(
-                @PathVariable String username,
-                @ModelAttribute User user,
-                @RequestParam("roles") String roles,
-                Model model) {
+    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.POST)
+    public String updatePassword(
+            @RequestParam("oldPass") String oldPass,
+            @RequestParam("newPass") String newPass,
+            @RequestParam("reNewPass") String reNewPass,
+            Model model,
+            Principal principal
+    ) {
+        /* Load user */
+        String username = principal.getName();
+        if(username == null && username.length() == 0) return "redirect:/user?unsuccessfulChange=true";
+        User userFromBd = userRepository.findByUsername(username);
 
-            User userFromBd = userRepository.findByUsername(user.getUsername());
+        /* Verify that oldPass is correct */
+        if(!passwordEncoder.matches(oldPass, userFromBd.getPassword())) return "redirect:/user?unsuccessfulChange=true&&wrongPassword=true";
 
-            //Construyo un HashSet con los roles actuales
-            HashSet userRoles = (HashSet) user.getUserRole();
+        /* Verify that newPass and reNewPass are the same */
+        if(!newPass.equals(reNewPass)) return "redirect:/user?unsuccessfulChange=true";
 
-            /* Actualizar campos modificados */
-            userFromBd.setEnabled( user.isEnabled() );
-            userFromBd.setFullname(user.getFullname());
+        /* Encode and update new password */
+        if(newPass != null && !newPass.isEmpty())
+            userFromBd.setPassword( passwordEncoder.encode(newPass) );
+        else
+            return "redirect:/user?unsuccessfulChange=true";
 
-            /* Cambiar y Encriptar password si ha sido cambiado*/
-            if(!user.getPassword().isEmpty())
-                userFromBd.setPassword( passwordEncoder.encode(user.getPassword()) );
+        /* If reached to this way, save changes */
+        modificarUsuario(userFromBd);
 
-            /* Limpiar y reasignar roles */
-            // Para cada rol marcado en el formulario
-            for( String role : roles.split(",") ) {
-                //Para cada rol del usuario en la BD
-                Boolean alreadyExists = false;
-                for( UserRole ur : userFromBd.getUserRole() ) {
-                    //Verifico si ya existía ese rol
-                    if( ur.getRole().equals(role) )
-                        alreadyExists = true;
-                }
-                //Agregar rol si no lo tiene
-                if(alreadyExists)  { /* Does nothing */ } else
-                    userFromBd.addUserRole(role);
-            }
-
-            //Quitar rol: si roles en el formulario no lo contiene y la BD sí
-            ArrayList<UserRole> quitarRoles = new ArrayList<UserRole>();
-            for( UserRole ur : userFromBd.getUserRole() ) {
-                if(!Arrays.asList( roles.split(",") ).contains(ur.getRole()))  {
-                    quitarRoles.add(ur);
-                }
-            }
-            for(UserRole ur : quitarRoles)
-                userFromBd.getUserRole().remove(ur);
-
-            /* Guardar registro */
-            modificarUsuario(userFromBd);
-
-            /* Preparar html */
-
-            //Construyo un HashSet con los roles actuales
-            for(UserRole ur : userFromBd.getUserRole())
-                userRoles.add(ur.getRole());
-
-
-            return "redirect:/usuarioEdicion/"+username+"?successfulChange=true";
-
-        }
+        return "redirect:/user?successfulChange=true";
+    }
 
     @Transactional
     public void modificarUsuario(User user) {
