@@ -18,6 +18,7 @@
 	"total": "$ 2,318.84",
 	"termsAndConditions": "Páguese en los próximos 60 días naturales",
 	"date": "2015-01-01",
+    "folio": "A999",
 	"details": 
 			[
 				{ "concept": "Lorem ipsum", "quantity": "20", "price": "10.50" },

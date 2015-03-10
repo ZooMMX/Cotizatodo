@@ -81,7 +81,7 @@
 		<parameterDescription><![CDATA[BufferedImage del logotipo]]></parameterDescription>
 	</parameter>
 	<queryString language="json">
-		<![CDATA[quote]]>
+		<![CDATA[quote.folio]]>
 	</queryString>
 	<field name="targetName" class="java.lang.String">
 		<fieldDescription><![CDATA[targetName]]></fieldDescription>
@@ -143,6 +143,9 @@
 	<field name="title" class="java.lang.String">
 		<fieldDescription><![CDATA[title]]></fieldDescription>
 	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[folio]]></fieldDescription>
+	</field>
 	<title>
 		<band height="235" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
@@ -167,7 +170,7 @@
 				</textElement>
 				<text><![CDATA[FECHA	:]]></text>
 			</staticText>
-			<textField pattern="EEEEE dd MMMMM yyyy">
+			<textField pattern="">
 				<reportElement x="371" y="185" width="154" height="22" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -177,9 +180,9 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="OpenSans"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
+			<textField pattern="">
 				<reportElement x="127" y="185" width="84" height="22" uuid="3836ce65-eca3-4cad-a6de-b1818def0a2b">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -189,7 +192,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="OpenSans"/>
 				</textElement>
-				<textFieldExpression><![CDATA["INV0001"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="47" y="185" width="80" height="22" uuid="0b3f9342-da78-4cfa-9fc5-2301c4749678">
