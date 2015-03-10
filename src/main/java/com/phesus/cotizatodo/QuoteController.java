@@ -75,6 +75,20 @@ public class QuoteController {
         return "print_menu";
     }
 
+    /**
+     * This method outputs the PDF Quote / Método que genera el PDF con la cotización
+     * @param quote
+     * @param layout
+     * @param rowsDescription
+     * @param quantity
+     * @param unitPrice
+     * @param rowTotal
+     * @param logoFile
+     * @param response
+     * @return
+     * @throws IOException
+     * @throws JRException
+     */
     @RequestMapping(value = "/quotes/print/pdf", method = RequestMethod.POST)
     public ModelAndView fullReport(
             @ModelAttribute Quote quote,
@@ -83,7 +97,7 @@ public class QuoteController {
             @RequestParam(value = "quantity[]", required = false) BigDecimal[] quantity,
             @RequestParam(value = "unitPrice[]", required = false) BigDecimal[] unitPrice,
             @RequestParam(value = "rowTotal[]", required = false) BigDecimal[] rowTotal,
-            @RequestParam("logo") MultipartFile logoFile,
+            @RequestParam(value= "logo", required = false) MultipartFile logoFile,
             HttpServletResponse response) throws IOException, JRException {
 
         ObjectMapper om = new ObjectMapper();
@@ -109,7 +123,8 @@ public class QuoteController {
         params.put("datasource", ds);
 
         params.put("JSON_INPUT_STREAM", fields2Json(rowsDescription, quantity, unitPrice, rowTotal)); //new FileInputStream("demoData.json"));
-        params.put("logo", ImageIO.read(logoFile.getInputStream()));
+        if(logoFile != null)
+            params.put("logo", ImageIO.read(logoFile.getInputStream()));
         //Funcionando con demo data: params.put("JSON_INPUT_STREAM", new ByteArrayInputStream(out.toByteArray()));
 
         return new ModelAndView(view, params);
@@ -117,8 +132,8 @@ public class QuoteController {
     }
 
     /**
-     * 1. Genera un mapa de mapas de listas de un mapa -- map[map[list[map]]] -- que contiene la información de la tabla de la cotización.
-     * 1. Lo convierte a JSON
+     * 1. Por defecto genera un mapa de mapas de listas de un mapa -- map[map[list[map]]] -- que contiene la información de la tabla de la cotización.
+     * 2. Lo convierte a JSON
      * 3. Lo convierte a un ByteArrayOutputStream
      * 4. Lo convierte en un ByteArrayInputStream
      *
