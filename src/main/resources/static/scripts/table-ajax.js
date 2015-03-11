@@ -56,7 +56,7 @@ var TableAjax = function () {
             e.preventDefault();
             var action = $(".table-group-action-input", grid.getTableWrapper());
             if (action.val() != "" && grid.getSelectedRowsCount() > 0
-                && confirm("¿Está seguro de archivar? Tome en cuenta que requerirá de soporte técnico para recuperar las piezas archivadas."))
+                && confirm("¿Está seguro de archivar? Tome en cuenta que requerirá de soporte técnico para recuperar las cotizaciones archivadas."))
             {
                 grid.setAjaxParam("customActionType", "group_action");
                 grid.setAjaxParam("customActionName", action.val());

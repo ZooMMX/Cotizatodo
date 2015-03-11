@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -208,13 +209,22 @@ public class QuoteController {
         @RequestParam Integer length,
         @RequestParam Integer start,
         @RequestParam Integer draw,
-        @RequestParam(value = "id[]", required = false) Long[] id,
+        /* customActionType, customActionName e id son campos de la implementación de la acción Archivar/Ocultar/Softdelete */
+        @RequestParam(required = false) String customActionType,
+        @RequestParam(required = false) String customActionName,
+        @RequestParam(value = "id[]", required = false) Long[] ids,
         Model model,
         Principal principal) {
+            // Setup
             MediUser activeUser = (MediUser) ((Authentication) principal).getPrincipal();
-
             HashMap resp = new HashMap<String, Object>();
             Integer pageNo = start / length;
+
+            /* Ejecución de acciones */
+            if(customActionType != null && customActionType.equals("group_action"))
+                // ** ¿Borrar? **
+                if(customActionName != null && customActionName.equals("softdelete") && ids != null) disableQuotes(ids);
+            /* Terminan acciones */
 
             /* Comienza filtros mediante criteria builder de JPA */
             CriteriaBuilder qb = em.getCriteriaBuilder();
@@ -223,7 +233,13 @@ public class QuoteController {
             //Establezco una condición notNull únicamente para inicializar las condiciones
             Predicate condiciones = qb.isNotNull(p.get(Quote_.id));
 
-            //Filtro de usuario
+            // ** Filtro de cotizaciones activas **
+            if(true) {
+                Predicate condicion = qb.equal(p.get(Quote_.enabled), true);
+                condiciones = qb.and(condiciones, condicion);
+            }
+
+            // ** Filtro de usuario activo **
             Predicate condicion = qb.equal(p.get(Quote_.username), activeUser.getUsername());
             condiciones = qb.and(condiciones, condicion);
 
@@ -260,5 +276,19 @@ public class QuoteController {
         }
 
         return "classpath:Invoice_Table_Based_layout1.jrxml";
+    }
+
+    /**
+     * This method is used by quotesJSON method (/quotes/JSON/).
+     * Soft-delete quotes disabling them.
+     * @param id
+     */
+    @Transactional
+    private void disableQuotes(Long[] id) {
+       for (Long aLong : id) {
+           Quote p = repo.findOne(aLong);
+           p.setEnabled(false);
+           repo.save(p);
+       }
     }
 }

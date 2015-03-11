@@ -13,4 +13,5 @@ public class Quote_ {
     public static volatile SingularAttribute<Quote,Long> id;
     public static volatile SingularAttribute<Quote,Long> targetName;
     public static volatile SingularAttribute<Quote, String> username;
+    public static volatile SingularAttribute<Quote, Boolean> enabled;
 }

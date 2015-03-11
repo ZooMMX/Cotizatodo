@@ -49,6 +49,7 @@ public class Quote {
     @Column private String date = "1 de Febrero de 2015";
     @Column private Date created;
     @Column private Date updated;
+    @Column private Boolean enabled = true;
 
     @JsonIgnore
     @ManyToOne
@@ -310,5 +311,13 @@ public class Quote {
 
     public void setTaxes(String taxes) {
         this.taxes = taxes;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }
