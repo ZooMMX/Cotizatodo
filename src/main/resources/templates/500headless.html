@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Error interno!</title>
+    </head>
+    <body>
+    <div class="row">
+        <div class="col-md-12 page-500">
+            <div class=" number">
+                 500
+            </div>
+            <div class=" details">
+                <h3>Error interno.</h3>
+                <p>
+                     <div th:text="${type}"></div><br/>
+                    Si el problema persiste, llama a soporte técnico.<br/><br/>
+                </p>
+            </div>
+        </div>
+        <!-- Stacktrace -->
+            <div th:utext="'Failed URL: ' +  ${url}">${url}</div>
+            <div th:utext="'Exception: ' + ${exception.message}">${exception.message}</div>
+            <ul>
+                <li th:each="ste : ${exception.stackTrace}"><span
+                    th:utext="${ste}">${ste}</span></li>
+            </ul>
+        <!-- Fin stacktrace -->
+    </div>
+    <!-- Page level styles -->
+    <link href="/css/errors.css" rel="stylesheet" type="text/css"/>
+    <!-- End of page level styles -->
+    </body>
+</html>

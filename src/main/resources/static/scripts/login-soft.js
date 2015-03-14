@@ -169,6 +169,8 @@ var Login = function () {
 	                },
 
 	                username: {
+                        minlength: 3,
+                        remote: "/usuarioCheckUsername",
 	                    required: true
 	                },
 	                password: {
@@ -198,7 +200,9 @@ var Login = function () {
                         required: "Campo obligatorio"
                     },
                     username: {
-                        required: "Campo obligatorio"
+                        required: "Campo obligatorio",
+                        minlength: jQuery.validator.format("Escribe al menos {0} caractéres"),
+                        remote: "Nombre de usuario no disponible, elige otro"
                     },
                     password: {
                         required: "Campo obligatorio"

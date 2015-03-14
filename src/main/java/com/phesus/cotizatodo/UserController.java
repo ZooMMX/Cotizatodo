@@ -120,15 +120,6 @@ public class UserController {
         return "redirect:/user?successfulChange=true";
     }
 
-    @RequestMapping(value = "/usuarioCheckUsername")
-    public @ResponseBody String usuarioCheckUsername(@RequestParam("username") String username) {
-
-        if(username == null)
-            return "nombre inválido";
-        else
-            return String.valueOf(!userRepository.exists(username));
-    }
-
     @Transactional
     public void modificarUsuario(User user) {
         userRepository.save(user);

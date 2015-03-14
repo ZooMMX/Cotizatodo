@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,9 @@ public class Quote {
     @Column private String title = "COTIZACIÓN";
 
     @Column private String folio = "A876";
+
+    @JsonIgnore
+    @Lob private Blob logoBytes;
 
     @Column private String sourceName;
     @Column private String sourcePosition;
@@ -319,5 +323,13 @@ public class Quote {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Blob getLogoBytes() {
+        return logoBytes;
+    }
+
+    public void setLogoBytes(Blob logoBytes) {
+        this.logoBytes = logoBytes;
     }
 }

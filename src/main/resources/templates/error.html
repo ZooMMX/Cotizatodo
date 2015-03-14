@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="layout">
+    <head>
+        <title>Error interno!</title>
+    </head>
+    <body>
+    <th:block layout:fragment="titulo">
+        Título <small>subtítulo</small>
+    </th:block>
+    <th:block layout:fragment="breadcrumb">
+        <li>
+            <a href="/">Inicio</a>
+        </li>
+    </th:block>
+    <div class="row" layout:fragment="content">
+        <div class="col-md-12 page-500">
+            <div class=" number">
+                 500
+            </div>
+            <div class=" details">
+                <h3>Error interno.</h3>
+                <p>
+                     <div th:text="${type}"></div><br/>
+                    Si el problema persiste, llama a soporte técnico.<br/><br/>
+                </p>
+            </div>
+
+        </div>
+        <!-- Stacktrace -->
+            <div th:utext="'&lt;!--'" th:remove="tag"></div>
+            <div th:utext="'Failed URL: ' +  ${url}" th:remove="tag">${url}</div>
+            <div th:utext="'Exception: ' + ${throwable.message}" th:remove="tag">${throwable.message}</div>
+            <ul th:remove="tag">
+                <li th:each="ste : ${throwable.stackTrace}" th:remove="tag"><span
+                    th:utext="${ste}" th:remove="tag">${ste}</span></li>
+            </ul>
+            <div th:utext="'--&gt;'" th:remove="tag"></div>
+        <!-- Fin stacktrace -->
+    </div>
+    <th:block layout:fragment="scripts">
+        <!-- Page level styles -->
+        <link href="/css/errors.css" rel="stylesheet" type="text/css"/>
+        <!-- End of page level styles -->
+    </th:block>
+    </body>
+</html>

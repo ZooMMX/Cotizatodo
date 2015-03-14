@@ -150,10 +150,10 @@ License: You must have a valid license purchased only from themeforest(the above
 			<!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
 			<div class="hor-menu ">
 				<ul class="nav navbar-nav">
-					<li class="active">
+					<li th:class="${#httpServletRequest.requestURI.equals('/')}?'active':''">
 						<a href="/">INICIO</a>
 					</li>
-                    <li class="menu-dropdown" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                    <li th:class="${#httpServletRequest.requestURI.equals('/quotes/')}?'active':''" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                         <a href="/quotes/" target="_self" class="tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Aquí estan todas tus cotizaciones guardadas">
                         MIS COTIZACIONES </a>
                     </li>

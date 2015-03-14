@@ -6,6 +6,7 @@ import javassist.bytecode.ByteArray;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JsonDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,9 +29,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,6 +137,43 @@ public class QuoteController {
 
     }
 
+    @PreAuthorize("isAuthenticated() and hasPermission(#quoteId, 'quote')")
+    @RequestMapping("/quotes/viewLogo/{quoteId}")
+    public String viewQuoteLogo(
+            @PathVariable("quoteId") Long quoteId,
+            HttpServletResponse response
+        ) {
+        Quote q = repo.findOne(quoteId);
+
+        response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+        try {
+            /* If a image has been store, then copy his bytes to output */
+            if(q.getLogoBytes() == null) {
+                BufferedImage bi = new BufferedImage(1,1, Transparency.TRANSLUCENT);
+                OutputStream out = response.getOutputStream();
+                ImageIO.write(bi, "PNG", out);
+
+            /* Already stored image */
+            } else {
+                Integer leng = (int) q.getLogoBytes().length();
+                response.setContentLength(leng);
+                OutputStream out = response.getOutputStream();
+
+                IOUtils.copy(q.getLogoBytes().getBinaryStream(), out);
+                out.flush();
+                out.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+
     /**
      * 1. Por defecto genera un mapa de mapas de listas de un mapa -- map[map[list[map]]] -- que contiene la información de la tabla de la cotización.
      * 2. Lo convierte a JSON
@@ -181,12 +223,21 @@ public class QuoteController {
     @RequestMapping(value = "/quotes/save", method = RequestMethod.POST)
     public String fullReport(
             @ModelAttribute Quote quote,
+            @RequestParam(value= "logo", required = false) MultipartFile logoFile,
             HttpServletResponse response,
-            Principal principal) {
+            Principal principal) throws IOException, SQLException {
 
+        /* Transform the logo from Bytes to Blob */
+        Blob blob = new javax.sql.rowset.serial.SerialBlob(logoFile.getBytes());
+
+        /* Gather information about user */
         MediUser activeUser = (MediUser) ((Authentication) principal).getPrincipal();
         User user = userRepository.findOne(activeUser.getUsername());
+
+        /* Save/Update quote */
         quote.setUser(user);
+        // Change logo only if it changed. If logo==null I assume it didn't change
+        if(blob != null) quote.setLogoBytes(blob);
         repo.save(quote);
 
         return "quotes";
