@@ -1,6 +1,8 @@
 package com.phesus.cotizatodo;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javassist.bytecode.ByteArray;
 import net.sf.jasperreports.engine.*;
@@ -148,7 +150,7 @@ public class QuoteController {
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         try {
             /* If a image has been store, then copy his bytes to output */
-            if(q.getLogoBytes() == null) {
+            if(q.getLogoBytes() == null || q.getLogoBytes().length() == 0) {
                 BufferedImage bi = new BufferedImage(1,1, Transparency.TRANSLUCENT);
                 OutputStream out = response.getOutputStream();
                 ImageIO.write(bi, "PNG", out);
@@ -190,22 +192,7 @@ public class QuoteController {
     public InputStream fields2Json(String[] description, BigDecimal[] quantity, BigDecimal[] unitPrice, BigDecimal[] rowTotal) throws IOException {
         ObjectMapper om = new ObjectMapper();
 
-        ArrayList<Map<String, String>> lista = new ArrayList<>();
-        NumberFormat cf = NumberFormat.getCurrencyInstance();
-        NumberFormat nf = NumberFormat.getNumberInstance();
-        nf.setMaximumFractionDigits(2);
-        nf.setMinimumFractionDigits(2);
-        nf.setGroupingUsed(true);
-
-        for (int i = 0; i < description.length; i++) {
-            HashMap<String, String> map = new HashMap<>();
-            map.put("concept", description[i]);
-            map.put("quantity", nf.format( quantity[i] ));
-            map.put("price", cf.format( unitPrice[i]) );
-            map.put("total", cf.format( rowTotal[i]) );
-
-            lista.add(map);
-        }
+        ArrayList<Map<String, String>> lista = mapFields(description, quantity, unitPrice, rowTotal);
         HashMap<String, ArrayList<Map<String, String>>> outerMap = new HashMap<>();
         outerMap.put("details", lista);
 
@@ -219,16 +206,46 @@ public class QuoteController {
         return bais;
     }
 
+    public ArrayList<Map<String, String>> mapFields(String[] description, BigDecimal[] quantity, BigDecimal[] unitPrice, BigDecimal[] rowTotal) {
+        ArrayList<Map<String, String>> lista = new ArrayList<>();
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(2);
+        nf.setMinimumFractionDigits(2);
+        nf.setGroupingUsed(false);
+
+        for (int i = 0; i < description.length; i++) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("concept", description[i]);
+            map.put("quantity", nf.format( quantity[i] ));
+            map.put("price", nf.format( unitPrice[i]) );
+            map.put("total", nf.format( rowTotal[i]) );
+
+            lista.add(map);
+        }
+        return lista;
+    }
+
     @PreAuthorize("isAuthenticated() and hasPermission(#quote.id, 'quote')")
     @RequestMapping(value = "/quotes/save", method = RequestMethod.POST)
-    public String fullReport(
+    public ModelAndView fullReport(
             @ModelAttribute Quote quote,
             @RequestParam(value= "logo", required = false) MultipartFile logoFile,
+            @RequestParam(value = "description[]", required = false) String[] rowsDescription,
+            @RequestParam(value = "quantity[]", required = false) BigDecimal[] quantity,
+            @RequestParam(value = "unitPrice[]", required = false) BigDecimal[] unitPrice,
+            @RequestParam(value = "rowTotal[]", required = false) BigDecimal[] rowTotal,
             HttpServletResponse response,
             Principal principal) throws IOException, SQLException {
 
         /* Transform the logo from Bytes to Blob */
-        Blob blob = new javax.sql.rowset.serial.SerialBlob(logoFile.getBytes());
+        Blob blob = null;
+        if(logoFile != null)
+            blob = new javax.sql.rowset.serial.SerialBlob(logoFile.getBytes());
+
+        /* Transform cells into JSON */
+        InputStream inputStream = fields2Json(rowsDescription, quantity, unitPrice, rowTotal);
+        String itemsJson = convertStreamToString(inputStream);
+        inputStream.close();
 
         /* Gather information about user */
         MediUser activeUser = (MediUser) ((Authentication) principal).getPrincipal();
@@ -236,11 +253,17 @@ public class QuoteController {
 
         /* Save/Update quote */
         quote.setUser(user);
+        quote.setItemsJson(itemsJson);
         // Change logo only if it changed. If logo==null I assume it didn't change
         if(blob != null) quote.setLogoBytes(blob);
         repo.save(quote);
 
-        return "quotes";
+        return new ModelAndView("redirect:/quotes?success");
+    }
+
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 
     @PreAuthorize("isAuthenticated() and hasPermission(#quoteId, 'quote')")
@@ -249,9 +272,15 @@ public class QuoteController {
             @PathVariable Long quoteId,
             Model model,
             Principal principal
-    ) {
+    ) throws IOException {
         Quote quote = repo.findOne(quoteId);
+
+        ObjectMapper om = new ObjectMapper();
+        //Quote -> details -> [] -> total, quantity, price, concept
+        HashMap<String, HashMap<String, ArrayList<Map<String, String>>>> tableContent = om.readValue(quote.getItemsJson(), new TypeReference<HashMap<String, HashMap<String, ArrayList<Map<String, String>>>>>() {});
+
         model.addAttribute("quote", quote);
+        model.addAttribute("rows", tableContent.get("quote").get("details"));
         return "quote_new";
     }
 

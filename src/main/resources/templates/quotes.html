@@ -10,6 +10,10 @@
     </th:block>
     <div layout:fragment="content">
             <!-- Begin: life time stats -->
+            <div class="alert alert-success alert-dismissable" th:if="${param.success}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                <strong>Confirmación</strong> Cotización guardada.
+            </div>
             <div class="col-md-1">
                 <img th:src="@{/img/Cooldude.png}" style="max-height: 130px" class="hidden-sm hidden-xs"/>
             </div>
@@ -25,7 +29,7 @@
                         <a href="/quotes/new" class="btn btn-default btn-circle">
                         <i class="fa fa-plus"></i>
                         <span class="hidden-480">
-                        New quote </span>
+                        Nueva cotización </span>
                         </a>
                         <div class="btn-group">
                             <a class="btn btn-default btn-circle" href="#" data-toggle="dropdown">

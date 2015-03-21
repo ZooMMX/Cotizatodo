@@ -65,7 +65,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user dropdown-dark" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
-                        <a href="/login" class="dropdown-toggle">
+                        <a href="/login?register" class="dropdown-toggle">
                         <span class="username username-hide-mobile">Registrarse</span>
                         </a>
                     </li>

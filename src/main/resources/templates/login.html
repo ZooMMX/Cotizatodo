@@ -497,6 +497,12 @@ jQuery(document).ready(function() {
 
 });
 </script>
+<script th:if="${param.register}">
+    jQuery(document).ready(function() {
+        jQuery('.login-form').hide();
+        jQuery('.register-form').show();
+    });
+</script>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

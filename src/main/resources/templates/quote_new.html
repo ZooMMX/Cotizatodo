@@ -36,7 +36,7 @@
                                     <!-- [Start] Selector de logo -->
                                     <div class="fileinput fileinput-new" style="margin-bottom: 0px;" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 180px; height: 60px; margin-bottom: 0px; margin-left: 16px;">
-                                            <img th:src="*{'/quotes/viewLogo/'+id}" alt=""/>
+                                            <img th:src="*{'/quotes/viewLogo/'+id}" th:if="!${#httpServletRequest.requestURI.equals('/quotes/new')}"/>
                                         </div>
                                         <!--<div>-->
                                             <span class="btn default btn-file">
@@ -122,6 +122,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <tr class="calculate" th:each="row, stat : ${rows}">
+                                                <td class="fit-content"><span th:text="${stat.index}+1"></span></td>
+                                                <td class="editable description"><span th:text="${row.concept}"></span><input type="hidden" name="description[]" th:value="${row.concept}"/></td>
+                                                <td class="editable numeric quantity"><span th:text="${row.quantity}"></span><input type="hidden" name="quantity[]" th:value="${row.quantity}"/></td>
+                                                <td class="editable numeric unitPrice"><span th:text="${row.price}"></span><input type="hidden" name="unitPrice[]" th:value="${row.price}"/></td>
+                                                <td class="numeric rowTotal"><span></span><input type="hidden" name="rowTotal[]"/></td>
+                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">Borrar</button></td>
+                                            </tr>
                                             <tr id="row-template" class="hide">
                                                 <td class="fit-content"></td>
                                                 <td class="editable description"><span></span><input type="hidden" name="description[]" disabled="true" /></td>

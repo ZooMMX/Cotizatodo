@@ -23,7 +23,10 @@ public class HomeController implements ErrorController {
     }
 
     @RequestMapping("/login")
-    public String login(Model model) {
+    public String login(HttpServletRequest request, Model model) {
+
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("url_prior_login", referrer);
         model.addAttribute("user", new User());
 
         return "login";

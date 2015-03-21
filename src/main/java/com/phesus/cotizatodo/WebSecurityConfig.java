@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -62,15 +64,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/img/**", "/css/**", "/media/**", "/plugins/**", "/scripts/**", "/register", "/usuarioCheckUsername").permitAll()
                 .antMatchers("/", "/quotes/new", "/quotes/print", "/quotes/print/pdf").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
                 .loginPage("/login")
+                .successHandler(successHandler())
                 .permitAll()
                 .and()
             .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout")
-
                 .and()
             .exceptionHandling()
                 .accessDeniedPage("/403");
@@ -88,6 +91,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        //return new MyCustomLoginSuccessHandler("/quotes");
+        return new SavedRequestAwareAuthenticationSuccessHandler();
     }
 
 }
