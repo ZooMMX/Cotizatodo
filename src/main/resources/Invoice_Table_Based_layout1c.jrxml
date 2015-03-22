@@ -73,8 +73,8 @@
 		<field name="quantity" class="java.lang.String">
 			<fieldDescription><![CDATA[quantity]]></fieldDescription>
 		</field>
-		<field name="price" class="java.lang.String">
-			<fieldDescription><![CDATA[price]]></fieldDescription>
+		<field name="unitPrice" class="java.lang.String">
+			<fieldDescription><![CDATA[unitPrice]]></fieldDescription>
 		</field>
 	</subDataset>
 	<parameter name="logo" class="java.lang.Object">
@@ -403,7 +403,7 @@
 									<font fontName="Roboto" size="9"/>
 									<paragraph rightIndent="10"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -426,7 +426,7 @@
 									<font fontName="Roboto" size="9"/>
 									<paragraph rightIndent="10"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

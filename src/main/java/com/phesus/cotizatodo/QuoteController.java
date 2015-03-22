@@ -103,7 +103,12 @@ public class QuoteController {
             @RequestParam String layout,
             @RequestParam(value = "description[]", required = false) String[] rowsDescription,
             @RequestParam(value = "quantity[]", required = false) BigDecimal[] quantity,
+            @RequestParam(value = "buyPrice[]", required = false) BigDecimal[] buyPrice,
+            @RequestParam(value = "markup[]", required = false) BigDecimal[] markup,
+            @RequestParam(value = "profit[]", required = false) BigDecimal[] profit,
             @RequestParam(value = "unitPrice[]", required = false) BigDecimal[] unitPrice,
+            @RequestParam(value = "unitSellPrice[]", required = false) BigDecimal[] unitSellPrice,
+            @RequestParam(value = "profitTotal[]", required = false) BigDecimal[] profitTotal,
             @RequestParam(value = "rowTotal[]", required = false) BigDecimal[] rowTotal,
             @RequestParam(value= "logo", required = false) MultipartFile logoFile,
             HttpServletResponse response) throws IOException, JRException {
@@ -130,7 +135,7 @@ public class QuoteController {
 
         params.put("datasource", ds);
 
-        params.put("JSON_INPUT_STREAM", fields2Json(rowsDescription, quantity, unitPrice, rowTotal)); //new FileInputStream("demoData.json"));
+        params.put("JSON_INPUT_STREAM", fields2Json(rowsDescription, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal)); //new FileInputStream("demoData.json"));
         if(logoFile != null)
             params.put("logo", ImageIO.read(logoFile.getInputStream()));
         //Funcionando con demo data: params.put("JSON_INPUT_STREAM", new ByteArrayInputStream(out.toByteArray()));
@@ -189,10 +194,10 @@ public class QuoteController {
      * @return
      * @throws IOException
      */
-    public InputStream fields2Json(String[] description, BigDecimal[] quantity, BigDecimal[] unitPrice, BigDecimal[] rowTotal) throws IOException {
+    public InputStream fields2Json(String[] description, BigDecimal[] quantity, BigDecimal[] buyPrice, BigDecimal[] markup, BigDecimal[] profit, BigDecimal[] unitPrice, BigDecimal[] unitSellPrice, BigDecimal[] profitTotal, BigDecimal[] rowTotal) throws IOException {
         ObjectMapper om = new ObjectMapper();
 
-        ArrayList<Map<String, String>> lista = mapFields(description, quantity, unitPrice, rowTotal);
+        ArrayList<Map<String, String>> lista = mapFields(description, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal);
         HashMap<String, ArrayList<Map<String, String>>> outerMap = new HashMap<>();
         outerMap.put("details", lista);
 
@@ -206,7 +211,7 @@ public class QuoteController {
         return bais;
     }
 
-    public ArrayList<Map<String, String>> mapFields(String[] description, BigDecimal[] quantity, BigDecimal[] unitPrice, BigDecimal[] rowTotal) {
+    public ArrayList<Map<String, String>> mapFields(String[] description, BigDecimal[] quantity, BigDecimal[] buyPrice, BigDecimal[] markup, BigDecimal[] profit, BigDecimal[] unitPrice, BigDecimal[] unitSellPrice, BigDecimal[] profitTotal, BigDecimal[] rowTotal) {
         ArrayList<Map<String, String>> lista = new ArrayList<>();
         NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(2);
@@ -217,7 +222,12 @@ public class QuoteController {
             HashMap<String, String> map = new HashMap<>();
             map.put("concept", description[i]);
             map.put("quantity", nf.format( quantity[i] ));
-            map.put("price", nf.format( unitPrice[i]) );
+            map.put("buyPrice", nf.format( buyPrice[i] ));
+            map.put("markup", nf.format( markup[i] ));
+            map.put("profit", nf.format( profit[i] ));
+            map.put("unitPrice", nf.format( unitPrice[i]) );
+            map.put("unitSellPrice", nf.format( unitSellPrice[i] ));
+            map.put("profitTotal", nf.format( profitTotal[i] ));
             map.put("total", nf.format( rowTotal[i]) );
 
             lista.add(map);
@@ -232,7 +242,12 @@ public class QuoteController {
             @RequestParam(value= "logo", required = false) MultipartFile logoFile,
             @RequestParam(value = "description[]", required = false) String[] rowsDescription,
             @RequestParam(value = "quantity[]", required = false) BigDecimal[] quantity,
+            @RequestParam(value = "buyPrice[]", required = false) BigDecimal[] buyPrice,
+            @RequestParam(value = "markup[]", required = false) BigDecimal[] markup,
+            @RequestParam(value = "profit[]", required = false) BigDecimal[] profit,
             @RequestParam(value = "unitPrice[]", required = false) BigDecimal[] unitPrice,
+            @RequestParam(value = "unitSellPrice[]", required = false) BigDecimal[] unitSellPrice,
+            @RequestParam(value = "profitTotal[]", required = false) BigDecimal[] profitTotal,
             @RequestParam(value = "rowTotal[]", required = false) BigDecimal[] rowTotal,
             HttpServletResponse response,
             Principal principal) throws IOException, SQLException {
@@ -243,7 +258,7 @@ public class QuoteController {
             blob = new javax.sql.rowset.serial.SerialBlob(logoFile.getBytes());
 
         /* Transform cells into JSON */
-        InputStream inputStream = fields2Json(rowsDescription, quantity, unitPrice, rowTotal);
+        InputStream inputStream = fields2Json(rowsDescription, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal);
         String itemsJson = convertStreamToString(inputStream);
         inputStream.close();
 

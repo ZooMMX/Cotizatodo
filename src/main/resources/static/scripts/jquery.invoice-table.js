@@ -7,14 +7,16 @@ $.fn.invoiceTable = function(options) {
 				opts.editor = opts.editor.clone();
 				return opts;
 			},
+			fields = ['company', 'sourceAddress', 'sourcePhone', 'sourceMail', 'title', 'date', 'folio', 'targetName', 'targetPosition', 'targetCompany', 'targetPhone', 'notas', 'sourceName', 'sourcePosition'],
 			activeOptions = $.extend(buildDefaultOptions(), options),
 			ARROW_LEFT = 37, ARROW_UP = 38, ARROW_RIGHT = 39, ARROW_DOWN = 40, ENTER = 13, ESC = 27, TAB = 9,
+			isNormalMode = true,
 			element = $(this),
 			editor = activeOptions.editor.css('position', 'absolute').hide().appendTo(element.parent()),
 			active,
 			invoice = {},
 			// display form field in place of cell text
-			showEditor = function (select) {
+			showEditor = function() {
 				active = element.find('td.editable:focus,th.editable:focus');
 				if (active.length) {
 					var selectorVal = active.find('input[type=hidden]').val();
@@ -29,9 +31,6 @@ $.fn.invoiceTable = function(options) {
 						.width(active.width())
 						.height(active.height())
 						.focus();
-					if (select) {
-						editor.select();
-					}
 				}
 			},
 			// set the cell text after editing
@@ -57,22 +56,30 @@ $.fn.invoiceTable = function(options) {
 							active.find('span').text(originalContent);
 						}
 
+					} else if (active.hasClass("markup")) {
+						var numbers = text.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
+						if (numbers.length > 0) {
+							active.find('input[type=hidden]').val(numbers[numbers.length-1]);
+							active.closest('tr').find('.markuptext').val(text);
+						} else {
+							active.find('span').text(originalContent);
+						}
 					} else {
 						if (active.hasClass('numeric')) {
 							active.find('span').text(formatNumber(text,true));
 						}
 						active.find('input[type=hidden]').val(text);
 					}
-
+					
 				}
 				calculateTotal();
 			},
 			// allow arrow key navigation with editable elements
 			movement = function (element, keycode) {
 				if (keycode === ARROW_RIGHT) {
-					return element.next('td.editable');
+					return element.nextAll('td.editable:visible').first();
 				} else if (keycode === ARROW_LEFT) {
-					return element.prev('td.editable');
+					return element.prevAll('td.editable:visible').first();
 				} else if (keycode === ARROW_UP) {
 					return element.parent().prev().children().eq(element.index());
 				} else if (keycode === ARROW_DOWN) {
@@ -91,46 +98,123 @@ $.fn.invoiceTable = function(options) {
 			//function to calculate totals, and add json string to cookie
 			calculateTotal = function() {
 
-				var dataRows = element.find('tbody tr.calculate'),
-					subtotal;
-
-				invoice['lineitems'] = [];
-				invoice['subtotal'] = 0;
-
-				dataRows.each(function(index) {
-
-					var arrRow = {},
-					row = $(this);
-
-					arrRow['description'] = row.find('.description input[type=hidden]').val();
-					arrRow['quantity'] = row.find('.quantity input[type=hidden]').val();
-					arrRow['unitPrice'] = row.find('.unitPrice input[type=hidden]').val();
-					arrRow['rowTotal'] = 0;
-
-					if (!isNaN(parseFloat(arrRow['quantity']) && !isNaN(parseFloat(arrRow['unitPrice'])))) {
-						arrRow['rowTotal'] = (arrRow['quantity'] * arrRow['unitPrice']);
-						row.find('.rowTotal span').text(formatNumber(arrRow['rowTotal'],true));
-						row.find('.rowTotal  input[type=hidden]').val(arrRow['rowTotal']);
-						invoice['subtotal'] += arrRow['rowTotal'];
-					}
-
-					invoice['lineitems'].push(arrRow);
-
+				invoice['fields'] = {};
+				$.each(fields, function(index, field){
+					invoice['fields'][field] = $('#'+field).val();
 				});
 
-				invoice['salestaxrate'] = element.find('#salestaxrate').val();
-				invoice['salestaxratetext'] = element.find('.salesTaxText').text();
-				invoice['salestax'] = invoice['subtotal'] * invoice['salestaxrate'] / 100;
-				invoice['total'] = (invoice['subtotal'] * invoice['salestaxrate'] / 100) + invoice['subtotal'];
+				var dataRows = element.find('tbody tr.calculate');
 
-				element.find('.calc-subtotal span').text(formatNumber(invoice['subtotal'],true));
-				element.find('.calc-salesTax span').text(formatNumber(invoice['salestax'],true));
-				element.find('.calc-total span').text(formatNumber(invoice['total'],true));
+				if (isNormalMode) {
 
-				element.find('.calc-subtotal input[type=hidden]').val(invoice['subtotal']);
-				element.find('.calc-salesTax input[type=hidden]').val(invoice['salestax']);
-				element.find('.calc-total input[type=hidden]').val(invoice['total']);
+					invoice['mode'] = 'normal';
+					invoice['lineitems'] = [];
+					invoice['subtotal'] = 0;
 
+					dataRows.each(function(index) {
+
+						var arrRow = {},
+						row = $(this);
+
+						arrRow['description'] = row.find('.description input[type=hidden]').val();
+						arrRow['quantity'] = row.find('.quantity input[type=hidden]').val();
+						arrRow['unitPrice'] = row.find('.unitPrice input[type=hidden]').val();
+						arrRow['buyprice'] = row.find('.buyprice input[type=hidden]').val();
+						arrRow['markuptext'] = row.find('.markuptext').val();
+						arrRow['markup'] = row.find('.markup input[type=hidden]').val();
+						arrRow['rowTotal'] = 0;
+
+						if (!isNaN(parseFloat(arrRow['quantity'])) && !isNaN(parseFloat(arrRow['unitPrice']))) {
+							arrRow['rowTotal'] = (arrRow['quantity'] * arrRow['unitPrice']);
+							row.find('.rowTotal span').text(formatNumber(arrRow['rowTotal'],true));
+							row.find('.rowTotal  input[type=hidden]').val(arrRow['rowTotal']);
+							invoice['subtotal'] += arrRow['rowTotal'];
+						}
+
+						invoice['lineitems'].push(arrRow);
+
+					});
+
+					invoice['salestaxrate'] = element.find('#salestaxrate').val();
+					invoice['salestaxratetext'] = element.find('.salesTaxText').text();
+					invoice['salestax'] = invoice['subtotal'] * invoice['salestaxrate'] / 100;
+					invoice['total'] = (invoice['subtotal'] * invoice['salestaxrate'] / 100) + invoice['subtotal'];
+
+					element.find('.calc-subtotal span').text(formatNumber(invoice['subtotal'],true));
+					element.find('.calc-salesTax span').text(formatNumber(invoice['salestax'],true));
+					element.find('.calc-total span').text(formatNumber(invoice['total'],true));
+
+					element.find('.calc-subtotal input[type=hidden]').val(invoice['subtotal']);
+					element.find('.calc-salesTax input[type=hidden]').val(invoice['salestax']);
+					element.find('.calc-total input[type=hidden]').val(invoice['total']);
+
+				} else {
+
+					invoice['mode'] = 'calculation';
+					invoice['lineitems'] = [];
+					invoice['subtotal'] = 0;
+					invoice['totalbuycost'] = 0;
+					invoice['grandtotalprofit'] = 0;
+
+					dataRows.each(function(index) {
+
+						var arrRow = {},
+						row = $(this);
+
+						arrRow['description'] = row.find('.description input[type=hidden]').val();
+						arrRow['quantity'] = row.find('.quantity input[type=hidden]').val();
+						arrRow['unitPrice'] = row.find('.unitPrice input[type=hidden]').val();
+						arrRow['buyprice'] = row.find('.buyprice input[type=hidden]').val();
+						arrRow['markuptext'] = row.find('.markuptext').val();
+						arrRow['markup'] = row.find('.markup input[type=hidden]').val();
+						arrRow['rowTotal'] = 0;
+
+						if (!isNaN(parseFloat(arrRow['quantity'])) && !isNaN(parseFloat(arrRow['buyprice'])) && !isNaN(parseFloat(arrRow['markup']))) {
+
+							invoice['totalbuycost'] += (arrRow['buyprice'] * arrRow['quantity']);
+
+							arrRow['profit'] = (arrRow['buyprice'] * arrRow['markup'])/100;
+							row.find('.profit span').text(formatNumber(arrRow['profit'],true));
+							row.find('.profit input[type=hidden]').val(arrRow['profit']);
+							invoice['profittotal'] += (arrRow['profit'] * arrRow['quantity']);
+
+							arrRow['unitSellPrice'] = parseFloat(arrRow['buyprice']) + parseFloat(arrRow['profit']);
+							row.find('.unitSellPrice span').text(formatNumber(arrRow['unitSellPrice'],true));
+							row.find('.unitSellPrice input[type=hidden]').val(arrRow['unitSellPrice']);
+
+							arrRow['profitTotal'] = arrRow['quantity'] * arrRow['profit'];
+							row.find('.profitTotal span').text(formatNumber(arrRow['profitTotal'],true));
+							row.find('.profitTotal input[type=hidden]').val(arrRow['profitTotal']);
+							invoice['grandtotalprofit'] += arrRow['profitTotal'];
+
+							arrRow['rowTotal'] = (arrRow['quantity'] * arrRow['unitSellPrice']);
+							row.find('.rowTotal span').text(formatNumber(arrRow['rowTotal'],true));
+							row.find('.rowTotal  input[type=hidden]').val(arrRow['rowTotal']);
+							invoice['subtotal'] += arrRow['rowTotal'];
+						}
+
+						invoice['lineitems'].push(arrRow);
+
+					});
+
+					invoice['salestaxrate'] = element.find('#salestaxrate').val();
+					invoice['salestaxratetext'] = element.find('.salesTaxText').text();
+					invoice['salestax'] = invoice['subtotal'] * invoice['salestaxrate'] / 100;
+					invoice['total'] = (invoice['subtotal'] * invoice['salestaxrate'] / 100) + invoice['subtotal'];
+
+					element.find('.calc-total-buy span').text(formatNumber(invoice['totalbuycost'],true));
+					element.find('.calc-total-profit span').text(formatNumber(invoice['grandtotalprofit'],true));
+					element.find('.calc-subtotal span').text(formatNumber(invoice['subtotal'],true));
+					element.find('.calc-salesTax span').text(formatNumber(invoice['salestax'],true));
+					element.find('.calc-total span').text(formatNumber(invoice['total'],true));
+
+					element.find('.calc-total-buy input[type=hidden]').val(invoice['totalbuycost']);
+					element.find('.calc-total-profit input[type=hidden]').val(invoice['profittotal']);
+					element.find('.calc-subtotal input[type=hidden]').val(invoice['subtotal']);
+					element.find('.calc-salesTax input[type=hidden]').val(invoice['salestax']);
+					element.find('.calc-total input[type=hidden]').val(invoice['total']);
+
+				}
 				createCookie('myinvoice',JSON.stringify(invoice),30);
 			},
 			// add a row to the table
@@ -145,6 +229,7 @@ $.fn.invoiceTable = function(options) {
 			},
 			// create a cookie
 			createCookie = function(name,value,days) {
+                if(!$('#formi').data('cookie-persistable')) return null;
 				if (days) {
 					var date = new Date();
 					date.setTime(date.getTime()+(days*24*60*60*1000));
@@ -155,6 +240,7 @@ $.fn.invoiceTable = function(options) {
 			},
 			// read the cookie
 			readCookie = function(name) {
+                if(!$('#formi').data('cookie-persistable')) return null;
 				var nameEQ = name + "=";
 				var ca = document.cookie.split(';');
 				for(var i=0;i < ca.length;i++) {
@@ -167,6 +253,37 @@ $.fn.invoiceTable = function(options) {
 			// erase the cookie (on submit invoice)
 			eraseCookie = function(name) {
 				createCookie(name,"",-1);
+			},
+			toggleMode = function() {
+				if (isNormalMode){
+					$('.calcmode').removeClass('hide');
+					$('.calchide').addClass('hide');
+                    $('#btn-toggle-msg1').addClass('hide');
+                    $('#btn-toggle-msg2').removeClass('hide');
+					$("[data-calcspan]").each(function(){
+						$(this).attr('colspan',$(this).data('calcspan'));
+					});
+					$('#formmode').val('Calculation Mode');
+					isNormalMode = false;
+				} else {
+					$('.calcmode').addClass('hide');
+					$('.calchide').removeClass('hide');
+                    $('#btn-toggle-msg1').removeClass('hide');
+                    $('#btn-toggle-msg2').addClass('hide');
+					$("[data-normspan]").each(function(){
+						$(this).attr('colspan',$(this).data('normspan'));
+					});
+					$('#formmode').val('Normal Mode');
+					element.find('tbody tr.calculate').each(function(){
+						$(this).find('.unitPrice span').text($(this).find('.unitSellPrice span').text());
+						$(this).find('.unitPrice input[type=hidden]').val($(this).find('.unitSellPrice input[type=hidden]').val());
+					});
+					isNormalMode = true;
+				}
+				$('.clearthis span').text('0.00');
+				$('.clearthis input[type=hidden]').val(0);
+				calculateTotal();
+
 			};
 
 		// set sales tax text in the table
@@ -222,9 +339,9 @@ $.fn.invoiceTable = function(options) {
 			if (possibleMove.length > 0) {
 				possibleMove.focus();
 			} else if (e.which === ENTER) {
-				showEditor(false);
+				showEditor();
 			} else if (e.which === 17 || e.which === 91 || e.which === 93) {
-				showEditor(true);
+				showEditor();
 				prevent = false;
 			} else {
 				prevent = false;
@@ -274,8 +391,10 @@ $.fn.invoiceTable = function(options) {
 		});
 
 		// add click event for save invoice button
-        /*
-		$('#btn-save').on('click', function(){
+        /* Comentado por ORC
+		$('#btn-save').on('click', function(e){
+
+			e.preventDefault();
 
 			var formURL = 'save.php';
 			var formData = $('#formi').serialize();
@@ -293,15 +412,15 @@ $.fn.invoiceTable = function(options) {
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					alert(errorThrown);
-				}
+				}          
 			});
-
-		}); */
+			
+		});
 
 		// add click event for print invoice button
-        // print no envía datos si no la ventana de elección de layout
-        /*
-		$('#btn-print').on('click', function(){
+		$('#btn-print').on('click', function(e){
+
+			e.preventDefault();
 
 			var formURL = 'print.php';
 			var formData = $('#formi').serialize();
@@ -319,9 +438,19 @@ $.fn.invoiceTable = function(options) {
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					alert(errorThrown);
-				}
+				}          
 			});
-		});*/
+			
+		});  */
+
+		$('#btn-toggle').on('click', function(){
+			toggleMode();
+			if (editor.is(':visible')) {
+				editor.offset(active.offset())
+				.width(active.width())
+				.height(active.height());
+			}
+		});
 
 		// change event for editable elements
 		element.find('td.editable,th.editable').on('change', function(evt) {
@@ -345,26 +474,49 @@ $.fn.invoiceTable = function(options) {
 		var existingInvoice = readCookie('myinvoice');
 		if (existingInvoice) {
 			var invoiceObject = $.parseJSON(existingInvoice);
+			$.each(invoiceObject.fields, function(key, value){
+				$('#'+key).val(value);
+			});
 			$.each(invoiceObject.lineitems,function(index,item){
 				var newRow = addRow();
 				newRow.find('.description span').text(item.description);
 				newRow.find('.description input[type=hidden]').val(item.description);
-				if (!isNaN(item.quantity)) {
-					newRow.find('.quantity span').text(formatNumber(item.quantity,false));
+				if (!isNaN(item.quantity) && item.quantity) {
+					newRow.find('.quantity span').text(formatNumber(item.quantity,true));
 					newRow.find('.quantity input[type=hidden]').val(item.quantity);
 				}
 				if (!isNaN(item.unitPrice) && item.unitPrice) {
 					newRow.find('.unitPrice input[type=hidden]').val(item.unitPrice);
 					newRow.find('.unitPrice span').text(formatNumber(item.unitPrice,true));
 				}
+				if (!isNaN(item.buyprice) && item.buyprice) {
+					newRow.find('.buyprice input[type=hidden]').val(item.buyprice);
+					newRow.find('.buyprice span').text(formatNumber(item.buyprice,true));
+				}
+				if (item.markuptext) {
+					newRow.find('.markuptext').val(item.markuptext);
+					newRow.find('.markup span').text(item.markuptext);
+				}
+				if (!isNaN(item.markup) && item.markup) {
+					newRow.find('.markup input[type=hidden]').val(item.markup);
+				}
 			});
 			element.find('.salesTaxText span').text(invoiceObject.salestaxratetext);
 			element.find('#salestaxrate').val(invoiceObject.salestaxrate);
+			if (invoiceObject.mode == 'calculation') {
+				toggleMode();
+			}
 			calculateTotal();
 		} else {
 			addRow();
 		}
 
+		$.each(fields, function(index, field){
+			$('#'+field).on('change',function(){
+				calculateTotal();
+			});
+		});
+		
 
 	});
 

@@ -10,7 +10,7 @@
     </th:block>
     <div layout:fragment="content">
         <!-- BEGIN FORM-->
-        <form id="formi" th:action="@{/quotes/print/pdf}" th:object="${quote}" class="horizontal-form"  method="POST" enctype="multipart/form-data" target="_blank">
+        <form id="formi" th:attr="data-cookie-persistable=${#httpServletRequest.requestURI.equals('/quotes/new')}?'true':'false'" th:action="@{/quotes/print/pdf}" th:object="${quote}" class="horizontal-form"  method="POST" enctype="multipart/form-data" target="_blank">
             <input type="hidden" name="layout" id="layout" value=""/>
             <input type="hidden" th:field="*{id}"/>
             <div class="portlet light">
@@ -20,6 +20,10 @@
                     <span class="caption-subject bold uppercase">Nueva Cotización</span>
                 </div>
                 <div class="actions">
+                    <a href="javascript:;" class="btn btn-sm blue" id="btn-toggle">
+                        <span id="btn-toggle-msg1"><i class="fa fa-calculator"></i> Modo simple </span>
+                        <span id="btn-toggle-msg2" class="hide"><i class="fa fa-calculator"></i> Modo calcular utilidad </span>
+                    </a>
                     <a href="javascript:;" class="btn btn-sm blue" id="btn-save">
                     <i class="fa fa-save"></i> Guardar </a>
                     <a href="/quotes/print" data-target="#ajax" data-toggle="modal" id="btn-print" class="btn btn-sm green">
@@ -80,13 +84,13 @@
                                 <div class="form-group">
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <textarea th:field="*{sourceAddress}" class="form-control borderless input-sm" style="padding-left: 16px;" rows="3" placeholder="Dirección del emisor">
+                                        <textarea id="sourceAddress" th:field="*{sourceAddress}" class="form-control borderless input-sm" style="padding-left: 16px;" rows="3" placeholder="Dirección del emisor">
                                             1002 Av. Juarez
                                             Centro
                                             Puebla, Pue.
                                         </textarea>
-                                        <input type="text" id="phone" th:field="*{sourcePhone}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Teléfono del emisor" value="(222) 984 112"/>
-                                        <input type="text" id="mail" th:field="*{sourceEmail}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Correo del emisor" value="ventas@cotizadora.com"/>
+                                        <input type="text" id="sourcePhone" th:field="*{sourcePhone}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Teléfono del emisor" value="(222) 984 112"/>
+                                        <input type="text" id="sourceMail" th:field="*{sourceEmail}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Correo del emisor" value="ventas@cotizadora.com"/>
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +120,12 @@
                                                 <th class="fit-content">#</th>
                                                 <th>Concepto</th>
                                                 <th class="numeric">Cantidad</th>
-                                                <th class="numeric">PU ($)</th>
+                                                <th class="numeric calcmode hide">Precio de compra</th>
+                                                <th class="numeric calcmode hide">Factor utilidad %</th>
+                                                <th class="numeric calcmode hide">Ganancia</th>
+                                                <th class="numeric calchide">Precio unitario ($)</th>
+                                                <th class="numeric calcmode hide">Precio unitario ($)</th>
+                                                <th class="numeric calcmode hide">Ganancia Total</th>
                                                 <th class="numeric">Total ($)</th>
                                                 <th></th>
                                             </tr>
@@ -126,7 +135,12 @@
                                                 <td class="fit-content"><span th:text="${stat.index}+1"></span></td>
                                                 <td class="editable description"><span th:text="${row.concept}"></span><input type="hidden" name="description[]" th:value="${row.concept}"/></td>
                                                 <td class="editable numeric quantity"><span th:text="${row.quantity}"></span><input type="hidden" name="quantity[]" th:value="${row.quantity}"/></td>
-                                                <td class="editable numeric unitPrice"><span th:text="${row.price}"></span><input type="hidden" name="unitPrice[]" th:value="${row.price}"/></td>
+                                                <td class="editable numeric calcmode hide buyprice"><span th:text="${row.buyPrice}"></span><input type="hidden" name="buyPrice[]" class="calchidden" th:value="${row.buyPrice}" /></td>
+                                                <td class="editable calcmode hide markup"><span th:text="${row.markup}"></span><input type="hidden" name="markup[]" class="calchidden" th:value="${row.markup}"/></td>
+                                                <td class="numeric calcmode hide profit"><span th:text="${row.profit}"></span><input type="hidden" name="profit[]" class="calchidden" th:value="${row.profit}"/></td>
+                                                <td class="editable numeric calchide unitPrice"><span th:text="${row.unitPrice}"></span><input type="hidden" name="unitPrice[]" th:value="${row.unitPrice}"/></td>
+                                                <td class="numeric calcmode hide unitSellPrice"><span th:text="${row.unitSellPrice}"></span><input type="hidden" name="unitSellPrice[]" th:valie="${row.unitSellPrice}"/></td>
+                                                <td class="numeric calcmode hide profitTotal"><span th:text="${row.profitTotal}"></span><input type="hidden" name="profitTotal[]" class="calchidden" th:value="${row.profitTotal}"/></td>
                                                 <td class="numeric rowTotal"><span></span><input type="hidden" name="rowTotal[]"/></td>
                                                 <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">Borrar</button></td>
                                             </tr>
@@ -134,29 +148,44 @@
                                                 <td class="fit-content"></td>
                                                 <td class="editable description"><span></span><input type="hidden" name="description[]" disabled="true" /></td>
                                                 <td class="editable numeric quantity"><span></span><input type="hidden" name="quantity[]" disabled="true" /></td>
-                                                <td class="editable numeric unitPrice"><span></span><input type="hidden" name="unitPrice[]" disabled="true" /></td>
-                                                <td class="numeric rowTotal"><span>0.00</span><input type="hidden" name="rowTotal[]" disabled="true" /></td>
-                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">Borrar</button></td>
+                                                <td class="editable numeric calcmode hide buyprice"><span></span><input type="hidden" name="buyPrice[]" disabled="true" class="calchidden" /></td>
+                                                <td class="editable calcmode hide markup"><span></span><input type="hidden" name="markup[]" disabled="true" class="calchidden" /></td>
+                                                <td class="numeric calcmode hide profit"><span></span><input type="hidden" name="profit[]" disabled="true" class="calchidden" /></td>
+                                                <td class="editable numeric calchide unitPrice"><span></span><input type="hidden" name="unitPrice[]" disabled="true" /></td>
+                                                <td class="numeric calcmode hide unitSellPrice"><span></span><input type="hidden" name="unitSellPrice[]" disabled="true" /></td>
+                                                <td class="numeric calcmode hide profitTotal"><span></span><input type="hidden" name="profitTotal[]" disabled="true" class="calchidden" /></td>
+                                                <td class="numeric rowTotal clearthis"><span>0.00</span><input type="hidden" name="rowTotal[]" disabled="true" /></td>
+                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">Borrar</button><input type="hidden" disabled="true" name="markuptext[]" class="markuptext calchidden" /></td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
-                                            <tr>
-                                                <th colspan="4"><strong>Subtotal</strong></th>
-                                                <th class="calc-subtotal numeric"><strong><span>0.00</span></strong><input type="hidden" name="subtotal" /></th>
+                                            <tr class="calcmode hide">
+                                                <th colspan="8"><strong>Costo Total de Compra</strong></th>
+                                                <th class="calc-total-buy numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="totalbuycost" class="calchidden" /></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr class="calcmode hide">
+                                                <th colspan="8"><strong>Lucro Total</strong></th>
+                                                <th class="calc-total-profit numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="totalprofit" class="calchidden" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr>
-                                                <th colspan="4" class="salesTaxText editable"><strong><span></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" /></th>
-                                                <th class="calc-salesTax numeric"><strong><span>0.00</span></strong><input type="hidden" th:field="*{taxes}" name="salestax" /></th>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong>Subtotal</strong></th>
+                                                <th class="calc-subtotal numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="subtotal" /></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8" class="salesTaxText editable"><strong><span></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" /></th>
+                                                <th class="calc-salesTax numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" th:field="*{taxes}" name="salestax" /></th>
                                                 <th><input th:field="*{taxesDescription}" type="hidden" name="salestaxtext" id="salestaxtext" /></th>
                                             </tr>
                                             <tr class="grand-total">
-                                                <th colspan="4"><strong>Total</strong></th>
-                                                <th class="calc-total numeric"><strong><span>0.00</span></strong><input type="hidden" name="total" /></th>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong>Total</strong></th>
+                                                <th class="calc-total numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="total" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr>
-                                                <th colspan="6">
+                                                <th colspan="6" data-normspan="6" data-calcspan="10">
                                                     <button type="button" id="btn-add" class="btn btn-default">Agregar fila</button>
                                                 </th>
                                             </tr>
@@ -176,8 +205,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="text" th:field="*{sourceName}" class="form-control borderless input-sm client-cell" placeholder="Nombre del Emisor"/>
-                                    <input type="text" th:field="*{sourcePosition}" class="form-control borderless input-sm" placeholder="Cargo del emisor"/>
+                                    <input id="sourceName" type="text" th:field="*{sourceName}" class="form-control borderless input-sm client-cell" placeholder="Nombre del Emisor"/>
+                                    <input id="sourcePosition" type="text" th:field="*{sourcePosition}" class="form-control borderless input-sm" placeholder="Cargo del emisor"/>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +230,6 @@
         <script type="text/javascript" th:src="@{/plugins/bootstrap-fileinput/bootstrap-fileinput.js}"></script>
 
         <!-- END PAGE LEVEL PLUGINS-->
-
         <script>
                 jQuery(document).ready(function() {
                     $('#invoiceTable').invoiceTable({salestax:16,salestaxtext:'Impuesto (IVA 16%)'});

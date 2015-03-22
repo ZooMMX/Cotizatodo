@@ -49,3 +49,8 @@ textarea:focus, input:focus {
 	text-align: right;
     width:10%;
 }
+
+#invoiceTable .markup{
+	text-align: right;
+    width:10%;
+}
