@@ -36,14 +36,21 @@ public class HomeController implements ErrorController {
     @RequestMapping("/error")
     public String error(HttpServletRequest request, Model model) {
         Integer errorCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        String  errorMsg  = (String)  request.getAttribute("javax.servlet.error.message");
         model.addAttribute("errorCode", errorCode);
         if(errorCode == 404) {
             return "404";
         } else if(errorCode == 403) {
             return "403";
         } else {
-            Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
-            if (throwable == null) throwable = new Throwable("...");
+            Throwable throwable = (Throwable) request.getAttribute("org.springframework.web.servlet.DispatcherServlet.EXCEPTION");
+            //throw safe
+            if (throwable == null) {
+                throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
+                if(throwable == null) {
+                    throwable = new Throwable("Error "+errorCode+". "+errorMsg);
+                }
+            }
             model.addAttribute("throwable", throwable);
             return "error";
         }

@@ -13,6 +13,7 @@
             <div class="alert alert-success alert-dismissable" th:if="${param.success}">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
                 <strong>Confirmación</strong> Cotización guardada.
+                <script>document.cookie = "myinvoice" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';</script>
             </div>
             <div class="col-md-1">
                 <img th:src="@{/img/Cooldude.png}" style="max-height: 130px" class="hidden-sm hidden-xs"/>

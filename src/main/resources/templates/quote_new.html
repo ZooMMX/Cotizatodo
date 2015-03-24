@@ -13,6 +13,8 @@
         <form id="formi" th:attr="data-cookie-persistable=${#httpServletRequest.requestURI.equals('/quotes/new')}?'true':'false'" th:action="@{/quotes/print/pdf}" th:object="${quote}" class="horizontal-form"  method="POST" enctype="multipart/form-data" target="_blank">
             <input type="hidden" name="layout" id="layout" value=""/>
             <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{created}"/>
+            <input type="hidden" th:value="${taxText}" id="taxText"/>
             <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
@@ -21,8 +23,8 @@
                 </div>
                 <div class="actions">
                     <a href="javascript:;" class="btn btn-sm blue" id="btn-toggle">
-                        <span id="btn-toggle-msg1"><i class="fa fa-calculator"></i> Modo simple </span>
-                        <span id="btn-toggle-msg2" class="hide"><i class="fa fa-calculator"></i> Modo calcular utilidad </span>
+                        <span id="btn-toggle-msg1" class="hide"><i class="fa fa-calculator"></i> Modo calcular utilidad </span>
+                        <span id="btn-toggle-msg2"><i class="fa fa-calculator"></i> Modo simple </span>
                     </a>
                     <a href="javascript:;" class="btn btn-sm blue" id="btn-save">
                     <i class="fa fa-save"></i> Guardar </a>
@@ -123,8 +125,8 @@
                                                 <th class="numeric calcmode hide">Precio de compra</th>
                                                 <th class="numeric calcmode hide">Factor utilidad %</th>
                                                 <th class="numeric calcmode hide">Ganancia</th>
-                                                <th class="numeric calchide">Precio unitario ($)</th>
-                                                <th class="numeric calcmode hide">Precio unitario ($)</th>
+                                                <th class="numeric calchide">Precio unitario</th>
+                                                <th class="numeric calcmode hide">Precio unitario</th>
                                                 <th class="numeric calcmode hide">Ganancia Total</th>
                                                 <th class="numeric">Total ($)</th>
                                                 <th></th>
@@ -165,7 +167,7 @@
                                                 <th></th>
                                             </tr>
                                             <tr class="calcmode hide">
-                                                <th colspan="8"><strong>Lucro Total</strong></th>
+                                                <th colspan="8"><strong>Ganancia Total</strong></th>
                                                 <th class="calc-total-profit numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="totalprofit" class="calchidden" /></th>
                                                 <th></th>
                                             </tr>
@@ -176,8 +178,8 @@
                                             </tr>
                                             <tr>
                                                 <th colspan="4" data-normspan="4" data-calcspan="8" class="salesTaxText editable"><strong><span></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" /></th>
-                                                <th class="calc-salesTax numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" th:field="*{taxes}" name="salestax" /></th>
-                                                <th><input th:field="*{taxesDescription}" type="hidden" name="salestaxtext" id="salestaxtext" /></th>
+                                                <th class="calc-salesTax numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="salestax" /></th>
+                                                <th><input type="hidden" name="salestaxtext" id="salestaxtext" /></th>
                                             </tr>
                                             <tr class="grand-total">
                                                 <th colspan="4" data-normspan="4" data-calcspan="8"><strong>Total</strong></th>
@@ -232,14 +234,15 @@
         <!-- END PAGE LEVEL PLUGINS-->
         <script>
                 jQuery(document).ready(function() {
-                    $('#invoiceTable').invoiceTable({salestax:16,salestaxtext:'Impuesto (IVA 16%)'});
+                    var matcher = $('#taxText').val().match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
+                    $('#invoiceTable').invoiceTable({salestax:matcher[matcher.length-1], salestaxtext:$('#taxText').val()});
 
                     $("#btn-save").click(function() {
                         $("#formi")
                                 .attr('action', '/quotes/save')
                                 .attr('target', '_self')
                                 .submit();
-                    })
+                    });
                 });
         </script>
     </th:block>

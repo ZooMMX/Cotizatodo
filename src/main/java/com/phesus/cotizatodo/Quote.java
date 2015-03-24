@@ -2,6 +2,7 @@ package com.phesus.cotizatodo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -53,7 +54,7 @@ public class Quote {
     @Column private String itemsJson;
 
     @Column private String date = "1 de Febrero de 2015";
-    @Column private Date created;
+    @DateTimeFormat(pattern="dd/MM/yyyy hh:mm:ss") @Column private Date created = new Date();
     @Column private Date updated;
     @Column private Boolean enabled = true;
 

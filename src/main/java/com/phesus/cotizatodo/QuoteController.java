@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Proyecto cotizatodo
@@ -57,6 +59,7 @@ public class QuoteController {
     @Autowired private QuoteRepository repo;
     @Autowired private UserRepository userRepository;
     @Autowired private EntityManager em ;
+    private final String DEFAULT_TAX = "Impuestos (IVA 16%)";
 
     @RequestMapping("/quotes")
     public String quotes(Model model) {
@@ -68,6 +71,7 @@ public class QuoteController {
     public String newQuote(Model model)
     {
         model.addAttribute("quote", new Quote());
+        model.addAttribute("taxText", DEFAULT_TAX);
         return "quote_new";
     }
 
@@ -220,15 +224,26 @@ public class QuoteController {
 
         for (int i = 0; i < description.length; i++) {
             HashMap<String, String> map = new HashMap<>();
+            //Common fields
             map.put("concept", description[i]);
             map.put("quantity", nf.format( quantity[i] ));
-            map.put("buyPrice", nf.format( buyPrice[i] ));
-            map.put("markup", nf.format( markup[i] ));
-            map.put("profit", nf.format( profit[i] ));
             map.put("unitPrice", nf.format( unitPrice[i]) );
-            map.put("unitSellPrice", nf.format( unitSellPrice[i] ));
-            map.put("profitTotal", nf.format( profitTotal[i] ));
             map.put("total", nf.format( rowTotal[i]) );
+
+            //Advance fields, use if exists, otherwise fill with zeros
+            if(i < buyPrice.length) {
+                map.put("buyPrice", nf.format(buyPrice[i]));
+                map.put("markup", nf.format(markup[i]));
+                map.put("profit", nf.format(profit[i]));
+                map.put("unitSellPrice", nf.format(unitSellPrice[i]));
+                map.put("profitTotal", nf.format(profitTotal[i]));
+            } else {
+                map.put("buyPrice", map.get("unitPrice") );
+                map.put("markup", nf.format( BigDecimal.ZERO ));
+                map.put("profit", nf.format( BigDecimal.ZERO ));
+                map.put("unitSellPrice", nf.format( BigDecimal.ZERO )); //Uses the same value
+                map.put("profitTotal", nf.format( BigDecimal.ZERO ));
+            }
 
             lista.add(map);
         }
@@ -296,6 +311,7 @@ public class QuoteController {
 
         model.addAttribute("quote", quote);
         model.addAttribute("rows", tableContent.get("quote").get("details"));
+        model.addAttribute("taxText", quote.getTaxesDescription());
         return "quote_new";
     }
 

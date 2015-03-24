@@ -254,6 +254,7 @@ $.fn.invoiceTable = function(options) {
 			eraseCookie = function(name) {
 				createCookie(name,"",-1);
 			},
+
 			toggleMode = function() {
 				if (isNormalMode){
 					$('.calcmode').removeClass('hide');
@@ -470,6 +471,11 @@ $.fn.invoiceTable = function(options) {
 			}
 		});
 
+        // calcula totales al comenzar
+        $(document).ready( function () {
+      		calculateTotal();
+        });
+
 		// if an invoice exists in a cookie, populate the html
 		var existingInvoice = readCookie('myinvoice');
 		if (existingInvoice) {
@@ -505,10 +511,17 @@ $.fn.invoiceTable = function(options) {
 			element.find('#salestaxrate').val(invoiceObject.salestaxrate);
 			if (invoiceObject.mode == 'calculation') {
 				toggleMode();
-			}
+			} else {
+                $('#btn-toggle-msg1').removeClass('hide');
+                $('#btn-toggle-msg2').addClass('hide');
+            }
 			calculateTotal();
 		} else {
-			addRow();
+            // if cookies are disabled, there is no need to create an empty row, because,
+            //      there is being restored a saved
+            if($('#formi').data('cookie-persistable')) {
+                addRow();
+            }
 		}
 
 		$.each(fields, function(index, field){
