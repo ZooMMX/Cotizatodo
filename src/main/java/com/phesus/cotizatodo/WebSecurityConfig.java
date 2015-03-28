@@ -95,8 +95,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler successHandler() {
-        //return new MyCustomLoginSuccessHandler("/quotes");
-        return new SavedRequestAwareAuthenticationSuccessHandler();
+        return new MyCustomLoginSuccessHandler("/quotes");
+        //return new SavedRequestAwareAuthenticationSuccessHandler();
     }
 
 }
