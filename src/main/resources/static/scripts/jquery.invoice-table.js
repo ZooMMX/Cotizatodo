@@ -508,6 +508,7 @@ $.fn.invoiceTable = function(options) {
 				}
 			});
 			element.find('.salesTaxText span').text(invoiceObject.salestaxratetext);
+            element.find('#salestaxtext').val(invoiceObject.salestaxratetext);
 			element.find('#salestaxrate').val(invoiceObject.salestaxrate);
 			if (invoiceObject.mode == 'calculation') {
 				toggleMode();

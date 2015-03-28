@@ -178,8 +178,8 @@
                                             </tr>
                                             <tr>
                                                 <th colspan="4" data-normspan="4" data-calcspan="8" class="salesTaxText editable"><strong><span></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" /></th>
-                                                <th class="calc-salesTax numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="salestax" /></th>
-                                                <th><input type="hidden" name="salestaxtext" id="salestaxtext" /></th>
+                                                <th class="calc-salesTax numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" id="salestax" th:field="*{taxes}"/></th>
+                                                <th><input type="hidden" id="salestaxtext" th:field="*{taxesDescription}"/></th>
                                             </tr>
                                             <tr class="grand-total">
                                                 <th colspan="4" data-normspan="4" data-calcspan="8"><strong>Total</strong></th>

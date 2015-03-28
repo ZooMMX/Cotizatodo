@@ -139,7 +139,12 @@ public class QuoteController {
 
         params.put("datasource", ds);
 
-        params.put("JSON_INPUT_STREAM", fields2Json(rowsDescription, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal)); //new FileInputStream("demoData.json"));
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(2);
+        nf.setMinimumFractionDigits(2);
+        nf.setGroupingUsed(true);
+
+        params.put("JSON_INPUT_STREAM", fields2Json(nf, rowsDescription, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal)); //new FileInputStream("demoData.json"));
         if(logoFile != null)
             params.put("logo", ImageIO.read(logoFile.getInputStream()));
         //Funcionando con demo data: params.put("JSON_INPUT_STREAM", new ByteArrayInputStream(out.toByteArray()));
@@ -198,10 +203,10 @@ public class QuoteController {
      * @return
      * @throws IOException
      */
-    public InputStream fields2Json(String[] description, BigDecimal[] quantity, BigDecimal[] buyPrice, BigDecimal[] markup, BigDecimal[] profit, BigDecimal[] unitPrice, BigDecimal[] unitSellPrice, BigDecimal[] profitTotal, BigDecimal[] rowTotal) throws IOException {
+    public InputStream fields2Json(NumberFormat nf, String[] description, BigDecimal[] quantity, BigDecimal[] buyPrice, BigDecimal[] markup, BigDecimal[] profit, BigDecimal[] unitPrice, BigDecimal[] unitSellPrice, BigDecimal[] profitTotal, BigDecimal[] rowTotal) throws IOException {
         ObjectMapper om = new ObjectMapper();
 
-        ArrayList<Map<String, String>> lista = mapFields(description, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal);
+        ArrayList<Map<String, String>> lista = mapFields(nf, description, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal);
         HashMap<String, ArrayList<Map<String, String>>> outerMap = new HashMap<>();
         outerMap.put("details", lista);
 
@@ -215,39 +220,54 @@ public class QuoteController {
         return bais;
     }
 
-    public ArrayList<Map<String, String>> mapFields(String[] description, BigDecimal[] quantity, BigDecimal[] buyPrice, BigDecimal[] markup, BigDecimal[] profit, BigDecimal[] unitPrice, BigDecimal[] unitSellPrice, BigDecimal[] profitTotal, BigDecimal[] rowTotal) {
+    public ArrayList<Map<String, String>> mapFields(NumberFormat nf, String[] description, BigDecimal[] quantity, BigDecimal[] buyPrice, BigDecimal[] markup, BigDecimal[] profit, BigDecimal[] unitPrice, BigDecimal[] unitSellPrice, BigDecimal[] profitTotal, BigDecimal[] rowTotal) {
         ArrayList<Map<String, String>> lista = new ArrayList<>();
-        NumberFormat nf = NumberFormat.getNumberInstance();
-        nf.setMaximumFractionDigits(2);
-        nf.setMinimumFractionDigits(2);
-        nf.setGroupingUsed(false);
 
         for (int i = 0; i < description.length; i++) {
             HashMap<String, String> map = new HashMap<>();
             //Common fields
             map.put("concept", description[i]);
-            map.put("quantity", nf.format( quantity[i] ));
-            map.put("unitPrice", nf.format( unitPrice[i]) );
-            map.put("total", nf.format( rowTotal[i]) );
+            if(i < quantity.length && quantity[i] != null) map.put("quantity", nf.format( quantity[i] )); else map.put("quantity", nf.format( BigDecimal.ZERO ));
+            if(i < rowTotal.length && rowTotal[i] != null) map.put("total", nf.format( rowTotal[i]) );    else map.put("total", nf.format( BigDecimal.ZERO ));
 
-            //Advance fields, use if exists, otherwise fill with zeros
-            if(i < buyPrice.length) {
-                map.put("buyPrice", nf.format(buyPrice[i]));
-                map.put("markup", nf.format(markup[i]));
-                map.put("profit", nf.format(profit[i]));
-                map.put("unitSellPrice", nf.format(unitSellPrice[i]));
-                map.put("profitTotal", nf.format(profitTotal[i]));
-            } else {
-                map.put("buyPrice", map.get("unitPrice") );
-                map.put("markup", nf.format( BigDecimal.ZERO ));
-                map.put("profit", nf.format( BigDecimal.ZERO ));
-                map.put("unitSellPrice", nf.format( BigDecimal.ZERO )); //Uses the same value
-                map.put("profitTotal", nf.format( BigDecimal.ZERO ));
-            }
+            //Advance fields, use if exists, otherwise fill with zeros or another default
+            if(i < buyPrice.length && buyPrice[i] != null)         map.put("buyPrice", nf.format(buyPrice[i]));           else map.put("buyPrice", map.get("unitPrice") );
+            if(i < markup.length && markup[i] != null)             map.put("markup", nf.format(markup[i]));               else map.put("markup", nf.format(BigDecimal.ZERO));
+            if(i < profit.length && profit[i] != null)             map.put("profit", nf.format(profit[i]));               else map.put("profit", nf.format( BigDecimal.ZERO ));
+            if(i < unitSellPrice.length && unitSellPrice[i]!=null) map.put("unitSellPrice", nf.format(unitSellPrice[i])); else map.put("unitSellPrice", nf.format( BigDecimal.ZERO ));
+            if(i < profitTotal.length && profitTotal[i] != null)   map.put("profitTotal", nf.format(profitTotal[i]));     else map.put("profitTotal", nf.format( BigDecimal.ZERO ));
+            if(i < unitSellPrice.length && unitSellPrice[i] != null)
+                map.put("unitPrice", nf.format(unitSellPrice[i]) ); // In advance mode unitPrice = unitSellPrice
+            else if(i < unitPrice.length && unitPrice[i] != null)
+                map.put("unitPrice", nf.format( unitPrice[i]) ); // Unit price is only available at simple mode
+            else
+                map.put("unitPrice", nf.format( BigDecimal.ZERO ));
+
+            //Server side not null validation
+            map = sanitizeQuoteRows(nf, map);
 
             lista.add(map);
         }
         return lista;
+    }
+
+    /**
+     * Assure healthy quote rows map
+     * @param map
+     */
+    private HashMap<String, String> sanitizeQuoteRows(NumberFormat nf, HashMap<String, String> map) {
+
+        if(!map.containsKey("concept") || map.get("concept") == null) map.put("concept", "");
+        if(!map.containsKey("quantity") || map.get("quantity") == null) map.put("quantity", nf.format( BigDecimal.ZERO ));
+        if(!map.containsKey("total") || map.get("total") == null) map.put("total", nf.format( BigDecimal.ZERO ));
+        if(!map.containsKey("buyPrice") || map.get("buyPrice") == null) map.put("buyPrice", nf.format( BigDecimal.ZERO ));
+        if(!map.containsKey("markup") || map.get("markup") == null) map.put("markup", nf.format( BigDecimal.ZERO ));
+        if(!map.containsKey("profit") || map.get("profit") == null) map.put("profit", nf.format( BigDecimal.ZERO ));
+        if(!map.containsKey("unitSellPrice") || map.get("unitSellPrice") == null) map.put("unitSellPrice", nf.format( BigDecimal.ZERO ));
+        if(!map.containsKey("profitTotal") || map.get("profitTotal") == null) map.put("profitTotal", nf.format( BigDecimal.ZERO ));
+        if(!map.containsKey("unitPrice") || map.get("unitPrice") == null) map.put("unitPrice", nf.format( BigDecimal.ZERO ));
+
+        return map;
     }
 
     @PreAuthorize("isAuthenticated() and hasPermission(#quote.id, 'quote')")
@@ -273,7 +293,11 @@ public class QuoteController {
             blob = new javax.sql.rowset.serial.SerialBlob(logoFile.getBytes());
 
         /* Transform cells into JSON */
-        InputStream inputStream = fields2Json(rowsDescription, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal);
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(2);
+        nf.setMinimumFractionDigits(2);
+        nf.setGroupingUsed(false);
+        InputStream inputStream = fields2Json(nf, rowsDescription, quantity, buyPrice, markup, profit, unitPrice, unitSellPrice, profitTotal, rowTotal);
         String itemsJson = convertStreamToString(inputStream);
         inputStream.close();
 
