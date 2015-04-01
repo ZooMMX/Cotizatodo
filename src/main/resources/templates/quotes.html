@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
 <head>
-    <title>Quotes</title>
+    <title th:text="#{quotes.title}">Quotes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -12,7 +12,8 @@
             <!-- Begin: life time stats -->
             <div class="alert alert-success alert-dismissable" th:if="${param.success}">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-                <strong>Confirmación</strong> Cotización guardada.
+                <strong><span th:text="#{quotes.span.confirm_title}">Confirmación</span></strong>
+                <span th:text="#{quotes.span.confirm_body}"> Cotización guardada. </span>
                 <script>document.cookie = "myinvoice" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';</script>
             </div>
             <div class="col-md-1">
@@ -23,33 +24,35 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-gift font-green-sharp"></i>
-                        <span class="caption-subject font-green-sharp bold uppercase">Cotizaciones</span>
-                        <span class="caption-helper">aquí están todas tus cotizaciones.</span>
+                        <span class="caption-subject font-green-sharp bold uppercase" th:text="#{quotes.span.caption_subject}">
+                            Cotizaciones
+                        </span>
+                        <span class="caption-helper" th:text="#{quotes.span.caption_helper}">aquí están todas tus cotizaciones.</span>
                     </div>
                     <div class="actions">
                         <a href="/quotes/new" class="btn btn-default btn-circle">
                         <i class="fa fa-plus"></i>
-                        <span class="hidden-480">
+                        <span class="hidden-480" th:text="#{quotes.span_button.new_quote}">
                         Nueva cotización </span>
                         </a>
                         <div class="btn-group">
                             <a class="btn btn-default btn-circle" href="#" data-toggle="dropdown">
-                            <i class="fa fa-share"></i>
-                            <span class="hidden-480">
+                            <i class="fa fa-wrench"></i>
+                            <span class="hidden-480" th:text="#{quotes.span_button.tools}">
                             Herramientas </span>
                             <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <a href="#" id="xlsLink" download="quotes.xls" onClick ="$('#datatable_ajax').tableExport({type:'excel',escape:'false'});">
+                                    <a href="#" id="xlsLink" download="quotes.xls" onClick ="$('#datatable_ajax').tableExport({type:'excel',escape:'false'});" th:text="#{quotes.a.export_xls}">
                                     Exportar a Excel </a>
                                 </li>
                                 <li>
-                                    <a href="#" id="csvLink" download="quotes.csv" onclick="$('#datatable_ajax').tableExport({type:'csv',escape:'false'});">
+                                    <a href="#" id="csvLink" download="quotes.csv" onclick="$('#datatable_ajax').tableExport({type:'csv',escape:'false'});" th:text="#{quotes.a.export_csv}">
                                     Exportar a CSV </a>
                                 </li>
                                 <li>
-                                    <a href="#" id="xmlLink" download="quotes.xml" onclick="$('#datatable_ajax').tableExport({type:'xml',escape:'false'});">
+                                    <a href="#" id="xmlLink" download="quotes.xml" onclick="$('#datatable_ajax').tableExport({type:'xml',escape:'false'});" th:text="#{quotes.a.export_xml}">
                                     Exportar a XML </a>
                                 </li>
                                 <!--<li class="divider">
@@ -68,8 +71,8 @@
                             <span>
                             </span>
                             <select class="table-group-action-input form-control input-inline input-small input-sm">
-                                <option value="">Acción grupal...</option>
-                                <option value="softdelete">Archivar/Ocultar</option>
+                                <option value="" th:text="#{quotes.option.group_action}">Acción grupal...</option>
+                                <option value="softdelete" th:text="#{quotes.option.hide}">Archivar/Ocultar</option>
                             </select>
                             <button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-check"></i> Aplicar</button>
                         </div>

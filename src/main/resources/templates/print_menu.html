@@ -1,26 +1,18 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-    <h4 class="modal-title">Plantilla</h4>
+    <h4 class="modal-title" th:text="#{print_menu.h4.modal_title}">Plantilla</h4>
 </div>
 <!-- BEGIN MODAL BODY-->
 <div class="modal-body">
         <div class="form-body">
-            <div class="alert alert-danger display-hide">
-                <button class="close" data-close="alert"></button>
-                Los datos tienen algunos errores. Por favor revise la información que capturó.
-            </div>
-            <div class="alert alert-success display-hide">
-                <button class="close" data-close="alert"></button>
-                La validación del formulario es correcta.
-            </div>
-            <h3 class="form-section">Elige una plantilla para tu cotización</h3>
+            <h3 class="form-section" th:text="#{print_menu.h3.modal_subtitle}">Elige una plantilla para tu cotización</h3>
             <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
                 <div class="col-md-4">
                   <p class="text-center block-center">
                       <!--<i class="fa fa-file-text-o text-center" style="font-size: 140px; line-height: 160px; text-align: center;"></i>-->
                       <img src="/img/thumb_template_1_magenta.png" style="padding-top: 10px; padding-bottom: 10px"/>
-                      <a id="btn-layout-first-magenta" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block">Estilo 1</a>
+                      <a id="btn-layout-first-magenta" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block" th:text="#{print_menu.a.template_1}">Estilo 1</a>
                   </p>
                 </div>
                 <!--/span-->
@@ -28,7 +20,7 @@
                   <p class="text-center block-center">
                       <!--<i class="fa fa-file-text-o text-center" style="font-size: 140px; line-height: 160px; text-align: center;"></i>-->
                       <img src="/img/thumb_template_1_blue.png" style="padding-top: 10px; padding-bottom: 10px"/>
-                      <a id="btn-layout-first-blue" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block">Estilo 2</a>
+                      <a id="btn-layout-first-blue" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block" th:text="#{print_menu.a.template_2}">Estilo 2</a>
                   </p>
                 </div>
                 <!--/span-->
@@ -37,7 +29,7 @@
                         <p class="text-center block-center">
                           <!--<i class="fa fa-file-text-o text-center" style="font-size: 140px; line-height: 160px; text-align: center;"></i>-->
                           <img src="/img/thumb_template_1_green.png" style="padding-top: 10px; padding-bottom: 10px"/>
-                          <a id="btn-layout-first-green" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block">Estilo 3</a>
+                          <a id="btn-layout-first-green" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block" th:text="#{print_menu.a.template_3}">Estilo 3</a>
                       </p>
                     </div>
                 </div>
@@ -47,7 +39,7 @@
         </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn default" data-dismiss="modal">Volver</button>
+    <button type="button" class="btn default" data-dismiss="modal" th:text="#{print_menu.button.back}">Volver</button>
 </div>
 <!-- END MODAL BODY-->
 <script>

@@ -8,16 +8,16 @@
 <div layout:fragment="content">
     <div class="">
         <div class="row" style="text-align: center;">
-            <h1 style="font-size: 50pt;">
+            <h1 style="font-size: 50pt;" th:text="#{home.h1.title}">
                 <!--Concéntrese en su negocio-->30 segundos de la idea a la impresora
             </h1>
-            <h3>
+            <h3 th:text="#{home.h3.subtitle}">
                 Cotizaciones formales para su negocio
             </h3>
             <p>
                 <a href="/quotes/new" class="btn btn-lg green-turquoise">
                     <span class="fa fa-bullhorn"></span>
-                    Comienza ahora
+                    <span th:text="#{home.span.start}">Comienza ahora</span>
                 </a>
             </p>
         </div>
@@ -37,22 +37,22 @@
                 <div class="col-md-4">
                     <p class="text-center block-center">
                       <i class="fa fa-codepen text-center" style="font-size: 130px; line-height: 160px; text-align: center;"></i>
-                      <h2 style="text-align: center;">Simplicidad</h2>
-                      <h4 style="text-align: center;">Crea, genera y almacena tus cotizaciones en un solo paso.</h4>
+                      <h2 style="text-align: center;" th:text="#{home.h2.simplicity}">Simplicidad</h2>
+                      <h4 style="text-align: center;" th:text="#{home.h4.simplicity}">Crea, genera y almacena tus cotizaciones en un solo paso.</h4>
                     </p>
                 </div>
                 <div class="col-md-4">
                     <p class="text-center block-center">
                         <i class="fa fa-bolt text-center" style="font-size: 130px; line-height: 160px; text-align: center;"></i>
-                        <h2 style="text-align: center;">Rapidez</h2>
-                        <h4 style="text-align: center;">Diseña e imprime tus cotizaciones al instante <b>sin</b> necesidad de <b>registro</b>.</h4>
+                        <h2 style="text-align: center;" th:text="#{home.h2.speed}">Rapidez</h2>
+                        <h4 style="text-align: center;" th:text="#{home.h4.speed}">Diseña e imprime tus cotizaciones al instante <b>sin</b> necesidad de <b>registro</b>.</h4>
                      </p>
                 </div>
                 <div class="col-md-4">
                   <p class="text-center block-center">
                       <i class="fa fa-anchor text-center" style="font-size: 130px; line-height: 160px; text-align: center;"></i>
-                      <h2 style="text-align: center;">Estilo</h2>
-                      <h4 style="text-align: center;">Selecciona un estilo de cotización que se ajuste a la <b>imágen</b> de tu negocio.</h4>
+                      <h2 style="text-align: center;" th:text="#{home.h2.style}">Estilo</h2>
+                      <h4 style="text-align: center;" th:text="#{home.h4.style}">Selecciona un estilo de cotización que se ajuste a la <b>imágen</b> de tu negocio.</h4>
                   </p>
                 </div>
             </div>

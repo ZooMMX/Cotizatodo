@@ -66,7 +66,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				<ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user dropdown-dark" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
                         <a href="/login?register" class="dropdown-toggle">
-                        <span class="username username-hide-mobile">Registrarse</span>
+                        <span class="username username-hide-mobile" th:text="#{layout.span.signup}">Registrarse</span>
                         </a>
                     </li>
                     <li class="dropdown dropdown-separator" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
@@ -74,7 +74,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </li>
                     <li class="dropdown dropdown-user dropdown-dark" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
                         <a href="/login" class="dropdown-toggle">
-                        <span class="username username-hide-mobile">Entrar</span>
+                        <span class="username username-hide-mobile" th:text="#{layout.span.login}">Entrar</span>
                         </a>
                     </li>
                     <li class="dropdown dropdown-separator" th:if="!(${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false})">
@@ -93,7 +93,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						<ul class="dropdown-menu dropdown-menu-default">
 							<li>
 								<a th:href="'/user'">
-								<i class="icon-user"></i> Mi perfil </a>
+								<i class="icon-user"></i><span th:text="#{layout.span.account}"> Mi perfil </span></a>
 							</li>
 							<!--<li>
 								<a href="inbox.html">
@@ -110,17 +110,41 @@ License: You must have a valid license purchased only from themeforest(the above
 							<li>
                                 <form id="logoutForm" target="_self" action="/logout"></form>
 								<a href="javascript:;" onclick="logoutForm.submit();">
-								<i class="icon-key"></i> Cerrar sesión </a>
+								<i class="icon-key"></i><span th:text="#{layout.span.logout}"> Cerrar sesión </span></a>
 
 							</li>
 						</ul>
 					</li>
                     <!-- END USER LOGIN DROPDOWN -->
+                    <!-- BEGIN LANGUAGE DROPDOWN -->
+                    <li class="dropdown dropdown-language dropdown-dark">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <div th:if="${#locale.language.equals('en')}">
+                                <img alt="" th:src="@{/img/flags/us.png}"/>
+                                <span class="langname">EN</span>
+                            </div>
+                            <div th:if="${#locale.language.equals('es')}">
+                                <img alt="" th:src="@{/img/flags/es.png}"/>
+                                <span class="langname">ES</span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-default">
+                            <li>
+                                <a href="?lang=en">
+                                    <img alt="" th:src="@{/img/flags/us.png}"/> English </a>
+                            </li>
+                            <li>
+                                <a href="?lang=es">
+                                <img alt="" th:src="@{/img/flags/es.png}"/> Español </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END LANGUAGE DROPDOWN -->
                     <li class="dropdown dropdown-separator" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                         <span class="separator"></span>
                     </li>
                     <li>
-                        <a href="/quotes/new" class="btn btn-lg green-turquoise">
+                        <a href="/quotes/new" class="btn btn-lg green-turquoise" th:text="#{layout.link.start}">
                             <span class="fa fa-bullhorn"></span>
                             Comenzar
                         </a>
@@ -151,14 +175,14 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="hor-menu ">
 				<ul class="nav navbar-nav">
 					<li th:class="${#httpServletRequest.requestURI.equals('/')}?'active':''">
-						<a href="/">INICIO</a>
+						<a href="/" th:text="#{layout.link.home}">INICIO</a>
 					</li>
                     <li th:class="${#httpServletRequest.requestURI.equals('/quotes/')}?'active':''" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
-                        <a href="/quotes/" target="_self" class="tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Aquí estan todas tus cotizaciones guardadas">
+                        <a href="/quotes/" target="_self" class="tooltips" data-container="body" data-placement="bottom" data-html="true" th:attr="data-original-title=#{layout.title.myquotes}" th:text="#{layout.link.myquotes}">
                         MIS COTIZACIONES </a>
                     </li>
 					<li>
-                        <a href="http://blog.cotizadora.com" target="_blank" class="tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Visita nuestro blog">
+                        <a href="http://blog.cotizadora.com" target="_blank" class="tooltips" data-container="body" data-placement="bottom" data-html="true" th:attr="data-original-title=#{layout.tooltip.blog}">
                         BLOG </a>
                     </li>
                     <!--<li class="menu-dropdown">
@@ -199,11 +223,11 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
                 <div class="page-loading page-loading-boxed">
                     <img src="/img/loading-spinner-grey.gif" alt="" class="loading"/>
-                    <span>
+                    <span th:text="'&nbsp;&nbsp;'+#{layout.misc.loading}">
                     &nbsp;&nbsp;Cargando... </span>
                 </div>
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                    <div class="modal-content" th:text="#{layout.misc.loading}">
                         Cargando...
                     </div>
                 </div>
@@ -242,8 +266,8 @@ License: You must have a valid license purchased only from themeforest(the above
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-sm-6 col-xs-12 footer-block">
-				<h2>Acerca de</h2>
-				<p>
+				<h2 th:text="#{layout.h2.about}">Acerca de</h2>
+				<p th:text="#{layout.p.about}">
 					 Cotizadora es una aplicación desarrollada para facilitarte el diseño y elaboración de tus cotizaciones.
 				</p>
 			</div>
@@ -275,7 +299,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				</ul>
 			</div>
 			<div class="col-md-5 col-sm-6 col-xs-12 footer-block">
-				<h2>CONTACTO</h2>
+				<h2 th:text="#{layout.h2.contact}">CONTACTO</h2>
 				<address class="margin-bottom-40">
 				Email: <a href="mailto:contacto@cotizadora.com">contacto@cotizadora.com</a>
 				</address>

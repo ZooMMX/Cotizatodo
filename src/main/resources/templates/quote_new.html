@@ -19,17 +19,27 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-magic-wand"></i>
-                    <span class="caption-subject bold uppercase">Nueva Cotización</span>
+                    <span class="caption-subject bold uppercase" th:text="#{quote_new.span.new_quote}">Nueva Cotización</span>
                 </div>
                 <div class="actions">
                     <a href="javascript:;" class="btn btn-sm blue" id="btn-toggle">
-                        <span id="btn-toggle-msg1" class="hide"><i class="fa fa-calculator"></i> Modo calcular utilidad </span>
-                        <span id="btn-toggle-msg2"><i class="fa fa-calculator"></i> Modo simple </span>
+                        <span id="btn-toggle-msg1" class="hide">
+                            <i class="fa fa-calculator"></i>
+                            <span th:text="#{quote_new.span.calc_mode}"> Modo calcular utilidad </span>
+                        </span>
+                        <span id="btn-toggle-msg2">
+                            <i class="fa fa-calculator"></i>
+                            <span th:text="#{quote_new.span.simple_mode}">Modo simple</span>
+                        </span>
                     </a>
                     <a href="javascript:;" class="btn btn-sm blue" id="btn-save">
-                    <i class="fa fa-save"></i> Guardar </a>
+                        <i class="fa fa-save"></i>
+                        <span th:text="#{quote_new.span.save}"> Guardar </span>
+                    </a>
                     <a href="/quotes/print" data-target="#ajax" data-toggle="modal" id="btn-print" class="btn btn-sm green">
-                    <i class="fa fa-print"></i> Imprimir </a>
+                        <i class="fa fa-print"></i>
+                        <span th:text="#{quote_new.span.print}"> Imprimir </span>
+                    </a>
                     <a class="btn btn-icon-only btn-default btn-sm fullscreen" href="javascript:;">
                     </a>
                 </div>
@@ -46,34 +56,34 @@
                                         </div>
                                         <!--<div>-->
                                             <span class="btn default btn-file">
-                                            <span class="fileinput-new">
+                                            <span class="fileinput-new" th:text="#{quote_new.span.upload_logo}">
                                             Subir logo </span>
-                                            <span class="fileinput-exists">
+                                            <span class="fileinput-exists" th:text="#{quote_new.span.change_logo}">
                                             Cambiar </span>
                                             <input type="file" name="logo"/>
                                             </span>
-                                            <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput">
+                                            <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput" th:text="#{quote_new.a.remove_logo}">
                                             Remover </a>
                                         <!--</div>-->
                                     </div>
                                     <!-- [End] Selector de logo -->
-                                    <input type="text" th:field="*{sourceCompany}" id="company" class="form-control borderless company-name input-lg" placeholder="Nombre de tu empresa"/>
+                                    <input type="text" th:field="*{sourceCompany}" id="company" class="form-control borderless company-name input-lg" th:placeholder="#{quote_new.input.placeholder.your_business_name}"/>
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" th:field="*{title}" id="title" class="form-control borderless company-name input-lg right-column" style="padding-right: 33px;" value="COTIZACIÓN"/>
+                                    <input type="text" th:field="*{title}" id="title" class="form-control borderless company-name input-lg right-column" style="padding-right: 33px;" value="COTIZACIÓN" th:placeholder="#{quote_new.input.placeholder.title}"/>
                                     <!-- Fecha -->
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <input type="text" id="date" th:field="*{date}" class="form-control borderless right-column input-sm" value="13 de Febrero de 2015" placeholder="Fecha"/>
+                                        <input type="text" id="date" th:field="*{date}" class="form-control borderless right-column input-sm" value="13 de Febrero de 2015" th:placeholder="#{quote_new.input.placeholder.date}"/>
                                     </div>
                                     <!-- /Fecha -->
                                     <!-- Folio -->
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <input type="text" th:field="*{folio}" id="folio" class="form-control borderless right-column input-sm" value="#1099" placeholder="Folio o número de referencia"/>
+                                        <input type="text" th:field="*{folio}" id="folio" class="form-control borderless right-column input-sm" value="#1099" th:placeholder="#{quote_new.input.placeholder.reference_number}"/>
                                     </div>
                                     <!-- /Folio -->
                                 </div>
@@ -86,13 +96,13 @@
                                 <div class="form-group">
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <textarea id="sourceAddress" th:field="*{sourceAddress}" class="form-control borderless input-sm" style="padding-left: 16px;" rows="3" placeholder="Dirección del emisor">
+                                        <textarea id="sourceAddress" th:field="*{sourceAddress}" class="form-control borderless input-sm" style="padding-left: 16px;" rows="3" th:placeholder="#{quote_new.textarea.placeholder.your_address}">
                                             1002 Av. Juarez
                                             Centro
                                             Puebla, Pue.
                                         </textarea>
-                                        <input type="text" id="sourcePhone" th:field="*{sourcePhone}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Teléfono del emisor" value="(222) 984 112"/>
-                                        <input type="text" id="sourceMail" th:field="*{sourceEmail}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="Correo del emisor" value="ventas@cotizadora.com"/>
+                                        <input type="text" id="sourcePhone" th:field="*{sourcePhone}" class="form-control borderless input-sm" style="padding-left: 16px;" th:placeholder="#{quote_new.input.placeholder.your_phone_number}" value="(222) 984 112"/>
+                                        <input type="text" id="sourceMail" th:field="*{sourceEmail}" class="form-control borderless input-sm" style="padding-left: 16px;" th:placeholder="#{quote_new.input.placeholder.your_email}" value="ventas@cotizadora.com"/>
                                     </div>
                                 </div>
                             </div>
@@ -101,10 +111,10 @@
                                 <div class="form-group">
                                     <div class="input-icon right">
                                         <i class="fa"></i>
-                                        <input type="text" th:field="*{targetName}" id="targetName" class="form-control borderless right-column input-sm client-cell" value="Horacio Orozco" placeholder="Nombre receptor"/>
-                                        <input type="text" th:field="*{targetPosition}" id="targetPosition" class="form-control borderless right-column input-sm" value="CEO" placeholder="Puesto receptor"/>
-                                        <input type="text" th:field="*{targetCompany}" id="targetCompany" class="form-control borderless right-column input-sm client-cell" value="Orozco Co." placeholder="Compañía receptora"/>
-                                        <input type="text" th:field="*{targetPhone}" id="targetPhone" class="form-control borderless right-column input-sm" value="(55) 65 17 87 93" placeholder="Teléfono receptor"/>
+                                        <input type="text" th:field="*{targetName}" id="targetName" class="form-control borderless right-column input-sm client-cell" value="Horacio Orozco" th:placeholder="#{quote_new.input.placeholder.client_name}"/>
+                                        <input type="text" th:field="*{targetPosition}" id="targetPosition" class="form-control borderless right-column input-sm" value="CEO" th:placeholder="#{quote_new.input.placeholder.client_position}"/>
+                                        <input type="text" th:field="*{targetCompany}" id="targetCompany" class="form-control borderless right-column input-sm client-cell" value="Orozco Co." th:placeholder="#{quote_new.input.placeholder.client_company_name}"/>
+                                        <input type="text" th:field="*{targetPhone}" id="targetPhone" class="form-control borderless right-column input-sm" value="(55) 65 17 87 93" th:placeholder="#{quote_new.input.placeholder.client_phone}"/>
                                     </div>
                                 </div>
                             </div>
@@ -120,15 +130,15 @@
                                         <thead>
                                             <tr>
                                                 <th class="fit-content">#</th>
-                                                <th>Concepto</th>
-                                                <th class="numeric">Cantidad</th>
-                                                <th class="numeric calcmode hide">Precio de compra</th>
-                                                <th class="numeric calcmode hide">Factor utilidad %</th>
-                                                <th class="numeric calcmode hide">Ganancia</th>
-                                                <th class="numeric calchide">Precio unitario</th>
-                                                <th class="numeric calcmode hide">Precio unitario</th>
-                                                <th class="numeric calcmode hide">Ganancia Total</th>
-                                                <th class="numeric">Total ($)</th>
+                                                <th th:text="#{quote_new.th.concept}">Concepto</th>
+                                                <th class="numeric" th:text="#{quote_new.th.quantity}">Cantidad</th>
+                                                <th class="numeric calcmode hide" th:text="#{quote_new.th.wholesale_cost}">Precio de compra</th>
+                                                <th class="numeric calcmode hide" th:text="#{quote.new.th.markup_percent}">Factor utilidad %</th>
+                                                <th class="numeric calcmode hide" th:text="#{quote.new.th.unit_gross_margin_dollars}">Ganancia</th>
+                                                <th class="numeric calchide" th:text="#{quote_new.th.unit_selling_price}">Precio unitario</th>
+                                                <th class="numeric calcmode hide" th:text="#{quote_new.th.unit_selling_price}">Precio unitario</th>
+                                                <th class="numeric calcmode hide" th:text="#{quote_new.th.gross_margin_dollars}">Ganancia Total</th>
+                                                <th class="numeric" th:text="#{quote_new.th.amount}">Total ($)</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -157,38 +167,40 @@
                                                 <td class="numeric calcmode hide unitSellPrice"><span></span><input type="hidden" name="unitSellPrice[]" disabled="true" /></td>
                                                 <td class="numeric calcmode hide profitTotal"><span></span><input type="hidden" name="profitTotal[]" disabled="true" class="calchidden" /></td>
                                                 <td class="numeric rowTotal clearthis"><span>0.00</span><input type="hidden" name="rowTotal[]" disabled="true" /></td>
-                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">Borrar</button><input type="hidden" disabled="true" name="markuptext[]" class="markuptext calchidden" /></td>
+                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel" th:text="#{quote_new.button.delete_row}">Borrar</button><input type="hidden" disabled="true" name="markuptext[]" class="markuptext calchidden" /></td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
                                             <tr class="calcmode hide">
-                                                <th colspan="8"><strong>Costo Total de Compra</strong></th>
+                                                <th colspan="8"><strong th:text="#{quote_new.strong.total_wholesale_cost}">Costo Total de Compra</strong></th>
                                                 <th class="calc-total-buy numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="totalbuycost" class="calchidden" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr class="calcmode hide">
-                                                <th colspan="8"><strong>Ganancia Total</strong></th>
+                                                <th colspan="8"><strong th:text="#{quote_new.strong.total_profit}">Ganancia Total</strong></th>
                                                 <th class="calc-total-profit numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="totalprofit" class="calchidden" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr>
-                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong>Subtotal</strong></th>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong th:text="#{quote_new.strong.subtotal}">Subtotal</strong></th>
                                                 <th class="calc-subtotal numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="subtotal" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr>
-                                                <th colspan="4" data-normspan="4" data-calcspan="8" class="salesTaxText editable"><strong><span></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" /></th>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8" class="salesTaxText editable tooltips">
+                                                    <strong><span class="tooltips" data-container="body" data-placement="top" th:attr="data-original-title=#{quote_new.tooltip.taxes_format}"></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" />
+                                                </th>
                                                 <th class="calc-salesTax numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" id="salestax" th:field="*{taxes}"/></th>
                                                 <th><input type="hidden" id="salestaxtext" th:field="*{taxesDescription}"/></th>
                                             </tr>
                                             <tr class="grand-total">
-                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong>Total</strong></th>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong th:text="#{quote_new.strong.grand_total}">Total</strong></th>
                                                 <th class="calc-total numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="total" /></th>
                                                 <th></th>
                                             </tr>
                                             <tr>
                                                 <th colspan="6" data-normspan="6" data-calcspan="10">
-                                                    <button type="button" id="btn-add" class="btn btn-default">Agregar fila</button>
+                                                    <button type="button" id="btn-add" class="btn btn-default" th:text="#{quote_new.button.add_row}">Agregar fila</button>
                                                 </th>
                                             </tr>
                                         </tfoot>
@@ -202,13 +214,13 @@
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="form-group">
-                                    <textarea placeholder="Términos y condiciones" id="notas" th:field="*{termsAndConditions}" class="form-control borderless" rows="6"></textarea>
+                                    <textarea th:placeholder="#{quote_new.textarea.terms_and_conditions}" id="notas" th:field="*{termsAndConditions}" class="form-control borderless" rows="6"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input id="sourceName" type="text" th:field="*{sourceName}" class="form-control borderless input-sm client-cell" placeholder="Nombre del Emisor"/>
-                                    <input id="sourcePosition" type="text" th:field="*{sourcePosition}" class="form-control borderless input-sm" placeholder="Cargo del emisor"/>
+                                    <input id="sourceName" type="text" th:field="*{sourceName}" class="form-control borderless input-sm client-cell" th:placeholder="#{quote_new.input.your_name}"/>
+                                    <input id="sourcePosition" type="text" th:field="*{sourcePosition}" class="form-control borderless input-sm" th:placeholder="#{quote_new.input.your_position}"/>
                                 </div>
                             </div>
                         </div>
