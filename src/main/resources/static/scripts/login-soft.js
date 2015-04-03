@@ -129,9 +129,9 @@ var Login = function () {
             return "<img class='flag' src='/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
         }
 
-
 		$("#select2_sample4").select2({
-		  	placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Selecciona tu país',
+
+		  	placeholder: '<i class="fa fa-map-marker"></i>&nbsp;'+$("#select2_sample4").data("select2-placeholder"),
             allowClear: true,
             formatResult: format,
             formatSelection: format,
@@ -186,33 +186,14 @@ var Login = function () {
 	            },
 
 	            messages: {
-                    fullname: {
-                        required: "Campo obligatorio"
-                    },
-                    email: {
-                        required: "Campo obligatorio",
-                        email: "E-mail inválido"
-                    },
-                    city: {
-                        required: "Campo obligatorio"
-                    },
-                    country: {
-                        required: "Campo obligatorio"
-                    },
                     username: {
-                        required: "Campo obligatorio",
-                        minlength: jQuery.validator.format("Escribe al menos {0} caractéres"),
-                        remote: "Nombre de usuario no disponible, elige otro"
-                    },
-                    password: {
-                        required: "Campo obligatorio"
+                        remote: $("#input_username").data("unavailable-user-msg") //"Nombre de usuario no disponible, elige otro"
                     },
                     rpassword: {
-                        required: "Campo obligatorio",
-                        equalTo: "Password y confirmación no coinciden"
+                        equalTo: $("#rpassword").data("wrong-pass-confirmation")
                     },
 	                tnc: {
-	                    required: "Primero acepta términos y condiciones."
+	                    required: $("#tnc").data("empty-tnc-msg")
 	                }
 	            },
 
@@ -271,7 +252,7 @@ var Login = function () {
         	
             handleLogin();
             handleForgetPassword();
-            handleRegister();    
+            handleRegister();
         }
 
     };
