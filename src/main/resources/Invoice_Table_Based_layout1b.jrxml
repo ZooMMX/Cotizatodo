@@ -157,7 +157,7 @@
 				</reportElement>
 				<imageExpression><![CDATA["Invoice_blue_header.jpg"]]></imageExpression>
 			</image>
-			<staticText>
+			<textField>
 				<reportElement x="321" y="185" width="50" height="22" uuid="0f86baff-6386-4f3f-b3fe-2388707babe8">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -168,8 +168,8 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="OpenSans"/>
 				</textElement>
-				<text><![CDATA[FECHA	:]]></text>
-			</staticText>
+                <textFieldExpression><![CDATA[$R{invoice1.textfield.date}+"	:"]]></textFieldExpression>
+			</textField>
 			<textField pattern="">
 				<reportElement x="371" y="185" width="154" height="22" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979">
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -194,7 +194,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField>
 				<reportElement x="47" y="185" width="80" height="22" uuid="0b3f9342-da78-4cfa-9fc5-2301c4749678">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -205,8 +205,8 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="OpenSans"/>
 				</textElement>
-				<text><![CDATA[FOLIO	:]]></text>
-			</staticText>
+                <textFieldExpression><![CDATA[$R{invoice1.textfield.reference_number} + "   :"]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="20" y="70" width="161" height="20" uuid="192175a2-9159-4caa-a8c8-73f3c1ab5bb2"/>
 				<textElement>
@@ -238,13 +238,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField>
 				<reportElement x="230" y="165" width="114" height="20" forecolor="#FFFFFF" uuid="e54acca8-ebc2-4d76-8aad-dd632ac09d9d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="OpenSans"/>
 				</textElement>
-				<text><![CDATA[DETALLES]]></text>
-			</staticText>
+                <textFieldExpression class="java.lang.String"><![CDATA[$R{invoice1.textfield.details}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="340" y="60" width="220" height="31" uuid="8d647467-5413-4cb1-8120-288fa09e5ba4"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -320,14 +320,14 @@
 					</datasetRun>
 					<jr:column width="80" uuid="5dfd1d2b-122b-4c29-99f7-52c77a17b060">
 						<jr:columnHeader style="Table_CH" height="32">
-							<staticText>
+							<textField>
 								<reportElement key="" style="Table_CH" x="39" y="0" width="41" height="32" forecolor="#FFFFFF" uuid="a94c3c02-b277-4b84-92b4-e754535949f5"/>
 								<box leftPadding="2"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Roboto" size="10"/>
 								</textElement>
-								<text><![CDATA[PART.]]></text>
-							</staticText>
+                                <textFieldExpression><![CDATA[$R{invoice1.textfield.item_number}]]></textFieldExpression>
+							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="38">
 							<textField>
@@ -342,14 +342,14 @@
 					</jr:column>
 					<jr:column width="240" uuid="0ebe3ecc-2155-4d32-9873-c68b38a571e2">
 						<jr:columnHeader style="Table_CH" height="32">
-							<staticText>
+							<textField>
 								<reportElement key="" style="Table_CH" x="0" y="0" width="240" height="32" forecolor="#FFFFFF" uuid="8ff7ae4a-f105-43e0-85db-e3cea048abdd"/>
 								<box leftPadding="2"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Roboto" size="10"/>
 								</textElement>
-								<text><![CDATA[CONCEPTO]]></text>
-							</staticText>
+                                <textFieldExpression><![CDATA[$R{invoice1.textfield.concept}]]></textFieldExpression>
+							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="38">
 							<textField>
@@ -364,14 +364,14 @@
 					</jr:column>
 					<jr:column width="90" uuid="4d1120ad-3f6d-4ee4-b830-1e302b88c779">
 						<jr:columnHeader style="Table_CH" height="32">
-							<staticText>
+							<textField>
 								<reportElement key="" style="Table_CH" x="0" y="0" width="90" height="32" forecolor="#FFFFFF" uuid="d91b84ad-e587-4d92-9bdd-c3f924cf904e"/>
 								<box leftPadding="2"/>
 								<textElement>
 									<font fontName="Roboto" size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[CANTIDAD]]></text>
-							</staticText>
+                                <textFieldExpression><![CDATA[$R{invoice1.textfield.quantity}]]></textFieldExpression>
+							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="38">
 							<textField>
@@ -386,14 +386,14 @@
 					</jr:column>
 					<jr:column width="90" uuid="84930648-297c-4c2f-89c8-9c84d1b270f9">
 						<jr:columnHeader style="Table_CH" height="32">
-							<staticText>
+							<textField>
 								<reportElement key="" style="Table_CH" x="0" y="0" width="90" height="32" forecolor="#FFFFFF" uuid="52e73702-ddd0-4382-8d21-565bf3e321cf"/>
 								<box leftPadding="2"/>
 								<textElement>
 									<font fontName="Roboto" size="10" isBold="true"/>
 								</textElement>
-								<text><![CDATA[PRECIO UNITARIO]]></text>
-							</staticText>
+                                <textFieldExpression><![CDATA[$R{invoice1.textfield.unit_price}]]></textFieldExpression>
+							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="38">
 							<textField>
@@ -409,14 +409,14 @@
 					</jr:column>
 					<jr:column width="112" uuid="6f840b9a-9214-432b-a2a0-fd5bd069906c">
 						<jr:columnHeader style="Table_CH" height="32">
-							<staticText>
+							<textField>
 								<reportElement key="" style="Table_CH" x="0" y="0" width="91" height="32" forecolor="#FFFFFF" uuid="045d794e-ff71-4b2e-a209-ffc20025bb6c"/>
 								<box leftPadding="2"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Roboto" size="10"/>
 								</textElement>
-								<text><![CDATA[IMPORTE]]></text>
-							</staticText>
+                                <textFieldExpression><![CDATA[$R{invoice1.textfield.amount}]]></textFieldExpression>
+							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="38">
 							<textField>
@@ -447,7 +447,7 @@
 				</reportElement>
 				<imageExpression><![CDATA["Invoice_blue_footer.jpg"]]></imageExpression>
 			</image>
-			<staticText>
+			<textField>
 				<reportElement x="20" y="10" width="260" height="50" forecolor="#404040" uuid="8902e736-3891-4719-8e48-dc903c12e2f9">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -455,8 +455,8 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="OpenSans Semibold" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Gracias por hacer negocios con nosotros]]></text>
-			</staticText>
+                <textFieldExpression><![CDATA[$R{invoice1.textfield.footer_msg}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="458" y="25" width="85" height="35" uuid="e721b6df-ce63-4ebf-bdae-24f5c9e9cf5f">
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -524,7 +524,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Roboto" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["GRAN TOTAL"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$R{invoice1.textfield.grand_total}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="480" y="1" width="80" height="20" uuid="c8403093-e3cb-4678-afef-7972a4f49dfe"/>
@@ -587,13 +587,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{termsAndConditions}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField>
 				<reportElement x="20" y="6" width="250" height="20" uuid="6517c81a-c378-4356-9a17-66a71edbb91f"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="OpenSans Semibold" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Términos y condiciones]]></text>
-			</staticText>
+                <textFieldExpression><![CDATA[$R{invoice1.textfield.terms_and_conditions}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
