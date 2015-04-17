@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
-        <title>Error interno!</title>
+        <title th:text="#{error500.title}">Error interno!</title>
     </head>
     <body>
     <div class="row">
@@ -11,10 +11,13 @@
                  500
             </div>
             <div class=" details">
-                <h3>Error interno.</h3>
+                <h3 th:text="#{error500.title}">Error interno.</h3>
                 <p>
                      <div th:text="${type}"></div><br/>
-                    Si el problema persiste, llama a soporte técnico.<br/><br/>
+                    <span th:text="#{error500.span.explanation}">
+                        Si el problema persiste, llama a soporte técnico.
+                    </span>
+                    <br/><br/>
                 </p>
             </div>
         </div>

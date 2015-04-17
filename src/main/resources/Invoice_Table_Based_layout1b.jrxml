@@ -76,12 +76,18 @@
 		<field name="unitPrice" class="java.lang.String">
 			<fieldDescription><![CDATA[unitPrice]]></fieldDescription>
 		</field>
+        <field name="total" class="java.lang.String">
+            <fieldDescription><![CDATA[total]]></fieldDescription>
+        </field>
 	</subDataset>
 	<parameter name="logo" class="java.lang.Object">
 		<parameterDescription><![CDATA[BufferedImage del logotipo]]></parameterDescription>
 	</parameter>
+    <parameter name="SUBREPORT_JSON_INPUT_STREAM" class="java.lang.Object">
+        <parameterDescription><![CDATA[Input stream for subreport. The same as main but reseted]]></parameterDescription>
+    </parameter>
 	<queryString language="json">
-		<![CDATA[quote.folio]]>
+		<![CDATA[quote]]>
 	</queryString>
 	<field name="targetName" class="java.lang.String">
 		<fieldDescription><![CDATA[targetName]]></fieldDescription>
@@ -293,7 +299,7 @@
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="tableDataset" uuid="fd8c9666-b119-45dc-a0ec-9362df410787">
 						<datasetParameter name="JSON_INPUT_STREAM">
-							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+							<datasetParameterExpression><![CDATA[$P{SUBREPORT_JSON_INPUT_STREAM}]]></datasetParameterExpression>
 						</datasetParameter>
 						<datasetParameter name="net.sf.jasperreports.json.source">
 							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
@@ -426,7 +432,7 @@
 									<font fontName="Roboto" size="9"/>
 									<paragraph rightIndent="10"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

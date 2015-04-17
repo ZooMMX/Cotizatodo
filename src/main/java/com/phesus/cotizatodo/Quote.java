@@ -2,6 +2,10 @@ package com.phesus.cotizatodo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,6 +15,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Proyecto Cotizatodo
@@ -19,45 +24,44 @@ import java.util.Date;
  * Time: 3:34
  */
 @Entity
-public class Quote {
+public class Quote implements MessageSourceAware {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @Column private String title = "COTIZACIÓN";
+    @Column private String title; // = "COTIZACIÓN";
 
-    @Column private String folio = "A876";
+    @Column private String folio; // = "A876";
 
     @JsonIgnore
     @Lob private Blob logoBytes;
 
     @Column private String sourceName;
-    @Column private String sourcePosition;
-    @Column private String sourceCompany = "Tu empresa";
-    @Column private String sourceAddress = "1001 Av. Juarez\nCol. Centro\nPuebla, Pue.";
-    @Column private String sourcePhone = "(222) 984 112" ;
-    @Column private String sourceEmail = "ventas@cotizadora.com";
-    @Column private String targetName = "Horacio Orozco";
 
-    @Column private String targetPosition = "CEO";
-    @Column private String targetCompany = "Orozco Co.";
-    @Column private String targetAddress;
-    @Column private String targetPhone   = "(55) 12 23 34 45 56";
-    @Column private String targetEmail;
-    @Column private String termsAndConditions = "Páguese antes de 60 días.";
+    @Column private String sourceCompany; // = "Tu empresa";
+    @Column private String sourceAddress; // = "1001 Av. Juarez\nCol. Centro\nPuebla, Pue.";
+    @Column private String sourcePhone; // = "(222) 984 112" ;
+    @Column private String sourceEmail; // = "ventas@cotizadora.com";
+    @Column private String targetName; // = "Horacio Orozco";
+    @Column private String targetPosition; // = "CEO";
 
-    @Column private String taxesDescription = "IVA (16%)";
+    @Column private String targetCompany; // = "Orozco Co.";
+    @Column private String targetAddress = "";
+    @Column private String targetPhone; //   = "(55) 12 23 34 45 56";
+    @Column private String targetEmail = "";
+    @Column private String termsAndConditions; // = "Páguese antes de 60 días.";
+    @Column private String taxesDescription = "VAT (20%)";
+
     @Column private String taxes            = "";
     @Column private String subtotal         = "";
     @Column private String total            = "";
-
     @Type(type="text")
     @Column private String itemsJson;
 
-    @Column private String date = "1 de Febrero de 2015";
+    @Column private String date; // = "1 de Febrero de 2015";
+
     @DateTimeFormat(pattern="dd/MM/yyyy hh:mm:ss") @Column private Date created = new Date();
     @Column private Date updated;
     @Column private Boolean enabled = true;
-
     @JsonIgnore
     @ManyToOne
     User user;
@@ -77,6 +81,8 @@ public class Quote {
     protected void onUpdate() {
       updated = new Date();
     }
+
+    @Column private String sourcePosition;
 
     public Long getId() {
         return id;
@@ -240,9 +246,17 @@ public class Quote {
         return ret;
     }
 
+    @Transient
+    private MessageSource messageSource;
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
     public String getHtmlAction() {
         StringBuilder builder = new StringBuilder();
-        builder.append(new String("<a href=\"/quote/"+ getId() +"\" class=\"btn btn-xs blue\"><i class=\"fa fa-search\"></i> Ver</a>"));
+        builder.append(new String("<a href=\"/quote/"+ getId() +"\" class=\"btn btn-xs blue\"><i class=\"fa fa-search\"></i> View</a>"));
         return builder.toString();
     }
 

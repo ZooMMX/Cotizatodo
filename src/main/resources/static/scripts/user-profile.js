@@ -46,39 +46,11 @@ var Profile = function () {
 
 	                username: {
 	                    required: true
-	                },
-	                password: {
-	                    required: true
-	                },
-	                rpassword: {
-	                    equalTo: "#register_password"
 	                }
 	            },
 
 	            messages: {
-                    fullname: {
-                        required: "Campo obligatorio"
-                    },
-                    email: {
-                        required: "Campo obligatorio",
-                        email: "E-mail inválido"
-                    },
-                    city: {
-                        required: "Campo obligatorio"
-                    },
-                    country: {
-                        required: "Campo obligatorio"
-                    },
-                    username: {
-                        required: "Campo obligatorio"
-                    },
-                    password: {
-                        required: "Campo obligatorio"
-                    },
-                    rpassword: {
-                        required: "Campo obligatorio",
-                        equalTo: "Password y confirmación no coinciden"
-                    }
+
 	            },
 
 	            invalidHandler: function (event, validator) { //display error alert on form submit
@@ -129,21 +101,21 @@ var Profile = function () {
     	            focusInvalid: false, // do not focus the last invalid input
     	            ignore: "",
     	            rules: {
+                        oldPass: {
+                            required: true
+                        },
     	                newPass: {
     	                    required: true
     	                },
     	                reNewPass: {
+                            required: true,
     	                    equalTo: "#newPass"
     	                }
     	            },
 
     	            messages: {
-                        newPass: {
-                            required: "Campo obligatorio"
-                        },
                         reNewPass: {
-                            required: "Campo obligatorio",
-                            equalTo: "Password y confirmación no coinciden"
+                            equalTo: $("#reNewPass").data("wrong-pass-confirmation")
                         }
     	            },
 

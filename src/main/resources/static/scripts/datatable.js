@@ -39,29 +39,38 @@ var Datatable = function() {
                 filterApplyAction: "filter",
                 filterCancelAction: "filter_cancel",
                 resetGroupActionInputOnSuccess: true,
-                loadingMessage: 'Cargando...',
+                //loadingMessage: 'Cargando...',
                 dataTable: {
                     "dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-scrollable't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
                     "pageLength": 10, // default records per page
-                    "language": { // language settings
-                        // metronic spesific
-                        "metronicGroupActions": "_TOTAL_ registros seleccionados:  ",
-                        "metronicAjaxRequestGeneralError": "No se pudo completar la petición. Por favor revisa tu conexión.",
 
-                        // data tables spesific
-                        "lengthMenu": "<span class='seperator'>|</span>Ver _MENU_ registros",
-                        "info": "<span class='seperator'>|</span>_TOTAL_ registros encontrados",
-                        "infoEmpty": "No se encontraron registros que mostrar",
-                        "emptyTable": "No hay datos disponibles en la tabla",
-                        "zeroRecords": "No se encontraron registros que coincidan",
-                        "infoFiltered": "(filtrados de un total de _MAX_ registros)",
-                        "paginate": {
-                            "previous": "Anterior",
-                            "next": "Siguiente",
-                            "last": "Última",
-                            "first": "Primera",
-                            "page": "Página",
-                            "pageOf": "de"
+                    "language": { // language settings
+                        // metronic specific, I leave this here in english, because I couldn't make this work from the i18n files.
+                        "metronicGroupActions": "_TOTAL_ entries selected:  ",
+                        "metronicAjaxRequestGeneralError": "Can't complete request. Please check your connection.",
+
+                        "sEmptyTable":     "No data available in table",
+                        "sInfo":           "<span class='seperator'>|</span>Showing _START_ to _END_ of _TOTAL_ entries",
+                        "sInfoEmpty":      "Showing 0 to 0 of 0 entries",
+                        "sInfoFiltered":   "(filtered from _MAX_ total entries)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ",",
+                        "sLengthMenu":     "<span class='seperator'>|</span>Show _MENU_ entries",
+                        "sLoadingRecords": "Loading...",
+                        "sProcessing":     "Processing...",
+                        "sSearch":         "Search:",
+                        "sZeroRecords":    "No matching records found",
+                        "oPaginate": {
+                            "first":    "First",
+                            "last":     "Last",
+                            "next":     "Next",
+                            "previous": "Previous",
+                            "page": "Page ",
+                            "pageOf": " of "
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": activate to sort column ascending",
+                            "sSortDescending": ": activate to sort column descending"
                         }
                     },
 

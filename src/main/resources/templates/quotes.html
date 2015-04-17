@@ -74,9 +74,9 @@
                                 <option value="" th:text="#{quotes.option.group_action}">Acción grupal...</option>
                                 <option value="softdelete" th:text="#{quotes.option.hide}">Archivar/Ocultar</option>
                             </select>
-                            <button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-check"></i><span th:text="#{quote.span_button.apply}"> Aplicar</span></button>
+                            <button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-check"></i>&nbsp;<span th:text="#{quote.span_button.apply}"> Aplicar</span></button>
                         </div>
-                        <table class="table table-striped table-hover" id="datatable_ajax">
+                        <table class="table table-striped table-hover" id="datatable_ajax" th:attr="data-datatable-lang='/scripts/datatable_'+${#locale.language}+'.json'">
                         <thead>
                         <tr role="row" class="heading">
                             <th width="2%">

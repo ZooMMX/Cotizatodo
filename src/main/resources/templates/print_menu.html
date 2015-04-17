@@ -8,7 +8,15 @@
         <div class="form-body">
             <h3 class="form-section" th:text="#{print_menu.h3.modal_subtitle}">Elige una plantilla para tu cotización</h3>
             <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-                <div class="col-md-4">
+                <div class="col-md-3">
+                  <p class="text-center block-center">
+                      <!--<i class="fa fa-file-text-o text-center" style="font-size: 140px; line-height: 160px; text-align: center;"></i>-->
+                      <img src="/img/thumb_template_2.png" style="padding-top: 10px; padding-bottom: 10px"/>
+                      <a id="btn-layout-second" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block" th:text="#{print_menu.a.template_0}">Estilo 0</a>
+                  </p>
+                </div>
+                <!--/span-->
+                <div class="col-md-3">
                   <p class="text-center block-center">
                       <!--<i class="fa fa-file-text-o text-center" style="font-size: 140px; line-height: 160px; text-align: center;"></i>-->
                       <img src="/img/thumb_template_1_magenta.png" style="padding-top: 10px; padding-bottom: 10px"/>
@@ -16,7 +24,7 @@
                   </p>
                 </div>
                 <!--/span-->
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <p class="text-center block-center">
                       <!--<i class="fa fa-file-text-o text-center" style="font-size: 140px; line-height: 160px; text-align: center;"></i>-->
                       <img src="/img/thumb_template_1_blue.png" style="padding-top: 10px; padding-bottom: 10px"/>
@@ -24,7 +32,7 @@
                   </p>
                 </div>
                 <!--/span-->
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <p class="text-center block-center">
                           <!--<i class="fa fa-file-text-o text-center" style="font-size: 140px; line-height: 160px; text-align: center;"></i>-->
@@ -50,6 +58,10 @@
             .submit();
     }
     jQuery(document).ready(function() {
+            $("#btn-layout-second").click(function() {
+                $("#layout").val("second");
+                submitPrint();
+            })
             $("#btn-layout-first-magenta").click(function() {
                 $("#layout").val("first_magenta");
                 submitPrint();

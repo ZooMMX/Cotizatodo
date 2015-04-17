@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
 <head>
-    <title>Quotes</title>
+    <title th:title="#{user_profile.title}">Quotes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -11,15 +11,30 @@
     <div layout:fragment="content">
         <div class="alert alert-success alert-dismissable" th:if="${successfulChange}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-            <strong>Confirmación!</strong> Usuario modificado.
+            <strong th:text="user_profile.strong.confirm_modified_title">
+                Confirmación!
+            </strong>
+            <span th:text="user_profile.span.confirm_modified_body">
+                Usuario modificado.
+            </span>
         </div>
         <div class="alert alert-danger alert-dismissable" th:if="${unsuccessfulChange}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-            <strong>¡Error!</strong> Algo ha salido mal con las modificaciones, revisa los datos.
+            <strong th:text="#{user_profile.strong.confirm_error_title}">
+                ¡Error!
+            </strong>
+            <span th:text="#{quotes.span.confirm_error_body}">
+                Algo ha salido mal con las modificaciones, revisa los datos.
+            </span>
         </div>
         <div class="alert alert-danger alert-dismissable" th:if="${wrongPassword}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-            <strong>¡Password incorrecto!</strong> El password actual no coincide con el que capturaste.
+            <strong th:text="#{user_profile.strong.bad_password_title}">
+                ¡Password incorrecto!
+            </strong>
+            <span th:text="#{user_profile.span.bad_password_body}">
+                El password actual no coincide con el que capturaste.
+            </span>
         </div>
         <div class="portlet light">
             <div class="portlet-body">
@@ -29,7 +44,11 @@
                             <ul class="ver-inline-menu tabbable margin-bottom-10">
                                 <li class="active">
                                     <a data-toggle="tab" href="#tab_1-1">
-                                    <i class="fa fa-cog"></i> Información personal </a>
+                                    <i class="fa fa-cog"></i>
+                                        <span th:text="#{user_profile.span.personal_info}">
+                                            Información personal
+                                        </span>
+                                    </a>
                                     <span class="after">
                                     </span>
                                 </li>
@@ -40,7 +59,11 @@
                                 </li>-->
                                 <li>
                                     <a data-toggle="tab" href="#tab_3-3">
-                                    <i class="fa fa-lock"></i> Cambiar password </a>
+                                    <i class="fa fa-lock"></i>
+                                        <span th:text="#{user_profile.span.change_password}">
+                                        Cambiar password
+                                        </span>
+                                    </a>
                                 </li>
                                 <!-- Pestaña privacity settings -->
                                 <!--<li>
@@ -54,19 +77,19 @@
                                 <div id="tab_1-1" class="tab-pane active">
                                     <form role="form" id="form_profile" name="userUpdate" th:action="@{/user/update}" th:object="${user}" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label class="control-label">Nombre completo</label>
+                                            <label class="control-label" th:text="#{login.label.full_name}">Nombre completo</label>
                                             <input type="text" class="form-control" th:field="*{fullname}"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Username</label>
+                                            <label class="control-label" th:text="#{login.label.username}">Username</label>
                                             <input type="text" class="form-control" th:field="*{username}" readonly="readonly"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Ciudad</label>
+                                            <label class="control-label" th:text="#{login.label.city}">Ciudad</label>
                                             <input type="text" class="form-control" th:field="*{city}"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">País</label>
+                                            <label class="control-label" th:text="#{login.label.country}">País</label>
                                             <select name="country" id="select2_country" class="select2 form-control" th:field="*{country}">
                                                 <option value=""></option>
                                                 <option value="AF">Afghanistan</option>
@@ -306,13 +329,13 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Correo electrónico</label>
+                                            <label class="control-label" th:text="#{login.label.email}">Correo electrónico</label>
                                             <input type="text" class="form-control" th:field="*{email}"/>
                                         </div>
                                         <div class="margiv-top-10">
                                             <button class="btn green" type="submit">
                                             Guardar cambios </button>
-                                            <a href="/quotes/" class="btn default">
+                                            <a href="/quotes/" class="btn default" th:text="#{user_profile.a_button.cancel}">
                                             Cancelar </a>
                                         </div>
                                     </form>
@@ -361,21 +384,21 @@
                                 <div id="tab_3-3" class="tab-pane">
                                     <form id="form_update_password" th:action="@{/user/updatePassword}" method="POST">
                                         <div class="form-group">
-                                            <label class="control-label">Password actual</label>
+                                            <label class="control-label" th:text="#{user_profile.label.current_password}">Password actual</label>
                                             <input type="password" id="oldPass" name="oldPass" class="form-control" autocomplete="off"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Nuevo password</label>
+                                            <label class="control-label" th:text="#{user_profile.label.new_password}">Nuevo password</label>
                                             <input type="password" id="newPass" name="newPass" class="form-control" autocomplete="off"/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Re-escribe el nuevo password</label>
-                                            <input type="password" id="reNewPass" name="reNewPass" class="form-control" autocomplete="off"/>
+                                            <label class="control-label" th:text="#{user_profile.label.confirm_new_password}">Re-escribe el nuevo password</label>
+                                            <input type="password" id="reNewPass" name="reNewPass" class="form-control" autocomplete="off" th:attr="data-wrong-pass-confirmation=#{user_profile.input.data.wrong_pass_confirmation}"/>
                                         </div>
                                         <div class="margin-top-10">
-                                            <button class="btn green" type="submit">
+                                            <button class="btn green" type="submit" th:text="#{user_profile.button.change_password}">
                                             Cambiar Password </button>
-                                            <a href="/quotes/" class="btn default">
+                                            <a href="/quotes/" class="btn default" th:text="#{user_profile.a_button.cancel}">
                                             Cancelar </a>
                                         </div>
                                     </form>
@@ -451,6 +474,7 @@
     <script type="text/javascript" src="/plugins/select2/select2.min.js"></script>
     <script type="text/javascript" src="/scripts/user-profile.js"></script>
     <script src="/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+        <script th:src="'/plugins/jquery-validation/js/localization/messages_'+${#locale.language}+'.min.js'" type="text/javascript"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
             jQuery(document).ready(function() {
