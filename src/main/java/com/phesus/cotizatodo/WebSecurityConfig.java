@@ -18,6 +18,7 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -59,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setForceEncoding(true);
         http.addFilterBefore(filter,CsrfFilter.class);
 
+        http.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
         http
             .authorizeRequests()
                 .antMatchers("/img/**", "/css/**", "/media/**", "/plugins/**", "/scripts/**", "/register", "/usuarioCheckUsername").permitAll()

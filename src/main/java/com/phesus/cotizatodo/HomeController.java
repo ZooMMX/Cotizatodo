@@ -26,7 +26,9 @@ public class HomeController implements ErrorController {
     public String login(HttpServletRequest request, Model model) {
 
         String referrer = request.getHeader("Referer");
-        request.getSession().setAttribute("url_prior_login", referrer);
+        //Para cualquier referrer diferente a login se guarda su dirección, para poder devolver al usuario ahí después de loguear
+        if(!referrer.contains("/login"))
+            request.getSession().setAttribute("url_prior_login", referrer);
         model.addAttribute("user", new User());
 
         return "login";
