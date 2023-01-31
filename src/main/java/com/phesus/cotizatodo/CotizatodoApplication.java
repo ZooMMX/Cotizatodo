@@ -20,6 +20,7 @@ public class CotizatodoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CotizatodoApplication.class, args);
+
     }
 
     @Bean

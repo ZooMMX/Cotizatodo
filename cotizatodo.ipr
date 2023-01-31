@@ -9,8 +9,6 @@
     <option name="showMethodBody" value="true" />
   </component>
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
-    <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="?*.properties" />
       <entry name="?*.xml" />
@@ -24,14 +22,10 @@
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+      <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="cotizatodo" />
       </profile>
     </annotationProcessing>
@@ -43,33 +37,23 @@
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="ISO-8859-1">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="ISO-8859-1">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
-  </component>
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
   </component>
   <component name="IdProvider" IDEtalkID="1A2918261D463CD3622E7D8BFC15AD80" />
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
   <component name="JRebel Project data">
     <option name="privateKey" value="3082025b020100028181009fb1a263838679d09463eff875f4fad54f9c23b00ebc082835f6c0ac4419ac0d26d9b1857708169d8ff601f08a4af657eadb4d93ee34c86f6bfa8c358030cf96fd021c5305d8c87b84ca175ba573baf86f46ff4d644382929ded62094049fdd8f2ee8534b20cf56b9e3328ab23e6af03d75f28bf332c1ab40532ba9adb58f01102030100010281805495c936be9ec6fd04ec5e5a13589c57ca2021030afaebb328ca3749c794757e4ddab6ddc3aba416f6fece0e33a1fb139c5166a8f95e39e052a85605ac8dae162c38577b81a27646c9a33e828e4caeb6dc97ac5e8005a01318d1c9e2065b9c7742130fa0db12a4d2585857549a9bcacd63fc984fa383efbcfb5482dd9e528c15024100d230b015ede2b5a1105a36047b3d2d242c7cbbdc351f97ef4c4ab495f4349178d6b0de979a6614faf1ac3514b19858cd0f913f0a3718c2fcb22af8572342822b024100c27f90af923498f623eb4f7be6649fc0cfb7c0ca2499d0ec9a4715d1c05791a055465cd46d6aa7bc56756aaedd6273bbda2904bbd64c3cae4c109d4f040dc4b302403b682d6c9546bd651f750fcd66739cfd9b6149cb6c6c5889f6fb2a5d339f63fa4e5bc11e023295fd732ee3f5cc582dc90f7c52dff5409763ca8ba093285114ef0240092ea8900161064fa886756c2e06561c6e3208a20274588eb301e41fd0ead16f36576a0e8553e1b35c89928dcad9d908e755c46971c68b9ed6ec79e0bf1a3f4d024014187c36ac8f46898df7cdd9f90fd3640605781ec71e02512feb8ae153dd3911a54c8f10b14f63c78fec97159b8efdd2ccb1c267aa8e8bc89a2a1aa57e9103e4" />
     <option name="publicKey" value="308189028181009fb1a263838679d09463eff875f4fad54f9c23b00ebc082835f6c0ac4419ac0d26d9b1857708169d8ff601f08a4af657eadb4d93ee34c86f6bfa8c358030cf96fd021c5305d8c87b84ca175ba573baf86f46ff4d644382929ded62094049fdd8f2ee8534b20cf56b9e3328ab23e6af03d75f28bf332c1ab40532ba9adb58f0110203010001" />
   </component>
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" />
-    <option name="OPTION_SCOPE" value="protected" />
-    <option name="OPTION_HIERARCHY" value="true" />
-    <option name="OPTION_NAVIGATOR" value="true" />
-    <option name="OPTION_INDEX" value="true" />
-    <option name="OPTION_SEPARATE_INDEX" value="true" />
-    <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
-    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
-    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
-    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
-    <option name="OPTION_DEPRECATED_LIST" value="true" />
     <option name="OTHER_OPTIONS" value="" />
-    <option name="HEAP_SIZE" />
-    <option name="LOCALE" />
-    <option name="OPEN_IN_BROWSER" value="true" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -208,8 +192,35 @@
       <module fileurl="file://$PROJECT_DIR$/cotizatodo.iml" filepath="$PROJECT_DIR$/cotizatodo.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8 (1)" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="9" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jaspersoft-third-party" />
+      <option name="name" value="jaspersoft-third-party" />
+      <option name="url" value="http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jaspersoft-repo" />
+      <option name="name" value="jaspersoft-repo" />
+      <option name="url" value="https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-repo" />
+    </remote-repository>
   </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="500">
     <option name="USER" value="" />
@@ -227,7 +238,7 @@
     <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="libraryTable">
     <library name="Maven: antlr:antlr:2.7.7">
@@ -340,6 +351,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/classmate/1.0.0/classmate-1.0.0-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: com.google.protobuf:protobuf-java:3.21.9">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.21.9/protobuf-java-3.21.9.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.21.9/protobuf-java-3.21.9-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.21.9/protobuf-java-3.21.9-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: com.lowagie:itext:2.1.7.js2">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/com/lowagie/itext/2.1.7.js2/itext-2.1.7.js2.jar!/" />
@@ -351,15 +373,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/lowagie/itext/2.1.7.js2/itext-2.1.7.js2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.phesus:fonts:1">
+    <library name="Maven: com.mysql:mysql-connector-j:8.0.32">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/phesus/fonts/1/fonts-1.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/mysql/mysql-connector-j/8.0.32/mysql-connector-j-8.0.32.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/phesus/fonts/1/fonts-1-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/mysql/mysql-connector-j/8.0.32/mysql-connector-j-8.0.32-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/phesus/fonts/1/fonts-1-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/mysql/mysql-connector-j/8.0.32/mysql-connector-j-8.0.32-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: commons-beanutils:commons-beanutils:1.9.2">
@@ -461,6 +483,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: javax.xml.bind:jaxb-api:2.3.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: jfree:jcommon:1.0.15">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/jfree/jcommon/1.0.15/jcommon-1.0.15.jar!/" />
@@ -481,17 +514,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/jfree/jfreechart/1.0.12/jfreechart-1.0.12-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: mysql:mysql-connector-java:5.1.27">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.27/mysql-connector-java-5.1.27.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.27/mysql-connector-java-5.1.27-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.27/mysql-connector-java-5.1.27-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: net.sf.jasperreports:jasperreports:5.6.1">
@@ -1244,4 +1266,3 @@
     </library>
   </component>
 </project>
-
