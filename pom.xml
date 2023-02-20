@@ -78,10 +78,14 @@
         <dependency>
             <groupId>com.phesus</groupId>
             <artifactId>fonts</artifactId>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/fonts.jar</systemPath>
-            <version>1</version>
+            <version>1.0</version>
         </dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt.core.compiler</groupId>
+			<artifactId>ecj</artifactId>
+			<version>4.5.1</version>
+		</dependency>
+
 	</dependencies>
 	<repositories>
 		<repository>

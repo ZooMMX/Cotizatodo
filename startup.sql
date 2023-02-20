@@ -43,7 +43,7 @@ CREATE TABLE `user_role` (
   UNIQUE KEY `UK_adnyt6agwl65jnnokuvnskhn2` (`role`,`username`),
   KEY `FK_aphxiciwirrvuc0y7y2s2rufj` (`username`),
   CONSTRAINT `FK_aphxiciwirrvuc0y7y2s2rufj` FOREIGN KEY (`username`) REFERENCES `user` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
