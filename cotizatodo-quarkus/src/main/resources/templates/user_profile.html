@@ -1,0 +1,119 @@
+{@com.phesus.cotizatodo.entity.User user}
+{@java.lang.Boolean successfulChange}
+{@java.lang.Boolean unsuccessfulChange}
+{@java.lang.Boolean wrongPassword}
+{#include layout}
+{#title}{msg:t('user_profile.title')}{/title}
+{#content}
+        {#if successfulChange}
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+            <strong>{msg:t('user_profile.strong.confirm_modified_title')}</strong>
+            <span>{msg:t('user_profile.span.confirm_modified_body')}</span>
+        </div>
+        {/if}
+        {#if unsuccessfulChange}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+            <strong>{msg:t('user_profile.strong.confirm_error_title')}</strong>
+            <span>{msg:t('user_profile.span.confirm_error_body')}</span>
+        </div>
+        {/if}
+        {#if wrongPassword}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+            <strong>{msg:t('user_profile.strong.bad_password_title')}</strong>
+            <span>{msg:t('user_profile.span.bad_password_body')}</span>
+        </div>
+        {/if}
+        <div class="portlet light">
+            <div class="portlet-body">
+                <div class="tab-pane" id="tab_1_3">
+                    <div class="row profile-account">
+                        <div class="col-md-3">
+                            <ul class="ver-inline-menu tabbable margin-bottom-10">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#tab_1-1">
+                                    <i class="fa fa-cog"></i>
+                                        <span>{msg:t('user_profile.span.personal_info')}</span>
+                                    </a>
+                                    <span class="after"></span>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#tab_3-3">
+                                    <i class="fa fa-lock"></i>
+                                        <span>{msg:t('user_profile.span.change_password')}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content">
+                                <!-- Información personal -->
+                                <div id="tab_1-1" class="tab-pane active">
+                                    <form role="form" id="form_profile" name="userUpdate" action="/user/update" method="POST" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('login.label.full_name')}</label>
+                                            <input type="text" class="form-control" name="fullname" value="{user.fullname ?: ''}"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('login.label.username')}</label>
+                                            <input type="text" class="form-control" name="username" value="{user.username}" readonly="readonly"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('login.label.city')}</label>
+                                            <input type="text" class="form-control" name="city" value="{user.city ?: ''}"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('login.label.country')}</label>
+                                            <select name="country" id="select2_country" class="select2 form-control">
+                                                {#include countries /}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('login.label.email')}</label>
+                                            <input type="text" class="form-control" name="email" value="{user.email ?: ''}"/>
+                                        </div>
+                                        <div class="margin-top-10">
+                                            <button type="submit" class="btn green-haze">{msg:t('user_profile.button.save_changes')}</button>
+                                            <a href="/quotes" class="btn default">{msg:t('user_profile.a_button.cancel')}</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- Cambio de contraseña -->
+                                <div id="tab_3-3" class="tab-pane">
+                                    <form id="form_update_password" action="/user/updatePassword" method="POST">
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('user_profile.label.current_password')}</label>
+                                            <input type="password" id="oldPass" name="oldPass" class="form-control" autocomplete="off"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('user_profile.label.new_password')}</label>
+                                            <input type="password" id="newPass" name="newPass" class="form-control" autocomplete="off"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">{msg:t('user_profile.label.confirm_new_password')}</label>
+                                            <input type="password" id="reNewPass" name="reNewPass" class="form-control" autocomplete="off" data-wrong-pass-confirmation="{msg:t('user_profile.input.data.wrong_pass_confirmation')}"/>
+                                        </div>
+                                        <div class="margin-top-10">
+                                            <button type="submit" class="btn green-haze">{msg:t('user_profile.button.change_password')}</button>
+                                            <a href="/quotes" class="btn default">{msg:t('user_profile.a_button.cancel')}</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{/content}
+{#scripts}
+    <script type="text/javascript" src="/plugins/select2/select2.min.js"></script>
+    <script>
+        jQuery(document).ready(function() \{
+            $('#select2_country').val('{user.country ?: ""}');
+        });
+    </script>
+{/scripts}
+{/include}

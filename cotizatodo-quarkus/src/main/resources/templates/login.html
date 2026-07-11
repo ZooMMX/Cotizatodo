@@ -1,0 +1,208 @@
+{@java.lang.Boolean error}
+{@java.lang.Boolean logout}
+{@java.lang.Boolean register}
+<!DOCTYPE html>
+<html lang="{msg:lang}">
+<head>
+<meta charset="utf-8"/>
+<title>{msg:t('login.title.page_title')}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all" rel="stylesheet" type="text/css"/>
+<link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<!-- END GLOBAL MANDATORY STYLES -->
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link href="/plugins/select2/select2.css" rel="stylesheet" type="text/css"/>
+<link href="/css/login-soft.css" rel="stylesheet" type="text/css"/>
+<!-- END PAGE LEVEL STYLES -->
+<!-- BEGIN THEME STYLES -->
+<link href="/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css"/>
+<link href="/css/plugins.css" rel="stylesheet" type="text/css"/>
+<link href="/css/layout.css" rel="stylesheet" type="text/css"/>
+<link id="style_color" href="/css/themes/default.css" rel="stylesheet" type="text/css"/>
+<link href="/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- END THEME STYLES -->
+<link rel="shortcut icon" href="/favicon.ico"/>
+</head>
+<body class="login">
+<!-- BEGIN LOGO -->
+<div class="logo">
+	<a href="/"><img src="/img/logo-cotiza-small.png" alt="logo" class="logo-default"/></a>
+</div>
+<!-- END LOGO -->
+<div class="menu-toggler sidebar-toggler"></div>
+<!-- BEGIN LOGIN -->
+<div class="content">
+	<!-- BEGIN LOGIN FORM -->
+	<form class="login-form" action="/j_security_check" method="post">
+		<h3 class="form-title">{msg:t('login.h2.form_title')}</h3>
+        {#if error}
+        <div class="alert alert-danger">{msg:t('login.div_alert.bad_password')}</div>
+        {/if}
+        {#if logout}
+        <div class="alert alert-danger">{msg:t('login.div_alert.closed_session')}</div>
+        {/if}
+		<div class="alert alert-danger display-hide">
+			<button class="close" data-close="alert"></button>
+			<span>{msg:t('login.span_alert.empty_login')}</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.username')}</label>
+			<div class="input-icon">
+				<i class="fa fa-user"></i>
+				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="{msg:t('login.label.username')}" name="username"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.password')}</label>
+			<div class="input-icon">
+				<i class="fa fa-lock"></i>
+				<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="{msg:t('login.label.password')}" name="password"/>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn blue pull-right">
+			<span>{msg:t('login.button.submit_login')}</span>&nbsp;<i class="m-icon-swapright m-icon-white"></i>
+			</button>
+		</div>
+        <div class="create-account">
+            <p>
+                <span>{msg:t('login.span.create_account_msg')}</span>&nbsp;<a href="javascript:;" id="register-btn" style="color: black;">{msg:t('login.a.create_account_link')}</a>
+            </p>
+        </div>
+	</form>
+	<!-- END LOGIN FORM -->
+    <!-- BEGIN REGISTRATION FORM -->
+    <form class="register-form" action="/register" method="post">
+        <h3>{msg:t('login.h3.create_account_title')}</h3>
+        <p>{msg:t('login.p.create_account_subtitle')}</p>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.full_name')}</label>
+            <div class="input-icon">
+                <i class="fa fa-font"></i>
+                <input class="form-control placeholder-no-fix" type="text" placeholder="{msg:t('login.label.full_name')}" name="fullname"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.email')}</label>
+            <div class="input-icon">
+                <i class="fa fa-envelope"></i>
+                <input class="form-control placeholder-no-fix" type="text" placeholder="{msg:t('login.label.email')}" name="email"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.city')}</label>
+            <div class="input-icon">
+                <i class="fa fa-location-arrow"></i>
+                <input class="form-control placeholder-no-fix" type="text" placeholder="{msg:t('login.label.city')}" name="city"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.country')}</label>
+            <select name="country" id="select2_sample4" class="select2 form-control" data-select2-placeholder="{msg:t('login.label.country')}">
+                {#include countries /}
+            </select>
+        </div>
+        <p>{msg:t('login.p.access_pair_label')}</p>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.username')}</label>
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="{msg:t('login.label.username')}" name="username" id="input_username" data-unavailable-user-msg="{msg:t('login.validate.unavailable_user_msg')}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.password')}</label>
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="{msg:t('login.label.password')}" name="password"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">{msg:t('login.label.rpassword')}</label>
+            <div class="controls">
+                <div class="input-icon">
+                    <i class="fa fa-check"></i>
+                    <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="{msg:t('login.label.rpassword')}" name="rpassword" id="rpassword" data-wrong-pass-confirmation="{msg:t('login.validate.wrong_pass_confirmation')}"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>
+            <input type="checkbox" name="tnc" id="tnc" data-empty-tnc-msg="{msg:t('login.validate.empty_tnc_msg')}"/><span>{msg:t('login.span.i_accept')}</span><a href="#" style="color: black;">
+            <u>{msg:t('login.u.terms_of_service')}</u> </a>
+            <a href="#" style="color: black;">
+            <u>{msg:t('login.u.privacy_policy')}</u></a>
+            </label>
+            <div id="register_tnc_error">{msg:t('login.div.alert_tnc_empty')}</div>
+        </div>
+        <div class="form-actions">
+            <button id="register-back-btn" type="button" class="btn">
+            <i class="m-icon-swapleft"></i>&nbsp;<span>{msg:t('login.span_button_back')}</span></button>
+            <button type="submit" id="register-submit-btn" class="btn blue pull-right">
+            <span>{msg:t('login.button.submit_register')}</span>&nbsp;<i class="m-icon-swapright m-icon-white"></i>
+            </button>
+        </div>
+    </form>
+    <!-- END REGISTRATION FORM -->
+</div>
+<!-- END LOGIN -->
+<!-- BEGIN COPYRIGHT -->
+<div class="copyright">
+	 {app:year} &copy; Cotizadora &amp; Phesus.
+</div>
+<!-- END COPYRIGHT -->
+<!-- BEGIN CORE PLUGINS -->
+<script src="/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery-validation/js/localization/messages_{msg:lang}.min.js" type="text/javascript"></script>
+<script src="/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/plugins/select2/select2.min.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="/scripts/metronic.js" type="text/javascript"></script>
+<script src="/scripts/layout.js" type="text/javascript"></script>
+<script src="/scripts/demo.js" type="text/javascript"></script>
+<script src="/scripts/login-soft.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script>
+jQuery(document).ready(function() \{
+    Metronic.init(); // init metronic core components
+	Layout.init(); // init current layout
+    Login.init();
+
+    // init background slide images
+    $.backstretch([
+        "/media/bg/1.jpg",
+        "/media/bg/2.jpg",
+        "/media/bg/3.jpg",
+        "/media/bg/4.jpg"
+        ], \{
+          fade: 1000,
+          duration: 8000
+        }
+    );
+});
+</script>
+{#if register}
+<script>
+    jQuery(document).ready(function() \{
+        jQuery('.login-form').hide();
+        jQuery('.register-form').show();
+    });
+</script>
+{/if}
+</body>
+</html>
