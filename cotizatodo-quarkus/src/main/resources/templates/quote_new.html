@@ -1,0 +1,238 @@
+{@com.phesus.cotizatodo.entity.Quote quote}
+{@java.util.List<java.util.Map<String,String>> rows}
+{@java.lang.String taxText}
+{@java.lang.Boolean isNew}
+{#include layout}
+{#title}{msg:t('quote_new.span.new_quote')}{/title}
+{#content}
+        <!-- BEGIN FORM-->
+        <form id="formi" data-cookie-persistable="{isNew ? 'true' : 'false'}" action="/quotes/print/pdf" class="horizontal-form" method="POST" enctype="multipart/form-data" target="_blank">
+            <input type="hidden" name="layout" id="layout" value=""/>
+            <input type="hidden" name="id" value="{quote.id ?: ''}"/>
+            <input type="hidden" value="{taxText}" id="taxText"/>
+            <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-magic-wand"></i>
+                    <span class="caption-subject bold uppercase">{msg:t('quote_new.span.new_quote')}</span>
+                </div>
+                <div class="actions">
+                    <a href="javascript:;" class="btn btn-sm blue" id="btn-toggle">
+                        <span id="btn-toggle-msg1" class="hide">
+                            <i class="fa fa-calculator"></i>
+                            <span>{msg:t('quote_new.span.calc_mode')}</span>
+                        </span>
+                        <span id="btn-toggle-msg2">
+                            <i class="fa fa-calculator"></i>
+                            <span>{msg:t('quote_new.span.simple_mode')}</span>
+                        </span>
+                    </a>
+                    <a href="javascript:;" class="btn btn-sm blue" id="btn-save">
+                        <i class="fa fa-save"></i>
+                        <span>{msg:t('quote_new.span.save')}</span>
+                    </a>
+                    <a href="/quotes/print" data-target="#ajax" data-toggle="modal" id="btn-print" class="btn btn-sm green">
+                        <i class="fa fa-print"></i>
+                        <span>{msg:t('quote_new.span.print')}</span>
+                    </a>
+                    <a class="btn btn-icon-only btn-default btn-sm fullscreen" href="javascript:;"></a>
+                </div>
+            </div>
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <!-- [Start] Selector de logo -->
+                                    <div class="fileinput fileinput-new" style="margin-bottom: 0px;" data-provides="fileinput">
+                                        <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 180px; height: 60px; margin-bottom: 0px; margin-left: 16px;">
+                                            {#if !isNew}<img src="/quotes/viewLogo/{quote.id}"/>{/if}
+                                        </div>
+                                        <span class="btn default btn-file">
+                                        <span class="fileinput-new">{msg:t('quote_new.span.upload_logo')}</span>
+                                        <span class="fileinput-exists">{msg:t('quote_new.span.change_logo')}</span>
+                                        <input type="file" name="logo"/>
+                                        </span>
+                                        <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput">{msg:t('quote_new.a.remove_logo')}</a>
+                                    </div>
+                                    <!-- [End] Selector de logo -->
+                                    <input type="text" name="sourceCompany" value="{quote.sourceCompany ?: ''}" id="company" class="form-control borderless company-name input-lg" placeholder="{msg:t('quote_new.input.placeholder.your_business_name')}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="title" value="{quote.title ?: ''}" id="title" class="form-control borderless company-name input-lg right-column" style="padding-right: 33px;" placeholder="{msg:t('quote_new.input.placeholder.title')}"/>
+                                    <!-- Fecha -->
+                                    <div class="input-icon right">
+                                        <i class="fa"></i>
+                                        <input type="text" id="date" name="date" value="{quote.date ?: ''}" class="form-control borderless right-column input-sm" placeholder="{msg:t('quote_new.input.placeholder.date')}"/>
+                                    </div>
+                                    <!-- Folio -->
+                                    <div class="input-icon right">
+                                        <i class="fa"></i>
+                                        <input type="text" name="folio" value="{quote.folio ?: ''}" id="folio" class="form-control borderless right-column input-sm" placeholder="{msg:t('quote_new.input.placeholder.reference_number')}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-icon right">
+                                        <i class="fa"></i>
+                                        <textarea id="sourceAddress" name="sourceAddress" class="form-control borderless input-sm" style="padding-left: 16px;" rows="3" placeholder="{msg:t('quote_new.textarea.placeholder.your_address')}">{quote.sourceAddress ?: ''}</textarea>
+                                        <input type="text" id="sourcePhone" name="sourcePhone" value="{quote.sourcePhone ?: ''}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="{msg:t('quote_new.input.placeholder.your_phone_number')}"/>
+                                        <input type="text" id="sourceMail" name="sourceEmail" value="{quote.sourceEmail ?: ''}" class="form-control borderless input-sm" style="padding-left: 16px;" placeholder="{msg:t('quote_new.input.placeholder.your_email')}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-icon right">
+                                        <i class="fa"></i>
+                                        <input type="text" name="targetName" value="{quote.targetName ?: ''}" id="targetName" class="form-control borderless right-column input-sm client-cell" placeholder="{msg:t('quote_new.input.placeholder.client_name')}"/>
+                                        <input type="text" name="targetPosition" value="{quote.targetPosition ?: ''}" id="targetPosition" class="form-control borderless right-column input-sm" placeholder="{msg:t('quote_new.input.placeholder.client_position')}"/>
+                                        <input type="text" name="targetCompany" value="{quote.targetCompany ?: ''}" id="targetCompany" class="form-control borderless right-column input-sm client-cell" placeholder="{msg:t('quote_new.input.placeholder.client_company_name')}"/>
+                                        <input type="text" name="targetPhone" value="{quote.targetPhone ?: ''}" id="targetPhone" class="form-control borderless right-column input-sm" placeholder="{msg:t('quote_new.input.placeholder.client_phone')}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-icon right">
+                                        <i class="fa"></i>
+                                        <table id="invoiceTable" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="fit-content">#</th>
+                                                <th>{msg:t('quote_new.th.concept')}</th>
+                                                <th class="numeric">{msg:t('quote_new.th.quantity')}</th>
+                                                <th class="numeric calcmode hide">{msg:t('quote_new.th.wholesale_cost')}</th>
+                                                <th class="numeric calcmode hide">{msg:t('quote.new.th.markup_percent')}</th>
+                                                <th class="numeric calcmode hide">{msg:t('quote.new.th.unit_gross_margin_dollars')}</th>
+                                                <th class="numeric calchide">{msg:t('quote_new.th.unit_selling_price')}</th>
+                                                <th class="numeric calcmode hide">{msg:t('quote_new.th.unit_selling_price')}</th>
+                                                <th class="numeric calcmode hide">{msg:t('quote_new.th.gross_margin_dollars')}</th>
+                                                <th class="numeric">{msg:t('quote_new.th.amount')}</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {#for row in rows}
+                                            <tr class="calculate">
+                                                <td class="fit-content"><span>{row_count}</span></td>
+                                                <td class="editable description"><span>{row.concept}</span><input type="hidden" name="description[]" value="{row.concept}"/></td>
+                                                <td class="editable numeric quantity"><span>{row.quantity}</span><input type="hidden" name="quantity[]" value="{row.quantity}"/></td>
+                                                <td class="editable numeric calcmode hide buyprice"><span>{row.buyPrice}</span><input type="hidden" name="buyPrice[]" class="calchidden" value="{row.buyPrice}"/></td>
+                                                <td class="editable calcmode hide markup"><span>{row.markup}</span><input type="hidden" name="markup[]" class="calchidden" value="{row.markup}"/></td>
+                                                <td class="numeric calcmode hide profit"><span>{row.profit}</span><input type="hidden" name="profit[]" class="calchidden" value="{row.profit}"/></td>
+                                                <td class="editable numeric calchide unitPrice"><span>{row.unitPrice}</span><input type="hidden" name="unitPrice[]" value="{row.unitPrice}"/></td>
+                                                <td class="numeric calcmode hide unitSellPrice"><span>{row.unitSellPrice}</span><input type="hidden" name="unitSellPrice[]" value="{row.unitSellPrice}"/></td>
+                                                <td class="numeric calcmode hide profitTotal"><span>{row.profitTotal}</span><input type="hidden" name="profitTotal[]" class="calchidden" value="{row.profitTotal}"/></td>
+                                                <td class="numeric rowTotal"><span></span><input type="hidden" name="rowTotal[]"/></td>
+                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">{msg:t('quote_new.button.delete_row')}</button></td>
+                                            </tr>
+                                            {/for}
+                                            <tr id="row-template" class="hide">
+                                                <td class="fit-content"></td>
+                                                <td class="editable description"><span></span><input type="hidden" name="description[]" disabled="true" /></td>
+                                                <td class="editable numeric quantity"><span></span><input type="hidden" name="quantity[]" disabled="true" /></td>
+                                                <td class="editable numeric calcmode hide buyprice"><span></span><input type="hidden" name="buyPrice[]" disabled="true" class="calchidden" /></td>
+                                                <td class="editable calcmode hide markup"><span></span><input type="hidden" name="markup[]" disabled="true" class="calchidden" /></td>
+                                                <td class="numeric calcmode hide profit"><span></span><input type="hidden" name="profit[]" disabled="true" class="calchidden" /></td>
+                                                <td class="editable numeric calchide unitPrice"><span></span><input type="hidden" name="unitPrice[]" disabled="true" /></td>
+                                                <td class="numeric calcmode hide unitSellPrice"><span></span><input type="hidden" name="unitSellPrice[]" disabled="true" /></td>
+                                                <td class="numeric calcmode hide profitTotal"><span></span><input type="hidden" name="profitTotal[]" disabled="true" class="calchidden" /></td>
+                                                <td class="numeric rowTotal clearthis"><span>0.00</span><input type="hidden" name="rowTotal[]" disabled="true" /></td>
+                                                <td class="fit-content"><button type="button" class="btn btn-default btn-xs btn-rowdel">{msg:t('quote_new.button.delete_row')}</button><input type="hidden" disabled="true" name="markuptext[]" class="markuptext calchidden" /></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="calcmode hide">
+                                                <th colspan="8"><strong>{msg:t('quote_new.strong.total_wholesale_cost')}</strong></th>
+                                                <th class="calc-total-buy numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="totalbuycost" class="calchidden" /></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr class="calcmode hide">
+                                                <th colspan="8"><strong>{msg:t('quote_new.strong.total_profit')}</strong></th>
+                                                <th class="calc-total-profit numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="totalprofit" class="calchidden" /></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong>{msg:t('quote_new.strong.subtotal')}</strong></th>
+                                                <th class="calc-subtotal numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="subtotal" /></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="4" data-normspan="4" data-calcspan="8" class="salesTaxText editable tooltips">
+                                                    <strong><span class="tooltips" data-container="body" data-placement="top" data-original-title="{msg:t('quote_new.tooltip.taxes_format')}"></span></strong><input type="hidden" name="salestaxrate" id="salestaxrate" />
+                                                </th>
+                                                <th class="calc-salesTax numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" id="salestax" name="taxes"/></th>
+                                                <th><input type="hidden" id="salestaxtext" name="taxesDescription" value="{quote.taxesDescription ?: ''}"/></th>
+                                            </tr>
+                                            <tr class="grand-total">
+                                                <th colspan="4" data-normspan="4" data-calcspan="8"><strong>{msg:t('quote_new.strong.grand_total')}</strong></th>
+                                                <th class="calc-total numeric clearthis"><strong><span>0.00</span></strong><input type="hidden" name="total" /></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="6" data-normspan="6" data-calcspan="10">
+                                                    <button type="button" id="btn-add" class="btn btn-default">{msg:t('quote_new.button.add_row')}</button>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <textarea placeholder="{msg:t('quote_new.textarea.terms_and_conditions')}" id="notas" name="termsAndConditions" class="form-control borderless" rows="6">{quote.termsAndConditions ?: ''}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input id="sourceName" type="text" name="sourceName" value="{quote.sourceName ?: ''}" class="form-control borderless input-sm client-cell" placeholder="{msg:t('quote_new.input.your_name')}"/>
+                                    <input id="sourcePosition" type="text" name="sourcePosition" value="{quote.sourcePosition ?: ''}" class="form-control borderless input-sm" placeholder="{msg:t('quote_new.input.your_position')}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- END FORM-->
+{/content}
+{#scripts}
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="/css/invoice-table.css" rel="stylesheet"/>
+        <link href="/css/quote-new.css" rel="stylesheet"/>
+        <link rel="stylesheet" type="text/css" href="/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
+        <!-- END PAGE LEVEL STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="/scripts/jquery.invoice-table.js"></script>
+        <script type="text/javascript" src="/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+        <!-- END PAGE LEVEL PLUGINS-->
+        <script>
+                jQuery(document).ready(function() \{
+                    var matcher = $('#taxText').val().match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/g);
+                    $('#invoiceTable').invoiceTable(\{salestax:matcher[matcher.length-1], salestaxtext:$('#taxText').val()});
+
+                    $("#btn-save").click(function() \{
+                        $("#formi")
+                                .attr('action', '/quotes/save')
+                                .attr('target', '_self')
+                                .submit();
+                    });
+                });
+        </script>
+{/scripts}
+{/include}

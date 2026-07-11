@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!-- Plantilla base (port a Qute del layout Metronic legado) -->
+<html lang="{msg:lang}">
+<head>
+<meta charset="utf-8"/>
+<title>{#insert title}Cotizadora{/}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all" rel="stylesheet" type="text/css"/>
+<link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<!-- END GLOBAL MANDATORY STYLES -->
+<!-- BEGIN THEME STYLES -->
+<link href="/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css"/>
+<link href="/css/plugins.css" rel="stylesheet" type="text/css"/>
+<link href="/css/layout.css" rel="stylesheet" type="text/css"/>
+<link href="/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+<link href="/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- END THEME STYLES -->
+<link rel="shortcut icon" href="/favicon.ico"/>
+</head>
+<body>
+<!-- BEGIN HEADER -->
+<div class="page-header">
+	<div class="page-header-top">
+		<div class="container">
+			<!-- BEGIN LOGO -->
+			<div class="page-logo">
+				<a href="/"><img src="/img/logo-cotiza-small.png" alt="logo" class="logo-default"/></a>
+			</div>
+			<!-- END LOGO -->
+			<a href="javascript:;" class="menu-toggler"></a>
+			<!-- BEGIN TOP NAVIGATION MENU -->
+			<div class="top-menu">
+				<ul class="nav navbar-nav pull-right">
+                    {#if !sec:authenticated}
+                    <li class="dropdown dropdown-user dropdown-dark">
+                        <a href="/login?register" class="dropdown-toggle">
+                        <span class="username username-hide-mobile">{msg:t('layout.span.signup')}</span>
+                        </a>
+                    </li>
+                    <li class="dropdown dropdown-separator"><span class="separator"></span></li>
+                    <li class="dropdown dropdown-user dropdown-dark">
+                        <a href="/login" class="dropdown-toggle">
+                        <span class="username username-hide-mobile">{msg:t('layout.span.login')}</span>
+                        </a>
+                    </li>
+                    <li class="dropdown dropdown-separator"><span class="separator"></span></li>
+                    {#else}
+					<!-- BEGIN USER LOGIN DROPDOWN -->
+					<li class="dropdown dropdown-user dropdown-dark">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<span class="username username-hide-mobile">{sec:displayName}</span>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-default">
+							<li>
+								<a href="/user">
+								<i class="icon-user"></i><span>{msg:t('layout.span.account')}</span></a>
+							</li>
+							<li>
+                                <form id="logoutForm" method="post" target="_self" action="/logout"></form>
+								<a href="javascript:;" onclick="logoutForm.submit();">
+								<i class="icon-key"></i><span>{msg:t('layout.span.logout')}</span></a>
+							</li>
+						</ul>
+					</li>
+                    <!-- END USER LOGIN DROPDOWN -->
+                    {/if}
+                    <!-- BEGIN LANGUAGE DROPDOWN -->
+                    <li class="dropdown dropdown-language dropdown-dark">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            {#if msg:lang == 'es'}
+                            <div><img alt="" src="/img/flags/es.png"/><span class="langname">ES</span></div>
+                            {#else}
+                            <div><img alt="" src="/img/flags/us.png"/><span class="langname">EN</span></div>
+                            {/if}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-default">
+                            <li><a href="?lang=en"><img alt="" src="/img/flags/us.png"/> English </a></li>
+                            <li><a href="?lang=es"><img alt="" src="/img/flags/es.png"/> Español </a></li>
+                        </ul>
+                    </li>
+                    <!-- END LANGUAGE DROPDOWN -->
+                    {#if sec:authenticated}
+                    <li class="dropdown dropdown-separator"><span class="separator"></span></li>
+                    {/if}
+                    <li>
+                        <a href="/quotes/new" class="btn btn-lg green-turquoise">{msg:t('layout.link.start')}</a>
+                    </li>
+				</ul>
+			</div>
+			<!-- END TOP NAVIGATION MENU -->
+		</div>
+	</div>
+	<!-- BEGIN HEADER MENU -->
+	<div class="page-header-menu">
+		<div class="container">
+			<div class="hor-menu ">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="/">{msg:t('layout.link.home')}</a>
+					</li>
+                    {#if sec:authenticated}
+                    <li>
+                        <a href="/quotes" target="_self" class="tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="{msg:t('layout.title.myquotes')}">
+                        {msg:t('layout.link.myquotes')}</a>
+                    </li>
+                    {/if}
+					<li>
+                        <a href="http://blog.cotizadora.com" target="_blank" class="tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="{msg:t('layout.tooltip.blog')}">
+                        BLOG </a>
+                    </li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- END HEADER MENU -->
+</div>
+<!-- END HEADER -->
+<!-- BEGIN PAGE CONTAINER -->
+<div class="page-container">
+	<div class="page-content">
+		<div class="container">
+            <!-- Modal -->
+            <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+                <div class="page-loading page-loading-boxed">
+                    <img src="/img/loading-spinner-grey.gif" alt="" class="loading"/>
+                    <span>&nbsp;&nbsp;{msg:t('layout.misc.loading')}</span>
+                </div>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">{msg:t('layout.misc.loading')}</div>
+                </div>
+            </div>
+            <!-- End Modal -->
+			<div class="row">
+				<div class="col-md-12">
+					{#insert content}Page content goes here{/}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END PAGE CONTAINER -->
+<!-- BEGIN PRE-FOOTER -->
+<div class="page-prefooter">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-sm-6 col-xs-12 footer-block">
+				<h2>{msg:t('layout.h2.about')}</h2>
+				<p>{msg:t('layout.p.about')}</p>
+			</div>
+			<div class="col-md-3 col-sm-6 col-xs-12 footer-block">
+				<h2>Follow Us On</h2>
+				<ul class="social-icons">
+					<li><a href="javascript:;" data-original-title="facebook" class="facebook"></a></li>
+					<li><a href="javascript:;" data-original-title="twitter" class="twitter"></a></li>
+					<li><a href="javascript:;" data-original-title="youtube" class="youtube"></a></li>
+				</ul>
+			</div>
+			<div class="col-md-5 col-sm-6 col-xs-12 footer-block">
+				<h2>{msg:t('layout.h2.contact')}</h2>
+				<address class="margin-bottom-40">
+				Email: <a href="mailto:contacto@cotizadora.com">contacto@cotizadora.com</a>
+				</address>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END PRE-FOOTER -->
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+	<div class="container">
+		 2015 &copy; Phesus. All Rights Reserved.
+	</div>
+</div>
+<div class="scroll-to-top">
+	<i class="icon-arrow-up"></i>
+</div>
+<!-- END FOOTER -->
+<!-- BEGIN CORE PLUGINS -->
+<script src="/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<script src="/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<script src="/scripts/metronic.js" type="text/javascript"></script>
+<script src="/scripts/layout.js" type="text/javascript"></script>
+<script src="/scripts/demo.js" type="text/javascript"></script>
+<script>
+      jQuery(document).ready(function() \{
+            Metronic.init(); // init metronic core components
+            Layout.init(); // init current layout
+      });
+</script>
+{#insert scripts}{/}
+</body>
+</html>

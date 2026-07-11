@@ -1,0 +1,19 @@
+{#include layout}
+{#title}{msg:t('error404.title')}{/title}
+{#content}
+        <div class="col-md-12 page-500">
+            <div class=" number">404</div>
+            <div class=" details">
+                <h3>{msg:t('error404.title')}</h3>
+                <p>
+                    <span>{msg:t('error404.span.explanation1')}</span><br/>
+                    <span>{msg:t('error404.span.explanation2')}</span>
+                </p>
+                <br/><br/><br/>
+            </div>
+        </div>
+{/content}
+{#scripts}
+        <link href="/css/errors.css" rel="stylesheet" type="text/css"/>
+{/scripts}
+{/include}

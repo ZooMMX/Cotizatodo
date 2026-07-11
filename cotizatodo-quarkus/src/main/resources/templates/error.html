@@ -1,0 +1,18 @@
+{#include layout}
+{#title}{msg:t('error500.title')}{/title}
+{#content}
+        <div class="col-md-12 page-500">
+            <div class=" number">500</div>
+            <div class=" details">
+                <h3>{msg:t('error500.title')}</h3>
+                <p>
+                    <span>{msg:t('error500.span.explanation')}</span>
+                    <br/><br/>
+                </p>
+            </div>
+        </div>
+{/content}
+{#scripts}
+        <link href="/css/errors.css" rel="stylesheet" type="text/css"/>
+{/scripts}
+{/include}

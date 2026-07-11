@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">{msg:t('print_menu.h4.modal_title')}</h4>
+</div>
+<!-- BEGIN MODAL BODY-->
+<div class="modal-body">
+        <div class="form-body">
+            <h3 class="form-section">{msg:t('print_menu.h3.modal_subtitle')}</h3>
+            <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                <div class="col-md-3">
+                  <p class="text-center block-center">
+                      <img src="/img/thumb_template_2.png" style="padding-top: 10px; padding-bottom: 10px"/>
+                      <a id="btn-layout-second" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block">{msg:t('print_menu.a.template_0')}</a>
+                  </p>
+                </div>
+                <div class="col-md-3">
+                  <p class="text-center block-center">
+                      <img src="/img/thumb_template_1_magenta.png" style="padding-top: 10px; padding-bottom: 10px"/>
+                      <a id="btn-layout-first-magenta" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block">{msg:t('print_menu.a.template_1')}</a>
+                  </p>
+                </div>
+                <div class="col-md-3">
+                  <p class="text-center block-center">
+                      <img src="/img/thumb_template_1_blue.png" style="padding-top: 10px; padding-bottom: 10px"/>
+                      <a id="btn-layout-first-blue" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block">{msg:t('print_menu.a.template_2')}</a>
+                  </p>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <p class="text-center block-center">
+                          <img src="/img/thumb_template_1_green.png" style="padding-top: 10px; padding-bottom: 10px"/>
+                          <a id="btn-layout-first-green" style="margin-top: 10px;" href="javascript:;" class="btn default green-stripe btn-block">{msg:t('print_menu.a.template_3')}</a>
+                      </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">{msg:t('print_menu.button.back')}</button>
+</div>
+<!-- END MODAL BODY-->
+<script>
+    function submitPrint() \{
+        $("#formi")
+            .attr('action', '/quotes/print/pdf')
+            .attr('target', "_blank")
+            .submit();
+    }
+    jQuery(document).ready(function() \{
+            $("#btn-layout-second").click(function() \{
+                $("#layout").val("second");
+                submitPrint();
+            })
+            $("#btn-layout-first-magenta").click(function() \{
+                $("#layout").val("first_magenta");
+                submitPrint();
+            })
+            $("#btn-layout-first-blue").click(function() \{
+                $("#layout").val("first_blue");
+                submitPrint();
+            })
+            $("#btn-layout-first-green").click(function() \{
+                $("#layout").val("first_green");
+                submitPrint();
+            })
+        });
+</script>

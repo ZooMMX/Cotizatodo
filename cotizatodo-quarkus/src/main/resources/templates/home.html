@@ -1,0 +1,48 @@
+{#include layout}
+{#content}
+    <div class="">
+        <div class="row" style="text-align: center;">
+            <h1 style="font-size: 50pt;">{msg:t('home.h1.title')}</h1>
+            <h3>{msg:t('home.h3.subtitle')}</h3>
+            <p>
+                <a href="/quotes/new" class="btn btn-lg green-turquoise">
+                    <span class="fa fa-bullhorn"></span>
+                    <span>{msg:t('home.span.start')}</span>
+                </a>
+            </p>
+        </div>
+        &nbsp;
+    </div>
+    <div class="portlet light">
+        <div class="portlet-body">
+            <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                <div class="col-md-4">
+                    <p class="text-center block-center">
+                      <i class="fa fa-codepen text-center" style="font-size: 130px; line-height: 160px; text-align: center;"></i>
+                    </p>
+                    <h2 style="text-align: center;">{msg:t('home.h2.simplicity')}</h2>
+                    <h4 style="text-align: center;">{msg:t('home.h4.simplicity')}</h4>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-center block-center">
+                        <i class="fa fa-bolt text-center" style="font-size: 130px; line-height: 160px; text-align: center;"></i>
+                    </p>
+                    <h2 style="text-align: center;">{msg:t('home.h2.speed')}</h2>
+                    <h4 style="text-align: center;">{msg:t('home.h4.speed')}</h4>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-center block-center">
+                      <i class="fa fa-anchor text-center" style="font-size: 130px; line-height: 160px; text-align: center;"></i>
+                    </p>
+                    <h2 style="text-align: center;">{msg:t('home.h2.style')}</h2>
+                    <h4 style="text-align: center;">{msg:t('home.h4.style')}</h4>
+                </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <img src="/img/cotizadora.png" style="max-width:100%; width: 100%;"/>
+            </div>
+        </div>
+    </div>
+{/content}
+{/include}
