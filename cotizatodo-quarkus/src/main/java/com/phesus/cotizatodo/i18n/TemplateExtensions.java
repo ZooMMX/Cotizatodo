@@ -26,6 +26,12 @@ public class TemplateExtensions {
         return Arc.container().instance(CurrentLocale.class).get().getLang();
     }
 
+    /** Año actual del servidor, para el copyright del footer: {app:year}. */
+    @TemplateExtension(namespace = "app")
+    static int year() {
+        return java.time.Year.now().getValue();
+    }
+
     @TemplateExtension(namespace = "sec")
     static boolean authenticated() {
         return SecurityHelper.isAuthenticated();
