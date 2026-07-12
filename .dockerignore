@@ -1,0 +1,14 @@
+# Solo se necesitan src/main/resources (legado) y cotizatodo-quarkus/ para el build
+.git
+.idea
+**/target
+**/*.iml
+**/*.ipr
+**/*.iws
+cotizatodo-quarkus/local-repo/**/*.jar.sha1
+
+# App legada Spring: no participa en la imagen (salvo sus resources, copiados explícitamente)
+src/main/java
+lib
+*.iml
+*.ipr

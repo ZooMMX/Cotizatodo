@@ -1,0 +1,29 @@
+# Configuración de ejemplo para desplegar en Fly.io (opción ~2-3 USD/mes).
+# Copia este archivo a la raíz del repo (junto al Dockerfile) antes de `fly deploy`,
+# o ejecuta fly desde la raíz apuntando aquí con --config cotizatodo-quarkus/fly.toml.
+#
+# Cambia "app" por el nombre real que registres con `fly launch`.
+
+app = "cotizatodo"
+primary_region = "qro"   # Querétaro (México). Ajusta a tu región más cercana.
+
+[build]
+  dockerfile = "Dockerfile"
+  # Para PostgreSQL en vez de MySQL, descomenta:
+  # [build.args]
+  #   DB_KIND = "postgresql"
+
+[env]
+  # El puerto interno que expone el contenedor; DB_URL/credenciales van como secretos.
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"    # apaga la máquina sin tráfico -> ahorra dinero
+  auto_start_machines = true
+  min_machines_running = 0       # 0 = escala a cero cuando no hay tráfico
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"               # JVM + JasperReports cómodo; 256mb es límite justo

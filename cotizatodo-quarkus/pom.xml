@@ -59,6 +59,11 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-mysql</artifactId>
         </dependency>
+        <!-- Driver alternativo: permite DB_KIND=postgresql sin cambios de código -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-postgresql</artifactId>
+        </dependency>
         <!-- H2 solo para dev/test -->
         <dependency>
             <groupId>io.quarkus</groupId>

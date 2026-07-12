@@ -67,9 +67,67 @@ Configuración por variables de entorno (ver `application.properties`):
 
 | Variable                 | Descripción                                    |
 | ------------------------ | ---------------------------------------------- |
-| `DB_URL`                 | JDBC URL de MySQL (`jdbc:mysql://host/cotizatodo`) |
+| `DB_URL`                 | JDBC URL de la base (`jdbc:mysql://host/cotizatodo`) |
 | `DB_USER` / `DB_PASSWORD`| Credenciales de la base                        |
+| `DB_KIND`                | Motor: `mysql` (por defecto) o `postgresql`. **Se fija al construir**, no en runtime (ver Despliegue). |
+| `PORT`                   | Puerto HTTP (por defecto 8080). Varios PaaS lo inyectan automáticamente. |
 | `COOKIE_ENCRYPTION_KEY`  | **Obligatoria en prod**: clave (≥16 bytes) para cifrar la cookie de sesión |
 
 El esquema (`user`, `user_role`, `quote`) es compatible con el de la app
 original; `startup.sql` de la raíz sigue sirviendo para inicializar MySQL.
+
+## Despliegue en un PaaS (contenedor Docker)
+
+En la **raíz del repo** hay un `Dockerfile` (imagen JVM) que produce un contenedor
+autocontenido. El contexto de build es la raíz porque el módulo reutiliza los
+recursos de la app legada en `src/main/resources`.
+
+```bash
+# Desde la raíz del repositorio
+docker build -t cotizatodo .
+docker run -p 8080:8080 \
+  -e DB_URL="jdbc:mysql://host/cotizatodo" \
+  -e DB_USER=cotizatodo -e DB_PASSWORD=secreto \
+  -e COOKIE_ENCRYPTION_KEY="$(openssl rand -hex 16)" \
+  cotizatodo
+```
+
+**PostgreSQL en vez de MySQL**: el motor se fija al construir (es una propiedad
+build-time de Quarkus). Construye la imagen con el build-arg y apunta el `DB_URL`
+a Postgres en runtime:
+
+```bash
+docker build --build-arg DB_KIND=postgresql -t cotizatodo .
+docker run -p 8080:8080 \
+  -e DB_URL="jdbc:postgresql://host:5432/cotizatodo" \
+  -e DB_USER=... -e DB_PASSWORD=... \
+  -e COOKIE_ENCRYPTION_KEY="$(openssl rand -hex 16)" \
+  cotizatodo
+```
+
+### Opciones económicas (≈ un par de USD/mes)
+
+| Plataforma | Base de datos | Notas |
+|---|---|---|
+| **Railway** | MySQL gestionado | La más simple: agrega el plugin MySQL, conecta el repo, despliega por Dockerfile. Inyecta `PORT` y variables de la BD. ~5 USD/mes de crédito hobby. |
+| **Fly.io** | Postgres (o BD externa) | La más barata con escala a cero. Usa `cotizatodo-quarkus/fly.toml` (cópialo a la raíz). Construye con `--build-arg DB_KIND=postgresql` si usas Postgres. |
+| **Koyeb** | Neon Postgres (gratis) | Instancia nano barata; BD externa gratuita en Neon. |
+| **Clever Cloud** | MySQL gestionado | Soporte nativo de Quarkus; mantiene MySQL sin cambios. |
+
+**Pasos comunes en cualquier plataforma:**
+
+1. Provisiona la base de datos (MySQL o Postgres) y anota su URL/usuario/contraseña.
+2. Carga `startup.sql` (o deja que Hibernate cree el esquema con `ddl-auto=update`;
+   crea al menos un usuario con `INSERT` + hash BCrypt para poder entrar).
+3. Configura los secretos: `DB_URL`, `DB_USER`, `DB_PASSWORD`, y **`COOKIE_ENCRYPTION_KEY`**
+   (genérala con `openssl rand -hex 16`; si cambia, se invalidan las sesiones).
+4. Apunta la plataforma al `Dockerfile` de la raíz (build-arg `DB_KIND=postgresql`
+   solo si usas Postgres) y despliega.
+
+> **Ejemplo Fly.io:** `cp cotizatodo-quarkus/fly.toml ./fly.toml`, edita el nombre
+> de la app, luego `fly launch --no-deploy`, `fly secrets set DB_URL=... DB_USER=... DB_PASSWORD=... COOKIE_ENCRYPTION_KEY=$(openssl rand -hex 16)` y `fly deploy`.
+
+Recomendación de RAM: **512 MB** para ir holgado (JVM + JasperReports). Funciona en
+256 MB pero queda justo. El despliegue es en **modo JVM** a propósito: la imagen
+nativa usaría menos memoria, pero JasperReports + AWT complica el build nativo y no
+compensa para ahorrar un dólar.
